@@ -13,12 +13,10 @@
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     
     <link rel="stylesheet" href="Style.css">
-    <style>
-        /* Basic styling */
-        
-    </style>
+  
 </head>
 <body>
+  <!-- Most were copied from guides with small changes made, just cause its the basic website design will change after we decide if its the final design. -->
     <div class="header">
         <a href="#default" class="logo">Stay Finder</a>
         <div class="header-right">
@@ -26,6 +24,34 @@
           <a href="#contact">Contact</a>
           <a href="#about">About</a>
         </div>
+      </div>
+
+
+      <!--Container Centers everything-->
+      <div class="container" style="margin: 20px auto; max-width: 800px; padding: 0 20px;">
+        <div style="display: flex; justify-content: center; margin: 40px 0;">
+            <input 
+                type="text" 
+                placeholder="Search for places..."
+                style="width: 100%; max-width: 600px; padding: 12px 20px; font-size: 16px;"
+            >
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 30px; justify-content: center;">
+            <button style="padding: 8px 16px;">Price Range</button>
+            <button style="padding: 8px 16px;">Amenities</button>
+            <button style="padding: 8px 16px;">Rating</button>
+            <button style="padding: 8px 16px;">Type</button>
+        </div>
+
+         <div class="search-results">
+          <div style="display: flex; gap: 20px; margin-bottom: 30px;">
+              <div style="width: 200px; height: 150px; background-color: #f0f0f0;">
+              </div>
+              <div>
+                  <h3 style="margin: 0 0 10px 0;">Example Place Name</h3>
+                  <p>Description or details about the place...</p>
+              </div>
       </div>
 </body>
 </html>
