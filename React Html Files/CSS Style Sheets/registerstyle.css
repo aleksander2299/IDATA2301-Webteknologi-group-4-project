@@ -4,8 +4,10 @@
 }
 
 body {
+    
     font-family: sans-serif;
     background: radial-gradient(circle,rgb(216, 112, 216),rgb(179, 38, 179))
+    
   }
 
   header {
@@ -16,9 +18,11 @@ body {
     justify-content: flex-start; 
     align-items: center; 
     border-bottom: 2px solid;
+    
   }
   
   .home {
+    padding: 1rem;
     font-size: 2rem; /* Increase font size */
     color: rgb(180, 40, 180);
     font-weight: bold;
@@ -32,12 +36,51 @@ body {
     color: rgb(27, 25, 25);
   }
 
+
+  .register{
+    border-style: solid;
+    border-radius: 1rem;
+    display: flex;
+    background: radial-gradient(circle, rgb(60, 58, 58), rgb(90, 88, 88)) !important;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+    width: fit-content;
+    padding-bottom: 0;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.5rem;
+}
+
+
+  .register label{
+    font-size: 1.4rem;
+    margin: 0.6rem;
+    color: rgb(180, 40, 180);
+  }
+
+  .register h1{
+    font-size: 2.5rem;
+    color: rgb(180, 40, 180);
+  }
+
+  .register input{
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .submit{
+   padding: 1.2rem;
+   font-size: 1.5rem;
+    margin: 1.5rem;    
+}
+
+
+
   form{
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-flow: column;
+    margin-top: 2rem;
+   
   }
-
-
-  
