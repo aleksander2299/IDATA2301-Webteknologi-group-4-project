@@ -9,7 +9,7 @@ body {
   }
 
   header {
-    background: radial-gradient(circle, rgb(60, 58, 58), rgb(90, 88, 88)); 
+    background: radial-gradient(circle, rgb(60, 58, 58), rgb(90, 88, 88)) !important;
     width: 100%;
     height: 5rem;
     display: flex; 
@@ -26,3 +26,8 @@ body {
     text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
   }
 
+
+  a{
+
+    color: rgb(27, 25, 25);
+  }
