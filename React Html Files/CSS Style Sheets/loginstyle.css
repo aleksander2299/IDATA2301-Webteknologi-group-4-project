@@ -13,13 +13,16 @@ body {
     width: 100%;
     height: 5rem;
     display: flex; 
-    justify-content: center; 
+    justify-content: flex-start; 
     align-items: center; 
     border-bottom: 2px solid;
   }
   
   .home {
     font-size: 2rem; /* Increase font size */
-    color: purple;
+    color: rgb(180, 40, 180);
+    font-weight: bold;
+    border: 100px;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
   }
 
