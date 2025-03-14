@@ -1,0 +1,103 @@
+
+*{
+    margin: 0;
+}
+
+
+  body {
+    font-family: sans-serif;
+    background: radial-gradient(circle,rgb(150, 30, 150),rgb(179, 38, 179));
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+header {
+    background: radial-gradient(circle, rgb(60, 58, 58), rgb(90, 88, 88)) !important;
+    width: 100%;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 3rem;
+    font-weight: bold;
+
+}
+
+
+.settingscontainer {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    margin-top: 0.5rem;
+   
+}
+
+
+section {
+    flex: 1;
+    padding: 2rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    background: radial-gradient(circle, rgb(60, 58, 58), rgb(90, 88, 88)) !important;
+    border-radius: 0.9rem;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    
+    margin: 5rem;
+}
+
+
+h2 {
+    text-transform: capitalize;
+    font-size: 1.6rem;
+    border-bottom: 2px solid white;
+    padding-bottom: 5px;
+}
+
+
+label {
+    display: block;
+    font-size: 1.6rem;
+    margin: 0.6rem 0.1rem;
+}
+
+input {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    background: #f5f5f5;
+}
+
+button {
+    margin-top: 0.8rem;
+    padding: 0.8rem 1.1rem;
+    background: #d500f9; 
+    font-size: 1.2rem;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
+#deletebtn{
+    font-size: 2.5rem;
+    background: red;
+    padding: 4rem 4rem;
+    display: flex;
+    align-items: end;
+    }
+
+    #deletebtn:hover{
+        transform: scale(1.1);
+        
+    }
+
+button:hover {
+    background: #aa00ff;
+}
