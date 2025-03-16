@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SearchPage</title>
+    <link rel="stylesheet"  href="/React_Html_Files/CSS_Style_Sheets/searchpagestyle.css">
+</head>
+
+
+
+<body>
+    <main>
+    <div class="search-container">
+        <form class="search-btn">
+            <label for="Search">Search for hotel/location</label>
+            <input type="search" name="Search" id="Search">
+        </form>
+
+        <label for="roomType"></label>
+        <select id="roomType" class="search-btn">
+            <option value="single">Single</option>
+            <option value="double">Double</option>
+            <option value="family">Family</option>
+        </select>
+
+        <form class="search-btn">
+            <label for="number">Number of rooms</label>
+            <input type="number" name="number" id="number">
+        </form>
+
+        <button class="search-btn active">Search</button>
+    </div>
+
+    <div class="filters">
+        <button class="filter-btn">Sort by (rating, low to high...)</button>
+        <button class="filter-btn">Price</button>
+        <button class="filter-btn">Filter by rooms</button>
+        <button class="filter-btn">Rating</button>
+        <button class="filter-btn">Hotel or house</button>
+    </div>
+
+    <div class="hotel-list">
+        <div class="hotel-card">
+            <div class="image-placeholder">Image</div>
+            <div class="hotel-info">
+                <p>Lorem Ipsum, Lorem Ipsum, Lorem Ipsum</p>
+                <button class="deal-btn">Go to Deal</button>
+            </div>
+        </div>
+    </div>
+
+    </main>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
