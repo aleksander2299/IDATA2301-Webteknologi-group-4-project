@@ -18,7 +18,7 @@ header {
 }
 
 .home {
-    font-size: 2rem; /* Increase font size */
+    font-size: 2rem;
     color: rgb(180, 40, 180);
     font-weight: bold;
     border: 100px;
@@ -36,12 +36,12 @@ header {
     padding-top: 20px;
     padding-bottom: 20px;
     border-radius: 10px;
-    width: 70rem;
+    width: 80rem;
     height: 3rem;
 }
 
 .introductiontext {
-    font-size: 2rem;
+    font-size: 2.5rem;
     text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
     color:white;
     display: flex;
@@ -53,7 +53,7 @@ header {
     background-color: rgba(60, 58, 58, 0.588);
     padding: 2px;
     border-radius: 10px;
-    width: 70rem;
+    width: 80rem;
     height: 30rem;
     
 }
@@ -123,4 +123,71 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.popular-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.popular-title-box {
+    padding: 8px;
+    align-self: flex-start;
+    margin-left: 15.5%;
+    white-space: nowrap;
+    background-color: rgba(60, 58, 58, 0.588);
+    border-radius: 10px;
+    width: 25rem;
+    height: 3rem;
+}
+
+.popular-title {
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    color:white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.recommend-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    width: 80%;
+}
+
+.recommendbox {
+    width: 19rem;
+    height: 20rem;
+    background-color: rgba(60, 58, 58, 0.588);
+    border-radius: 10px;
+    padding: 2px;
+    position: relative;
+}
+
+.recommendbox img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.placebox {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(60, 58, 58, 0.588);
+    color: white;
+    padding: 5px;
+    border-radius: 10px;
+    font-size: 2rem;
+    text-align: center;
 }
