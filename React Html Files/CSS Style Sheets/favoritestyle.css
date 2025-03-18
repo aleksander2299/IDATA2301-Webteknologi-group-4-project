@@ -1,5 +1,5 @@
 html {
-	font-size:62.5%;
+	font-size: 62.5%;
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -8,6 +8,9 @@ html {
 body {
 	font-family: sans-serif;
 	background: radial-gradient(circle,rgb(216, 112, 216),rgb(179, 38, 179));
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 h1 {
@@ -72,5 +75,15 @@ header {
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	height: 3rem;
+	height: 4rem;
+	border-style: none;
+	font-size: 1.8rem;
+	color: white;
+	font-variant: small-caps;
+	background: linear-gradient(180deg, rgba(120, 20, 20, 0.6), rgb(120, 20, 20));
+	transition: background 0.5s ease-in-out;
+}
+
+.favorite-card > button:hover {
+	background: linear-gradient(180deg, rgb(170, 70, 70), rgb(120, 20, 20));
 }
