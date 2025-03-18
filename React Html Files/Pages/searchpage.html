@@ -11,25 +11,30 @@
 
 <body>
     <main>
-    <div class="search-container">
-        <form class="search-btn">
-            <label for="Search">Search for hotel/location</label>
-            <input type="search" name="Search" id="Search">
-        </form>
+        <section class="container" style="margin-top: 20px;">
+                <div class="searchbarbox">
+                    <form class="search-field">
+                        <label for="Search">Search for hotel/location</label>
+                        <input type="search" name="Search" id="Search">
+                    </form>
+                    <label for="roomType"></label>
+                    <select id="roomType" class="search-btn">
+                        <option value="single">Single</option>
+                        <option value="double">Double</option>
+                        <option value="family">Family</option>
+                    </select>
+                    <form class="numberOfRooms">
+                        <label for="number">Number of rooms</label>
+                        <input type="number" name="number" id="number">
+                    </form>
+                    <button class="search-btn active">Search</button>
+                </div>
+        </section>
 
-        <label for="roomType"></label>
-        <select id="roomType" class="search-btn">
-            <option value="single">Single</option>
-            <option value="double">Double</option>
-            <option value="family">Family</option>
-        </select>
 
-        <form class="search-btn">
-            <label for="number">Number of rooms</label>
-            <input type="number" name="number" id="number">
-        </form>
 
-        <button class="search-btn active">Search</button>
+
+
     </div>
 
     <div class="filters">
