@@ -8,49 +8,19 @@ body {
     padding: 20px;
     text-align: center;
 }
-/* Search Container */
-.search-container {
+main div {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    background-color: #444;
-    padding: 15px;
-    border-radius: 10px;
-    max-width: 800px;
-
 }
-
-.search-btn, select, input[type="search"], input[type="number"] {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 15px;
-    background-color: #aaa;
-    font-weight: bold;
-    cursor: pointer;
-    text-align: center;
+/*Search container */
+.searchbarbox {
+    background: #777777;
+    width: 58%;
+    height: 7rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
     justify-content: center;
-}
-
-.search-btn.active {
-    background-color: #69bfff;
-}
-
-/* Input Fields */
-input[type="search"], input[type="number"], select {
-    background-color: #fff;
-    color: #333;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 8px;
-    font-size: 14px;
-    width: 150px;
-}
-
-label {
-    font-size: 12px;
-    color: white;
-    display: block;
-    margin-bottom: 5px;
 }
 
 /* Filters */
