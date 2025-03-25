@@ -1,87 +1,134 @@
-/**
-Temp css just for testing
+/*
+CSS Made with help from AI gonna be used temporarily
  */
+/* General styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #d1b3e0;
     margin: 0;
+    padding: 0;
+    background: radial-gradient(circle,rgb(216, 112, 216),rgb(179, 38, 179))
+}
+
+.container {
+    display: flex;
+    justify-content: center;
     padding: 20px;
-    text-align: center;
 }
-main div {
-    display: flex;
-    justify-content: center;
-}
-/*Search container */
+
+/* Search Bar */
 .searchbarbox {
-    background: #777777;
-    width: 58%;
-    height: 7rem;
-    border-radius: 10px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+}
+
+.search-field,
+.numberOfRooms {
+    flex: 1;
+    min-width: 180px;
+}
+
+.search-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.search-btn.active {
+    background-color: #0056b3;
 }
 
 /* Filters */
 .filters {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-    margin: 20px 0;
+    margin: 20px;
 }
 
 .filter-btn {
     background-color: #ddd;
-    padding: 8px 15px;
     border: none;
-    border-radius: 15px;
+    padding: 10px 15px;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-/* Hotel List */
+.filter-btn:hover {
+    background-color: #bbb;
+}
+
+/* Hotel list */
 .hotel-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
-    margin-top: 20px;
+    padding: 20px;
+    width: 50%;
+    margin: 20px auto;
+    justify-content: center;
 }
 
 .hotel-card {
-    display: flex;
-    align-items: center;
-    background-color: #e8e8e8;
-    padding: 15px;
-    border-radius: 15px;
-    width: 60%;
-    max-width: 500px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+
 }
 
 .image-placeholder {
-    width: 100px;
-    height: 100px;
-    background-color: gray;
+    background: #ccc;
+    height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-weight: bold;
-    border-radius: 10px;
-    margin-right: 15px;
+
 }
 
 .hotel-info {
-    flex: 1;
-    text-align: left;
+    padding: 15px;
+
 }
 
 .deal-btn {
-    background-color: #777;
+    background-color: #28a745;
     color: white;
-    padding: 10px;
     border: none;
-    border-radius: 10px;
+    padding: 10px 15px;
+    border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
+}
+
+.deal-btn:hover {
+    background-color: #218838;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .searchbarbox {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .filters {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hotel-list {
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
 }
