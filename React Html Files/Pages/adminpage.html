@@ -12,55 +12,41 @@
 <body>
 
 <main>
+    <header>
+        <div class="home"><b>Home</b></div>
+    </header>
+
+    <!-- Main content -->
     <div class="container">
-        <h2>Admin Profile</h2>
-        <h3>Display Database</h3>
-        <div class="buttons"></div>
-            <button>Database table 1</button>
-            <button>Database table 1</button>
-            <button>Database table 1</button>
-            <button>Database table 1</button>
-            <button>Database table 1</button>
+
+        <!-- Top Buttons -->
+        <div class="top-buttons">
+            <button class="nav-button">Rooms</button>
+            <button class="nav-button">Provider</button>
         </div>
-        <table class="database-table">
-            <tr>
-                <td>Record 1</td>
-                <td class="actions">
-                    <button class="btn edit">Edit</button>
-                    <button class="btn delete">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Record 2</td>
-                <td class="actions">
-                    <button class="btn edit">Edit</button>
-                    <button class="btn delete">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Record 3</td>
-                <td class="actions">
-                    <button class="btn edit">Edit</button>
-                    <button class="btn delete">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Record 4</td>
-                <td class="actions">
-                    <button class="btn edit">Edit</button>
-                    <button class="btn delete">Delete</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Record 5</td>
-                <td class="actions">
-                    <button class="btn edit">Edit</button>
-                    <button class="btn delete">Delete</button>
-                </td>
-            </tr>
-        </table>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <form class="search-field">
+                <label for="Search">Search for hotel/location</label>
+                <input type="search" name="Search" id="Search">
+            </form>
+            <button class="search-btn">Search</button>
+        </div>
+
+        <!-- Card -->
+        <div class="admin-card">
+            <div class="image-placeholder">Image</div>
+            <div class="card-info">
+                <p>Lorem Ipsum, Lorem Ipsum, Lorem Ipsum</p>
+            </div>
+            <div class="card filters">
+                <button class="btn edit">Edit</button>
+                <button class="btn hide/show">Hide</button>
+                <button class="btn delete">Delete</button>
+            </div>
+        </div>
     </div>
-    </form>
 </main>
 </body>
 </html>

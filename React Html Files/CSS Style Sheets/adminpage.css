@@ -10,18 +10,37 @@ body {
     text-align: center;
 }
 
+/* Header */
+header {
+    background: radial-gradient(circle, rgb(60, 58, 58), rgb(90, 88, 88)) !important;
+    width: 100%;
+    height: 5rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 2px solid;
+
+}
+
+.home {
+    padding: 1rem;
+    font-size: 2rem; /* Increase font size */
+    color: rgb(180, 40, 180);
+    font-weight: bold;
+    border: 100px;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+}
+
+
 /* Container */
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background: white;
     max-width: 900px;
     margin: 30px auto;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
 }
 
 /* Buttons Section */
@@ -44,33 +63,6 @@ body {
 
 .buttons button:hover {
     background-color: #0056b3;
-}
-
-.database-table {
-    width: 100%;
-    max-width: 800px;
-    border-collapse: collapse;
-    margin: 20px auto;
-    background: white;
-}
-
-/* Centering Table Wrapper */
-.table-container {
-    display: flex;
-    justify-content: center;  /* Centers the table horizontally */
-    width: 100%;
-}
-
-.database-table th,
-.database-table td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: center;
-}
-
-.database-table th {
-    background-color: #007bff;
-    color: white;
 }
 
 /* Action Buttons */
