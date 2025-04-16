@@ -7,6 +7,6 @@ import Settings from './components/Settings.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Settings />
+    <LoginPage/>
   </StrictMode>,
 )
