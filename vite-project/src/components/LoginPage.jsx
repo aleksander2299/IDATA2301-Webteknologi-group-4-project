@@ -1,4 +1,4 @@
-import './styles/loginstyle.css';
+import '../styles/loginstyle.css';
 
 
 
