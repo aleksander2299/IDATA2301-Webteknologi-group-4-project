@@ -3,6 +3,8 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+import axios from 'axios';
+
 function App() {
   const [count, setCount] = useState(0)
 
@@ -33,3 +35,9 @@ function App() {
 }
 
 export default App
+
+
+
+export const axiosInstance = axios.create({
+    baseURL : 'http://localhost:8080'
+});
