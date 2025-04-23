@@ -1,0 +1,269 @@
+*{
+    margin: 0;
+}
+
+body {
+    font-family: sans-serif;
+    background: radial-gradient(circle,rgb(216, 112, 216),rgb(179, 38, 179))
+}
+
+header {
+    background: radial-gradient(circle, rgba(60, 58, 58, 0.8), rgb(90, 88, 88)); 
+    width: 100%;
+    height: 5rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 2px solid;
+}
+
+.home {
+    font-size: 2rem;
+    color: rgb(180, 40, 180);
+    font-weight: bold;
+    border: 100px;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.introductionbox {
+    background-color: rgba(60, 58, 58, 0.588);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 10px;
+    width: 80rem;
+    height: 3rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.introductiontext {
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    color:white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.backgroundbox {
+    background-color: rgba(60, 58, 58, 0.588);
+    padding: 2px;
+    border-radius: 10px;
+    width: 80rem;
+    height: 30rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.backgroundbox img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.searchbarbox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(60, 58, 58, 0.9);
+    width: 58%;
+    height: 10rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button1 {
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 8rem;
+    width: 20rem;
+    border-radius: 5%;
+    background-color: rgba(101, 101, 101, 0.5);
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    color:white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button2 {
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 8rem;
+    width: 10rem;
+    border-radius: 5%;
+    background-color: rgba(101, 101, 101, 0.5);
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    color:#ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button3 {
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 8rem;
+    width: 10rem;
+    border-radius: 5%;
+    background-color: rgba(37, 117, 255, 0.5);
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    color:white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popular-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.popular-title-box {
+    padding: 8px;
+    align-self: flex-start;
+    margin-left: 15.5%;
+    white-space: nowrap;
+    background-color: rgba(60, 58, 58, 0.588);
+    border-radius: 10px;
+    width: 25rem;
+    height: 3rem;
+}
+
+.popular-title {
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    color:white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.recommend-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.recommendbox {
+    width: 19rem;
+    height: 20rem;
+    background-color: rgba(60, 58, 58, 0.588);
+    border-radius: 10px;
+    padding: 2px;
+    position: relative;
+}
+
+.recommendbox img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.placebox {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(60, 58, 58, 0.588);
+    color: white;
+    padding: 5px;
+    border-radius: 10px;
+    font-size: 2rem;
+    text-align: center;
+}
+
+@media (max-width: 1280px) {
+    .backgroundbox {
+        width: 60rem;
+        height: 30rem;
+    }
+    .searchbarbox {
+        height: 10rem;
+    }
+    .button1 {
+        font-size: 1.4rem;
+    }
+    .button2 {
+        font-size: 1.4rem;
+    }
+    .button3 {
+        font-size: 2rem;
+    }
+    .introductionbox {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .introductiontext {
+        font-size: 2rem;
+    }
+    .recommendbox {
+        width: 17rem;
+        height: 18rem;
+    }
+}
+
+@media (max-width: 960px) {
+    .backgroundbox {
+        width: 50rem;
+        height: 30rem;
+    }
+    .searchbarbox {
+        width: 80%;
+        height: 10rem;
+    }
+    .button1 {
+        font-size: 1.4rem;
+    }
+    .button2 {
+        font-size: 1.4rem;
+    }
+    .button3 {
+        font-size: 2rem;
+    }
+    .recommendbox {
+        width: 15rem;
+        height: 16rem;
+    }
+}
+
+@media (max-width: 800px) {
+    .backgroundbox {
+        width: 40rem;
+        height: 30rem;
+    }
+    .introductionbox {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        width: 35rem;
+        height: 3rem;
+    }
+    .introductiontext {
+        font-size: 1.4rem;
+    }
+    .recommendbox {
+        width: 13rem;
+        height: 14rem;
+    }
+}
