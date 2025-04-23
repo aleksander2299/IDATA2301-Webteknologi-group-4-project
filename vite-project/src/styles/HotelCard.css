@@ -1,0 +1,35 @@
+/* Hotel Card */
+.hotel-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+
+}
+
+.image-placeholder {
+    background: #ccc;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.hotel-info {
+    padding: 15px;
+
+}
+
+.deal-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.deal-btn:hover {
+    background-color: #218838;
+}
