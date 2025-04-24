@@ -1,0 +1,101 @@
+/*
+CSS Made with help from AI gonna be used temporarily
+ */
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(circle,rgb(216, 112, 216),rgb(179, 38, 179))
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Search Bar */
+.searchbarbox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+}
+
+.search-field,
+.numberOfRooms {
+    flex: 1;
+    min-width: 180px;
+}
+
+.search-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.search-btn.active {
+    background-color: #0056b3;
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px;
+}
+
+.filter-btn {
+    background-color: #ddd;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.filter-btn:hover {
+    background-color: #bbb;
+}
+
+/* Hotel list */
+.hotel-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    width: 50%;
+    margin: 20px auto;
+    justify-content: center;
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .searchbarbox {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .filters {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hotel-list {
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
+}
