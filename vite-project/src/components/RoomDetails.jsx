@@ -1,4 +1,7 @@
+import '../styles/main.css';
 import '../styles/roomdetailstyle.css';
+
+import Footer from './Footer.jsx';
 
 import roomImg from '../Images/room image placeholder.jpg';
 
@@ -48,6 +51,7 @@ function RoomDetails () {
                     </div>
                 </div>
             </section>
+            <Footer />
         </div>
     );
 

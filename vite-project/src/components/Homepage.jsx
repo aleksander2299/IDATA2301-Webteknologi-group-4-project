@@ -1,10 +1,12 @@
 import '../styles/homepagestyle.css';
+import '../styles/main.css';
 
 import amsterdamImg from '../Images/Amsterdam placeholder.jpg';
 import bergenImg from '../Images/Bergen placeholder.jpg';
 import mainRoomImg from '../Images/main page room placeholder.jpg';
 import osloImg from '../Images/Oslo placeholder.jpg';
 import aalesundImg from '../Images/Ålesund placeholder.jpg';
+import Footer from './Footer.jsx';
 
 
 function HomePage() {
@@ -57,6 +59,7 @@ function HomePage() {
             </div>
           </section>
         </main>
+        <Footer />
       </div>
     );
   }
