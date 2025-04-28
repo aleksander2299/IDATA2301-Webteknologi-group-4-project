@@ -18,15 +18,18 @@ function HotelCard({
         <div className="hotel-card" hotel-id={id}>
               <div className="hotel-card-image-container">
                 <img
-                  // Use provided imageUrl or fallback to default
-                  src={imageUrl || DEFAULT_IMAGE_URL}
-                  // Use provided alt text or a generic default
-                  alt={imageAlt || 'Hotel room or property'}
-                  // On Error use placeholder
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = DEFAULT_IMAGE_URL;
-                  }}
+                    // Use provided imageUrl or fallback to default
+                    src={imageUrl || DEFAULT_IMAGE_URL}
+                    alt={imageAlt || 'Hotel room or property'}
+                    // On Error use placeholder
+                    onError={e => {
+                            if(this.state.imageLoadError) {
+                                this.setState({
+                                    imageLoadError: false
+                                });
+                                e.currentTarget.src = DEFAULT_IMAGE_URL;
+                            }
+                        }}
                 />
               </div>
 
@@ -42,6 +45,17 @@ function HotelCard({
             </div>
       )
   }
+
+
+HotelCard.propTypes = {
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    imageUrl: PropTypes.string,
+    imageAlt: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    children: PropTypes.node,
+};
+
 HotelCard.defaultProps = {
   imageUrl: DEFAULT_IMAGE_URL,
   imageAlt: 'Hotel room or property',

@@ -72,7 +72,7 @@ function SearchPage() {
                          >
                             Go to Deal
                          </button>
-                              {/* More buttons depending on page */}
+                              {/* Different buttons depending on page */}
                 </HotelCard>
                 )
             )
