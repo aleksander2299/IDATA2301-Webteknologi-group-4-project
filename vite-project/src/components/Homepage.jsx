@@ -1,6 +1,7 @@
 import '../styles/homepagestyle.css';
 import '../styles/main.css';
 
+
 import amsterdamImg from '../Images/Amsterdam placeholder.jpg';
 import bergenImg from '../Images/Bergen placeholder.jpg';
 import mainRoomImg from '../Images/main page room placeholder.jpg';
@@ -25,7 +26,7 @@ function HomePage() {
           <section className="container" style={{ marginTop: '20px' }}>
             <div className="backgroundbox">
               <img src={mainRoomImg} alt="Room placeholder" />
-              <div className="searchbarbox">
+              <div className="searchbarcontainer">
                 <button className="button1">Search for hotel or location!</button>
                 <button className="button1">Room type?</button>
                 <button className="button2">How many?</button>
