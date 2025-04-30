@@ -8,14 +8,13 @@ import mainRoomImg from '../Images/main page room placeholder.jpg';
 import osloImg from '../Images/Oslo placeholder.jpg';
 import aalesundImg from '../Images/Ålesund placeholder.jpg';
 import Footer from './Footer.jsx';
+import Header from './Header.jsx';
 
 
 function HomePage() {
     return (
       <div>
-        <header>
-          <div className="home"><b>Stay Finder</b></div>
-        </header>
+        <Header />
         <main style={{ marginTop: '20px' }}>
           <section className="container">
             <div className="introductionbox">

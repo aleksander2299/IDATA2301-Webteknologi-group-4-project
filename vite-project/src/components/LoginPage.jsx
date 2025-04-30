@@ -1,16 +1,14 @@
 import '../styles/loginstyle.css';
 
 import { axiosInstance } from '../App';
-import { useState } from 'react';
 
-
+import Footer from './Footer.jsx';
+import Header from './Header.jsx';
 
 function loginPage() {
     return (
         <div>
-            <header>
-                <div className="home"><b>Home</b></div>
-            </header>
+            <Header />
             <main>
                 <form action="" method="post">
                     <div className="login">
@@ -24,6 +22,7 @@ function loginPage() {
                     </div>
                 </form>
             </main>
+            <Footer />
         </div>
     );
 }

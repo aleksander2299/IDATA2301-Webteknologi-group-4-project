@@ -1,12 +1,15 @@
+import '../styles/main.css';
 import '../styles/registerstyle.css';
+
+import Footer from './Footer.jsx';
+import Header from './Header.jsx';
+
 
 
 function Register() {
     return (
       <div>
-        <header>
-          <div className="home"><b>Home</b></div>
-        </header>
+        <Header />
         <main>
           <form action="" method="post">
             <div className="register">
@@ -21,6 +24,7 @@ function Register() {
             </div>
           </form>
         </main>
+        <Footer />
       </div>
     );
   }
