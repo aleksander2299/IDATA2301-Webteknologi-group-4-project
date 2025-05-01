@@ -5,10 +5,14 @@ import HotelCard from "./HotelCard.jsx"
 
 function SearchPage() {
     {/* Fake Temporary data */}
-      const [hotels, setHotels] = useState([
+    const [hotels, setHotels] = useState([
         { id: '1', name: 'Hotel 1', location: 'Location 1', description: 'This hotel has a nice view', imageUrl: '/images/hotel-room-1.jpg' },
         { id: '2', name: 'Hotel 2', location: 'Location 2', description: 'This hotel has a nice  oceanside view', imageUrl: '/images/hotel-room-2.jpg' },
       ]);
+    const [dateFrom, dateTo] = useState(null);
+    function GoToDeal(id, dateFrom, dateTo) {
+
+    }
   return (
     <main>
       {/* Search Bar Section temporary until function is made */}
@@ -64,11 +68,11 @@ function SearchPage() {
                 {/* Using buttons as children was an idea given by AI since i could not figure out how to use different buttons depending on the page while they were still connected */}
                       <button
                          className="deal-btn"
-                         //onClick={() => function(hotel.id)}
+                         onClick={() => GoToDeal(hotel.id)}
                          >
                             Go to Deal
                          </button>
-                              {/* More buttons depending on page */}
+                              {/* Different buttons depending on page */}
                 </HotelCard>
                 )
             )
