@@ -1,4 +1,4 @@
-import '../styles/AdminPage.css';
+import './AdminPage.css';
 
 function AdminPage() {
   return (

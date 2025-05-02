@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Import the specific CSS for this component
-import '../styles/HotelCard.css';
+import './HotelCard.css';
 
 const DEFAULT_IMAGE_URL = '/images/placeholder-hotel.png';
 

@@ -1,7 +1,7 @@
-import '../styles/settings.css'
+import './SettingsPage.css'
 
 
-function Settings(){
+function SettingsPage(){
 return(
 
 <div>
@@ -38,5 +38,5 @@ return(
 );
 }
 
-export default Settings;
+export default SettingsPage;
 

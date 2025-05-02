@@ -1,12 +1,12 @@
-import '../styles/main.css';
-import '../styles/registerstyle.css';
+import '../../styles/main.css';
+import './RegisterPage.css';
 
-import Footer from './Footer.jsx';
-import Header from './Header.jsx';
+import Footer from '../../components/layout/Footer.jsx';
+import Header from '../../components/layout/Header.jsx';
 
 
 
-function Register() {
+function RegisterPage() {
     return (
       <div>
         <Header />
@@ -29,7 +29,7 @@ function Register() {
     );
   }
   
-  export default Register;
+  export default RegisterPage;
   
 
 
