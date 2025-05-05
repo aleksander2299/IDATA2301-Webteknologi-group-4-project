@@ -1,4 +1,4 @@
-import '../../styles/main.module.css';
+import '../../styles/main.css';
 import homePageStyle from './HomePage.module.css';
 
 

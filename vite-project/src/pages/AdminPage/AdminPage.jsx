@@ -1,40 +1,40 @@
-import './AdminPage.css';
+import adminStyle from './AdminPage.module.css';
 
 function AdminPage() {
   return (
     <main>
       <header>
-        <div className="home"><b>Home</b></div>
+        <div className={adminStyle.home}><b>Home</b></div>
       </header>
 
       {/* Main content */}
-      <div className="container">
+      <div className={adminStyle.container}>
 
         {/* Top Buttons */}
-        <div className="top-buttons">
-          <button className="nav-button">Rooms</button>
-          <button className="nav-button">Provider</button>
+        <div className={adminStyle["top-buttons"]}>
+          <button className={adminStyle["nav-button"]}>Rooms</button>
+          <button className={adminStyle["nav-button"]}>Provider</button>
         </div>
 
         {/* Search Bar */}
-        <div className="search-bar">
-          <form className="search-field">
+        <div className={adminStyle["search-bar"]}>
+          <form className={adminStyle["search-field"]}>
             <label htmlFor="Search">Search for hotel/location</label>
             <input type="search" name="Search" id="Search" />
           </form>
-          <button className="search-btn">Search</button>
+          <button className={adminStyle["search-btn"]}>Search</button>
         </div>
 
         {/* Card */}
-        <div className="admin-card">
-          <div className="image-placeholder">Image</div>
-          <div className="card-info">
+        <div className={adminStyle["admin-card"]}>
+          <div className={adminStyle["image-placeholder"]}>Image</div>
+          <div className={adminStyle["card-info"]}>
             <p>Lorem Ipsum, Lorem Ipsum, Lorem Ipsum</p>
           </div>
-          <div className="card filters">
-            <button className="btn edit">Edit</button>
-            <button className="btn hide/show">Hide</button>
-            <button className="btn delete">Delete</button>
+          <div className={adminStyle["card filters"]}>
+            <button className={adminStyle["btn edit"]}>Edit</button>
+            <button className={adminStyle["btn hide/show"]}>Hide</button>
+            <button className={adminStyle["btn delete"]}>Delete</button>
           </div>
         </div>
       </div>
