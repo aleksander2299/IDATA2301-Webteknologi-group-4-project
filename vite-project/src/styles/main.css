@@ -27,15 +27,39 @@ button {
     cursor: pointer;
 }
 
+
 .home-buttons:hover {
     color: hsl(300, 64%, 35%);
 }
 
 .home-buttons:active {
     font-size: 1.9rem;
+
 }
 
-
+  /* Styling for right-aligned buttons */
+  .right-buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .right-button {
+    font-size: 1.4rem;
+    color: #fff;
+    background-color: rgb(50, 50, 50); /* Dark background for buttons */
+    border-radius: 5px; /* Rounded corners for buttons */
+    padding: 0.5rem 1rem;
+    margin-left: 1rem; /* Space between the buttons */
+  }
+  
+  .right-button:hover {
+    background-color: rgb(100, 100, 100); /* Lighter shade when hovered */
+  }
+  
+  .right-button:active {
+    font-size: 1.3rem;
+  }
+  
 header {
     background: radial-gradient(circle, rgba(60, 58, 58, 0.8), rgb(90, 88, 88)); 
     width: 100%;
