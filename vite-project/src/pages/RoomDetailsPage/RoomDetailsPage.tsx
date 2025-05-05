@@ -17,6 +17,7 @@ interface RoomDetails {
   imageUrl: string;
   roomType: string;
   bedType: string;
+  roomCapacity: string;
   checkIn: string;
   checkOut: string;
   internet: string;
@@ -28,10 +29,10 @@ interface RoomDetails {
 {/* Fake temporary data */}
 const ALL_HOTEL_DETAILS: Record<string, RoomDetails> = {
     '1': { id: '1', name: 'Hotel 1 - Grand View', location: 'Location 1', description: 'This hotel has a nice view and premium amenities.',
-        imageUrl: '/images/hotel-room-1.jpg', roomType: 'Suite', bedType: 'King',
+        imageUrl: '/images/hotel-room-1.jpg', roomType: 'Suite', bedType: 'King', roomCapacity: '2',
         checkIn: '3:00 PM', checkOut: '11:00 AM', internet: 'Included', parking: 'Available', gym: 'Available', pets: 'No' },
     '2': { id: '2', name: 'Hotel 2 - Ocean Breeze', location: 'Location 2', description: 'This hotel has a nice oceanside view and relaxing atmosphere.',
-        imageUrl: '/images/hotel-room-2.jpg', roomType: 'Double', bedType: 'Queen', checkIn: '2:00 PM', checkOut: '12:00 PM',
+        imageUrl: '/images/hotel-room-2.jpg', roomType: 'Double', bedType: 'Queen', roomCapacity:'3', checkIn: '2:00 PM', checkOut: '12:00 PM',
         internet: 'Included', parking: 'Available', gym: 'Not Available', pets: 'Yes' },
 };
 
@@ -42,7 +43,6 @@ function RoomDetailsPage () {
     const [searchParams] = useSearchParams();
     const dateFrom = searchParams.get('from');
     const dateTo = searchParams.get('to');
-
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     {/* roomDetails and error can both be an object or null since they start out as null and then can get objects */}
@@ -78,13 +78,17 @@ function RoomDetailsPage () {
 
     }, [id]);
 
+    if (!roomDetails) {
+            return <div>Room details not available.</div>;
+    }
+
     return (
         <div>
             <header>
                 <div className="home"><b>Stay Finder</b></div>
             </header>
             <div className="content-container">
-                <h1 className="roomnametext">Thon Hotel Ålesund, City Centre. Ålesund, Norway.</h1>
+                <h1 className="roomnametext">{roomDetails.name} , {roomDetails.location}.</h1>
             </div>
             <section className="content-container">
                 <div className="image">
@@ -92,8 +96,8 @@ function RoomDetailsPage () {
                 </div>
                 <section className="bookingbox">
                     <div className="bookingboxtext">How long will you stay?</div>
-                    <button className="button1">Start Date</button>
-                    <button className="button2">End Date</button>
+                    <button className="button1">{dateFrom}</button>
+                    <button className="button2">{dateTo}</button>
                     <button className="button3">BOOK NOW!</button>
                 </section>
             </section>
@@ -102,23 +106,21 @@ function RoomDetailsPage () {
                     <div className="description">
                         <h2 className="bigwhitetext">Description</h2>
                         <p className="smallwhitetext">
-                            Lovely hotel suite in the heart of Ålesund! You and your partner get one of the best views the city has to offer overlooking the bay,
-                            a king-sized bed with maximum comfortability and wonderful room service!
-
+                            {roomDetails.description}
                         </p>
                     </div>
                     <div className="site-specification">
                         <h2 className="bigwhitetext">Room Specifications</h2>
                         <p className="smallwhitetext">
-                            Room type: Suite<br />
-                            Bed type: Double<br />
-                            Room capacity: 2<br />
-                            Check-in: 3:00 PM<br />
-                            Check-out: 11:00 AM<br />
-                            Internet: Included<br />
-                            Parking: Available<br />
-                            Gym: Available<br />
-                            Pet Friendly: Yes<br />
+                            Room type: {roomDetails.roomType}<br />
+                            Bed type: {roomDetails.bedType}<br />
+                            Room capacity: {roomDetails.roomCapacity}<br />
+                            Check-in: {roomDetails.checkIn}<br />
+                            Check-out: {roomDetails.checkOut}<br />
+                            Internet: {roomDetails.internet}<br />
+                            Parking: {roomDetails.parking}<br />
+                            Gym: {roomDetails.gym}<br />
+                            Pet Friendly: {roomDetails.pets}<br />
                         </p>
                     </div>
                 </div>
