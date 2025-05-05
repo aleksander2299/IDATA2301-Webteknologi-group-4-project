@@ -8,6 +8,7 @@ import Footer from '../../components/layout/Footer.jsx';
 
 import roomImg from '../../Images/room image placeholder.jpg';
 
+{/* Interface with all datatypes to be taken from database */}
 interface RoomDetails {
   id: string;
   name: string;
@@ -36,6 +37,7 @@ const ALL_HOTEL_DETAILS: Record<string, RoomDetails> = {
 
 function RoomDetailsPage () {
 
+    {/* Id is based on url so it needs to be tested since it can still be null or undefined */}
     const { id } = useParams<{ id: string }>();
     const [searchParams] = useSearchParams();
     const dateFrom = searchParams.get('from');
@@ -43,13 +45,38 @@ function RoomDetailsPage () {
 
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    {/* roomDetails and error can both be an object or null since they start out as null and then can get objects */}
     const [error, setError] = useState<string | null>(null);
+    const [roomDetails, setRoomDetails] = useState<RoomDetails | null>(null);
 
     useEffect(() => {
-        console.log('Fetching Details for hotel id: ${id}');
-        setIsLoading(true);
-        setError(null);
-    }, [id,dateFrom,dateTo]);
+        console.log(`Fetching Details for hotel id: ${id}`);
+        setIsLoading(true); // Start loading
+        setError(null);     // Clear previous errors
+
+        {/* Ensure id exists and is not null */}
+        if (!id) {
+            setError("No Hotel ID provided in the URL.");
+            setIsLoading(false);
+            {/* Exit Early */}
+            return;
+        }
+
+        {/* Potentially undefined */}
+        const details: RoomDetails | undefined = ALL_HOTEL_DETAILS[id];
+
+        if (details) {
+            setRoomDetails(details);
+            console.log(`Found details: ${details.name}`);
+        } else {
+            setError(`No hotel with ID ${id} found`)
+        }
+        setIsLoading(false);
+
+
+
+
+    }, [id]);
 
     return (
         <div>
