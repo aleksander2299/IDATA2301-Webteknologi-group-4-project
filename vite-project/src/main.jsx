@@ -6,8 +6,8 @@ import HomePage from './pages/HomePage/HomePage.jsx';
 import LoginPage from './pages/LoginPage/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage/RegisterPage.jsx';
 import SearchPage from './pages/SearchPage/SearchPage.jsx';
-import RoomDetailsPage from './pages/RegisterPage/RoomDetailsPage.jsx';
-//"./pages/RoomDetailsPage/RoomDetailsPage.jsx"
+import RoomDetailsPage from './pages/RoomDetailsPage/RoomDetailsPage.jsx';
+
 const router = createBrowserRouter ([
   { path: '/', element: <HomePage /> },
   { path: '/login', element: <LoginPage /> },
