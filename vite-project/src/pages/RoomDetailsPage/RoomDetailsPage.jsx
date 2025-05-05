@@ -1,10 +1,28 @@
+import React, { useState, useEffect } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
+
 import '../../styles/main.css';
 import './RoomDetailsPage.css';
-
 
 import Footer from '../../components/layout/Footer.jsx';
 
 import roomImg from '../../Images/room image placeholder.jpg';
+
+{/* Fake temporary data */}
+const ALL_HOTEL_DETAILS = {
+    '1': { id: '1', name: 'Hotel 1 - Grand View', location: 'Location 1', description: 'This hotel has a nice view and premium amenities.',
+        imageUrl: '/images/hotel-room-1.jpg', roomType: 'Suite', bedType: 'King', capacity: 2,
+        checkIn: '3:00 PM', checkOut: '11:00 AM', internet: 'Included', parking: 'Available', gym: 'Available', pets: 'No' },
+    '2': { id: '2', name: 'Hotel 2 - Ocean Breeze', location: 'Location 2', description: 'This hotel has a nice oceanside view and relaxing atmosphere.',
+        imageUrl: '/images/hotel-room-2.jpg', roomType: 'Double', bedType: 'Queen', capacity: 2, checkIn: '2:00 PM', checkOut: '12:00 PM',
+        internet: 'Included', parking: 'Available', gym: 'Not Available', pets: 'Yes' },
+};
+
+function RoomDetailsPage() {
+    const {id} = useParams(); // Get the id from the Url
+    const [searchParams];
+    }
+
 
 function RoomDetailsPage () {
     return (
