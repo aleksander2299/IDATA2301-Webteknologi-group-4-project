@@ -2,15 +2,18 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-//import RoomDetailsPage from './components/roomdetails.jsx';
 import HomePage from './pages/HomePage/HomePage.jsx';
 import LoginPage from './pages/LoginPage/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage/RegisterPage.jsx';
+import SearchPage from './pages/SearchPage/SearchPage.jsx';
+import RoomDetailsPage from './pages/RegisterPage/RoomDetailsPage.jsx';
 
 const router = createBrowserRouter ([
-  {path:'/', element:<HomePage />},
-  {path:'/login', element:<LoginPage />},
-  {path:'/register', element:<RegisterPage />},
+  { path: '/', element: <HomePage /> },
+  { path: '/login', element: <LoginPage /> },
+  { path: '/register', element: <RegisterPage /> },
+  { path: '/search', element: <SearchPage /> },
+  { path: '/room/:id', element: <RoomDetailsPage /> }
 
 ]);
 
