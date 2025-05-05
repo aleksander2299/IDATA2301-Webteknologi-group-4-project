@@ -13,7 +13,7 @@ function Header() {
       boxSizing: 'border-box',
       overflowX: 'hidden'
     }}>
-      {/* Stay Finder on the left */}
+      {/* Site Logo */}
       <Link to="/">
         <button className="home-buttons">
           <b>Stay Finder</b>
@@ -22,13 +22,15 @@ function Header() {
 
       {/* Container for buttons on the right */}
       <div className="right-buttons" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+
+        { /* Log in button */ }
         <Link to="/login">
           <button className="home-buttons right-button">
             <b>Log In</b>
           </button>
         </Link>
 
-        {/* Add a third button */}
+        {/* Sign up button */}
         <Link to="/register">
           <button className="home-buttons right-button">
             <b>Sign Up</b>
