@@ -8,7 +8,7 @@ import Footer from '../../components/layout/Footer.jsx';
 
 import roomImg from '../../Images/room image placeholder.jpg';
 
-{/* Fake temporary data */}
+{/* Fake temporary data
 const ALL_HOTEL_DETAILS = {
     '1': { id: '1', name: 'Hotel 1 - Grand View', location: 'Location 1', description: 'This hotel has a nice view and premium amenities.',
         imageUrl: '/images/hotel-room-1.jpg', roomType: 'Suite', bedType: 'King', capacity: 2,
@@ -20,9 +20,9 @@ const ALL_HOTEL_DETAILS = {
 
 function RoomDetailsPage() {
     const {id} = useParams(); // Get the id from the Url
-    const [searchParams];
-    }
 
+    }
+*/}
 
 function RoomDetailsPage () {
     return (

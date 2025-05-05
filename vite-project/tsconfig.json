@@ -1,0 +1,26 @@
+// Used Ai to help setup tsconfig file since examples were not for vite
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true, // <--- Crucial for Vite
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true
+    // Optional path aliases
+    // "baseUrl": ".",
+    // "paths": { "@/*": ["./src/*"] }
+  },
+  "include": ["src"], // <--- Include your whole source directory
+  // "references": [{ "path": "./tsconfig.node.json" }] // Only if needed for specific Vite setups
+}
