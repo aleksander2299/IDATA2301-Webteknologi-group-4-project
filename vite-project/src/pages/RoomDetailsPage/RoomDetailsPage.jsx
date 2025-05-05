@@ -1,4 +1,4 @@
-import '../../styles/main.css';
+import '../../styles/main.module.css';
 import './RoomDetailsPage.css';
 
 import Footer from '../../components/layout/Footer.jsx';

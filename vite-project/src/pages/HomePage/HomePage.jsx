@@ -1,5 +1,5 @@
-import '../../styles/main.css';
-import './HomePage.css';
+import '../../styles/main.module.css';
+import homePageStyle from './HomePage.module.css';
 
 
 import Footer from '../../components/layout/Footer.jsx';
@@ -16,45 +16,45 @@ function HomePage() {
       <div>
         <Header />
         <main style={{ marginTop: '20px' }}>
-          <section className="container">
-            <div className="introductionbox">
-              <div className="introductiontext">Welcome to Stay Finder! Find your dream stay today!</div>
+          <section className={homePageStyle.container}>
+            <div className={homePageStyle.introductionbox}>
+              <div className={homePageStyle.introductiontext}>Welcome to Stay Finder! Find your dream stay today!</div>
             </div>
           </section>
   
-          <section className="container" style={{ marginTop: '20px' }}>
-            <div className="backgroundbox">
+          <section className={homePageStyle.container} style={{ marginTop: '20px' }}>
+            <div className={homePageStyle.backgroundbox}>
               <img src={mainRoomImg} alt="Room placeholder" />
-              <div className="searchbarcontainer">
-                <button className="buttons1">Search for hotel or location!</button>
-                <button className="buttons1">Room type?</button>
-                <button className="buttons2">How many?</button>
-                <button className="buttons3">Search</button>
+              <div className={homePageStyle.searchbarcontainer}>
+                <button className={homePageStyle.buttons1}>Search for hotel or location!</button>
+                <button className={homePageStyle.buttons1}>Room type?</button>
+                <button className={homePageStyle.buttons2}>How many?</button>
+                <button className={homePageStyle.buttons3}>Search</button>
               </div>
             </div>
           </section>
   
-          <section className="popular-section" style={{ marginTop: '20px' }}>
-            <div className="popular-title-box">
-              <div className="popular-title">Popular places to visit!</div>
+          <section className={homePageStyle["popular-section"]} style={{ marginTop: '20px' }}>
+            <div className={homePageStyle["popular-title-box"]}>
+              <div className={homePageStyle["popular-title"]}>Popular places to visit!</div>
             </div>
   
-            <div className="recommend-container">
-              <div className="recommendbox">
+            <div className={homePageStyle["recommend-container"]}>
+              <div className={homePageStyle.recommendbox}>
                 <img src={aalesundImg} alt="Ålesund" />
-                <div className="placebox">Ålesund</div>
+                <div className={homePageStyle.placebox}>Ålesund</div>
               </div>
-              <div className="recommendbox">
+              <div className={homePageStyle.recommendbox}>
                 <img src={osloImg} alt="Oslo" />
-                <div className="placebox">Oslo</div>
+                <div className={homePageStyle.placebox}>Oslo</div>
               </div>
-              <div className="recommendbox">
+              <div className={homePageStyle.recommendbox}>
                 <img src={bergenImg} alt="Bergen" />
-                <div className="placebox">Bergen</div>
+                <div className={homePageStyle.placebox}>Bergen</div>
               </div>
-              <div className="recommendbox">
+              <div className={homePageStyle.recommendbox}>
                 <img src={amsterdamImg} alt="Amsterdam" />
-                <div className="placebox">Amsterdam</div>
+                <div className={homePageStyle.placebox}>Amsterdam</div>
               </div>
             </div>
           </section>
