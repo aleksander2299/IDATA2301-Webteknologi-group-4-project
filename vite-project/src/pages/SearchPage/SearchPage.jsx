@@ -16,9 +16,8 @@ function SearchPage() {
 
     const navigate = useNavigate();
     function GoToDeal(id, dateFrom, dateTo) {
-
-        let url = `/room/${id}`;
-
+        {/* Depending on how data is gotten and handled fromDate and toDate might need to be formatted before being put in the url */}
+        let url = `/room/${id}?from=${fromDate}&to=${toDate}`;
         navigate(url);
     }
   return (
