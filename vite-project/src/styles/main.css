@@ -37,7 +37,6 @@ button {
 
 }
 
-  /* Styling for right-aligned buttons */
   .right-buttons {
     display: flex;
     justify-content: flex-end;
@@ -46,14 +45,14 @@ button {
   .right-button {
     font-size: 1.4rem;
     color: #fff;
-    background-color: rgb(50, 50, 50); /* Dark background for buttons */
-    border-radius: 5px; /* Rounded corners for buttons */
+    background-color: rgb(50, 50, 50);
+    border-radius: 5px; 
     padding: 0.5rem 1rem;
-    margin-left: 1rem; /* Space between the buttons */
+    margin-left: 1rem; 
   }
   
   .right-button:hover {
-    background-color: rgb(100, 100, 100); /* Lighter shade when hovered */
+    background-color: rgb(100, 100, 100);
   }
   
   .right-button:active {
