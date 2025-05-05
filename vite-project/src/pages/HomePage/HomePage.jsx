@@ -1,14 +1,14 @@
-import './HomePage.css';
 import '../../styles/main.css';
+import './HomePage.css';
 
 
+import Footer from '../../components/layout/Footer.jsx';
+import Header from '../../components/layout/Header.jsx';
 import amsterdamImg from '../../Images/Amsterdam placeholder.jpg';
 import bergenImg from '../../Images/Bergen placeholder.jpg';
 import mainRoomImg from '../../Images/main page room placeholder.jpg';
 import osloImg from '../../Images/Oslo placeholder.jpg';
 import aalesundImg from '../../Images/Ålesund placeholder.jpg';
-import Footer from '../../components/layout/Footer.jsx';
-import Header from '../../components/layout/Header.jsx';
 
 
 function HomePage() {
@@ -26,10 +26,10 @@ function HomePage() {
             <div className="backgroundbox">
               <img src={mainRoomImg} alt="Room placeholder" />
               <div className="searchbarcontainer">
-                <button className="button1">Search for hotel or location!</button>
-                <button className="button1">Room type?</button>
-                <button className="button2">How many?</button>
-                <button className="button3">Search</button>
+                <button className="buttons1">Search for hotel or location!</button>
+                <button className="buttons1">Room type?</button>
+                <button className="buttons2">How many?</button>
+                <button className="buttons3">Search</button>
               </div>
             </div>
           </section>

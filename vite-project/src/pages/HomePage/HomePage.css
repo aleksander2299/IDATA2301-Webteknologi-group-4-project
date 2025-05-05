@@ -56,7 +56,7 @@
     justify-content: center;
 }
 
-.button1 {
+.buttons1 {
     margin-left: 5px;
     margin-right: 5px;
     height: 8rem;
@@ -71,7 +71,7 @@
     justify-content: center;
 }
 
-.button2 {
+.buttons2 {
     margin-left: 5px;
     margin-right: 5px;
     height: 8rem;
@@ -86,7 +86,7 @@
     justify-content: center;
 }
 
-.button3 {
+.buttons3 {
     margin-left: 5px;
     margin-right: 5px;
     height: 8rem;
@@ -175,13 +175,13 @@
     .searchbarbox {
         height: 10rem;
     }
-    .button1 {
+    .buttons1 {
         font-size: 1.4rem;
     }
-    .button2 {
+    .buttons2 {
         font-size: 1.4rem;
     }
-    .button3 {
+    .buttons3 {
         font-size: 2rem;
     }
     .introductionbox {
@@ -206,13 +206,13 @@
         width: 80%;
         height: 10rem;
     }
-    .button1 {
+    .buttons1 {
         font-size: 1.4rem;
     }
-    .button2 {
+    .buttons2 {
         font-size: 1.4rem;
     }
-    .button3 {
+    .buttons3 {
         font-size: 2rem;
     }
     .recommendbox {
