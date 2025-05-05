@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import '../styles/SearchPage.css';
-import HotelCard from "./HotelCard.jsx"
+import './SearchPage.css';
+import HotelCard from "../../components/HotelCard/HotelCard.jsx"
 
 function SearchPage() {
     {/* Fake Temporary data */}

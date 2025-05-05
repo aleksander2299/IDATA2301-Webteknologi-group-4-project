@@ -1,5 +1,5 @@
-import AdminPage from './components/AdminPage.jsx';
-import SearchPage from './components/SearchPage.jsx'
+import AdminPage from './pages/AdminPage/AdminPage.jsx';
+import SearchPage from './pages/SearchPage/SearchPage.jsx'
 
 import axios from 'axios';
 

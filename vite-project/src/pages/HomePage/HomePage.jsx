@@ -1,14 +1,14 @@
-import '../styles/homepagestyle.css';
-import '../styles/main.css';
+import './HomePage.css';
+import '../../styles/main.css';
 
 
-import amsterdamImg from '../Images/Amsterdam placeholder.jpg';
-import bergenImg from '../Images/Bergen placeholder.jpg';
-import mainRoomImg from '../Images/main page room placeholder.jpg';
-import osloImg from '../Images/Oslo placeholder.jpg';
-import aalesundImg from '../Images/Ålesund placeholder.jpg';
-import Footer from './Footer.jsx';
-import Header from './Header.jsx';
+import amsterdamImg from '../../Images/Amsterdam placeholder.jpg';
+import bergenImg from '../../Images/Bergen placeholder.jpg';
+import mainRoomImg from '../../Images/main page room placeholder.jpg';
+import osloImg from '../../Images/Oslo placeholder.jpg';
+import aalesundImg from '../../Images/Ålesund placeholder.jpg';
+import Footer from '../../components/layout/Footer.jsx';
+import Header from '../../components/layout/Header.jsx';
 
 
 function HomePage() {

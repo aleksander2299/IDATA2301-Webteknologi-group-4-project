@@ -1,11 +1,11 @@
-import '../styles/main.css';
-import '../styles/roomdetailstyle.css';
+import '../../styles/main.css';
+import './RoomDetailsPage.css';
 
-import Footer from './Footer.jsx';
+import Footer from '../../components/layout/Footer.jsx';
 
-import roomImg from '../Images/room image placeholder.jpg';
+import roomImg from '../../Images/room image placeholder.jpg';
 
-function RoomDetails () {
+function RoomDetailsPage () {
     return (
         <div>
             <header>
@@ -57,6 +57,6 @@ function RoomDetails () {
 
 }
 
-export default RoomDetails;
+export default RoomDetailsPage;
 
 

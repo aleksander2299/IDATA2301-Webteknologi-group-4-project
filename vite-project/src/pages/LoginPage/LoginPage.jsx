@@ -1,11 +1,11 @@
-import '../styles/loginstyle.css';
+import './LoginPage.css';
 
-import { axiosInstance } from '../App';
+import { axiosInstance } from '../../App.jsx';
 
-import Footer from './Footer.jsx';
-import Header from './Header.jsx';
+import Footer from '../../components/layout/Footer.jsx';
+import Header from '../../components/layout/Header.jsx';
 
-function loginPage() {
+function LoginPage() {
     return (
         <div>
             <Header />
@@ -45,6 +45,6 @@ async function testCommunicationWithBackend(){
 
 
 
-export default loginPage
+export default LoginPage
 
 
