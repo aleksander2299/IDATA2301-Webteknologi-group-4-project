@@ -9,15 +9,16 @@ function SearchPage() {
     const [hotels, setHotels] = useState([
         { id: '1', name: 'Hotel 1', location: 'Location 1', description: 'This hotel has a nice view', imageUrl: '/images/hotel-room-1.jpg' },
         { id: '2', name: 'Hotel 2', location: 'Location 2', description: 'This hotel has a nice  oceanside view', imageUrl: '/images/hotel-room-2.jpg' },
+
       ]);
     {/* Temporary until we swap to the Api date picker */}
     const [dateFrom, setDateFrom] = useState('2024-08-01');
     const [dateTo, setDateTo] = useState('2024-08-10');
 
     const navigate = useNavigate();
-    function GoToDeal(id, dateFrom, dateTo) {
+    function GoToDeal(id) {
         {/* Depending on how data is gotten and handled fromDate and toDate might need to be formatted before being put in the url */}
-        let url = `/room/${id}?from=${fromDate}&to=${toDate}`;
+        let url = `/room/${id}?from=${dateFrom}&to=${dateTo}`;
         navigate(url);
     }
   return (
@@ -75,7 +76,7 @@ function SearchPage() {
                 {/* Using buttons as children was an idea given by AI since i could not figure out how to use different buttons depending on the page while they were still connected */}
                       <button
                          className="deal-btn"
-                         onClick={() => GoToDeal(hotel.id,dateFrom,dateTo)}
+                         onClick={() => GoToDeal(hotel.id)}
                          >
                             Go to Deal
                          </button>
@@ -84,7 +85,7 @@ function SearchPage() {
                 )
             )
         ) : (
-                  // If empty
+                  // If empty TODO: However it doesnt get empty yet even if the data is empty
                   <p className="no-results-message">No hotels found matching your criteria.</p>
                   )
         }
