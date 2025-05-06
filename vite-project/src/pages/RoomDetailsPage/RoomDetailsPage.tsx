@@ -40,27 +40,17 @@ function RoomDetailsPage () {
 
     {/* Id is based on url so it needs to be tested since it can still be null or undefined */}
     const { id } = useParams<{ id: string }>();
-
     const [searchParams] = useSearchParams();
 
-    const initialFromDate = useState(searchParams.get('from'));
-    const initialToDate = useState(searchParams.get('to'));
-
-    const [fromDate, setFromDate] = useState<string | null>(initialFromDate);
-    const [toDate, setToDate] = useState<string | null>(initialToDate);
-
+    const [fromDate, setFromDate] = useState<string | null>(() => searchParams.get('from'));
+    const [toDate, setToDate] = useState<string | null>(() => searchParams.get('to'));
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     {/* roomDetails and error can both be an object or null since they start out as null and then can get objects */}
     const [error, setError] = useState<string | null>(null);
     const [roomDetails, setRoomDetails] = useState<RoomDetails | null>(null);
 
-    if (!roomDetails) {
-        if (isLoading) return <div>Loading...</div>;
-        if (error) return <div>Error: {error}</div>; // Show error if any
-        return <div>Room details not available.</div>;
-    }
-
+    {/* Never have any early returns before useEffect */}
     useEffect(() => {
         console.log(`Fetching Details for hotel id: ${id}`);
         setIsLoading(true); // Start loading
@@ -74,7 +64,7 @@ function RoomDetailsPage () {
             return;
         }
 
-        {/* Potentially undefined */}
+        {/* Potentially undefined and will be API call instead later */}
         const details: RoomDetails | undefined = ALL_HOTEL_DETAILS[id];
 
         if (details) {
@@ -88,7 +78,12 @@ function RoomDetailsPage () {
 
 
 
-    }, [id]);
+    }, [id, fromDate, toDate]);
+    if (!roomDetails) {
+        if (isLoading) return <div>Loading...</div>;
+        if (error) return <div>Error: {error}</div>; // Show error if any
+        return <div>Room details not available.</div>;
+    }
 
     if (!roomDetails) {
             return <div>Room details not available.</div>;
@@ -108,8 +103,8 @@ function RoomDetailsPage () {
                 </div>
                 <section className="bookingbox">
                     <div className="bookingboxtext">How long will you stay?</div>
-                    <button className="button1">{dateFrom || 'N/A'}</button>
-                    <button className="button2">{dateTo || 'N/A'}</button>
+                    <button className="button1">{fromDate || 'N/A'}</button>
+                    <button className="button2">{toDate || 'N/A'}</button>
                     <button className="button3">BOOK NOW!</button>
                 </section>
             </section>
