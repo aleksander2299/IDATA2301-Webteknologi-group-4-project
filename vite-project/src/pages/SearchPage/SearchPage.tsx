@@ -4,21 +4,40 @@ import { useNavigate } from 'react-router-dom';
 import './SearchPage.css';
 import HotelCard from "../../components/HotelCard/HotelCard.jsx"
 
-function SearchPage() {
-    {/* Fake Temporary data */}
-    const [hotels, setHotels] = useState([
-        { id: '1', name: 'Hotel 1', location: 'Location 1', description: 'This hotel has a nice view', imageUrl: '/images/hotel-room-1.jpg' },
-        { id: '2', name: 'Hotel 2', location: 'Location 2', description: 'This hotel has a nice  oceanside view', imageUrl: '/images/hotel-room-2.jpg' },
+interface hotels {
+    id: string;
+    name: string;
+    location: string;
+    description: string;
+    imageUrl: string;
+}
 
-      ]);
-    {/* Temporary until we swap to the Api date picker */}
+{/* Fake Temporary data its set up differently since it will display every hotelcard it gets, so its not every hotel */}
+const [hotels, setHotels] = useState<Hotel[]>([
+        { id: '1', name: 'Hotel 1', location: 'Location 1',
+            description: 'This hotel has a nice view', imageUrl: '/images/hotel-room-1.jpg' },
+        { id: '2', name: 'Hotel 2', location: 'Location 2',
+            description: 'This hotel has a nice  oceanside view', imageUrl: '/images/hotel-room-2.jpg' },
+    ]);
+
+
+function SearchPage() {
+
+    {/* Temporary until we swap to the Api date picker, will be swapped to useState<string | null>(null); later */}
     const [dateFrom, setDateFrom] = useState('2024-08-01');
     const [dateTo, setDateTo] = useState('2024-08-10');
 
     const navigate = useNavigate();
-    function GoToDeal(id) {
-        {/* Depending on how data is gotten and handled fromDate and toDate might need to be formatted before being put in the url */}
-        let url = `/room/${id}?from=${dateFrom}&to=${dateTo}`;
+    {/* Using string | null since the user does not need to set a date */}
+    function GoToDeal(id: string, fromDate: string | null, toDate: string | null): void {
+        {/* Since fromDate and toDate, can now be null the need to be formatted and tested */}
+        const formattedFrom = fromDate || '';
+        const formattedTo = toDate || '';
+        let url = `/room/${id}`;
+
+
+
+
         navigate(url);
     }
   return (
