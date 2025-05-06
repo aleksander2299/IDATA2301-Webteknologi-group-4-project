@@ -1,3 +1,5 @@
+import { useParams, useSearchParams } from 'react-router-dom';
+
 import '../../styles/main.css';
 import homePageStyle from './HomePage.module.css';
 
@@ -12,6 +14,29 @@ import aalesundImg from '../../Images/Ålesund placeholder.jpg';
 
 
 function HomePage() {
+
+    const navigate = useNavigate();
+        {/* Using string | null since the user does not need to set a date */}
+        function Search(name: string | null, fromDate: string | null, toDate: string | null): void {
+            {/* Since fromDate and toDate, can now be null the need to be formatted and tested */}
+            const formattedFrom = fromDate || '';
+            const formattedTo = toDate || '';
+            let url = `/room/${name}`;
+
+            const queryParams: string[] = [];
+            {/* Using encodeURIComponent() since it can encode & which allows multiple parameters in a query */}
+            if (formattedFrom) {
+                query.push(`from=${encodeURIComponent(formattedFrom)}`)
+            }
+            if (formattedTo) {
+                query.push(`to=${encodeURIComponent(formattedTo)}`)
+            }
+
+            if (query > 0) {
+                url += `?${query.join('&')}`;
+            }
+            navigate(url);
+        }
     return (
       <div>
         <Header />

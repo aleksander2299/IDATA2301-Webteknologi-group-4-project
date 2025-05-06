@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import './SearchPage.css';
 import HotelCard from "../../components/HotelCard/HotelCard.jsx"
 
-interface hotels {
+interface Hotel {
     id: string;
     name: string;
     location: string;
@@ -24,9 +25,15 @@ function SearchPage() {
                 description: 'This hotel has a nice  oceanside view', imageUrl: '/images/hotel-room-2.jpg' },
         ]);
 
+    const [searchParams] = useSearchParams();
+    const initialFromDate = useState(searchParams.get('from'));
+    const initialToDate = useState(searchParams.get('to'));
+
+    const [fromDate, setFromDate] = useState<string | null>(initialFromDate);
+    const [toDate, setToDate] = useState<string | null>(initialToDate);
     {/* Temporary until we swap to the Api date picker, will be swapped to useState<string | null>(null); later */}
-    const [fromDate, setFromDate] = useState('2024-08-01');
-    const [toDate, setToDate] = '';
+    setFromDate('2024-08-01');
+
 
     const navigate = useNavigate();
     {/* Using string | null since the user does not need to set a date */}
@@ -36,7 +43,7 @@ function SearchPage() {
         const formattedTo = toDate || '';
         let url = `/room/${id}`;
 
-        const query: string[] = [];
+        const queryParams: string[] = [];
         {/* Using encodeURIComponent() since it can encode & which allows multiple parameters in a query */}
         if (formattedFrom) {
             query.push(`from=${encodeURIComponent(formattedFrom)}`)
