@@ -1,10 +1,19 @@
-import React from 'react';
+import { useState, SyntheticEvent, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 // Import the specific CSS for this component
 import './HotelCard.css';
 
 const DEFAULT_IMAGE_URL = '/images/placeholder-hotel.png';
+
+interface HotelCardProps {
+    id: string; // Only part of the prop that is not optional
+    imageUrl?: string;
+    imageAlt?: string;
+    tile?: string;
+    description?: string;
+    children?: React.ReactNode,
+}
 
 function HotelCard({
   id,
@@ -13,23 +22,34 @@ function HotelCard({
   title,
   description,
   children,
-}) {
-  return (
+}: HotelCardProps) {
+
+    // Error Handling
+    const [currentImageUrl, setCurrentImageUrl] = useState(imageUrl);
+    const [hasImageError, setHasImageError] = useState(false);
+
+    // If imageUrl Changes
+    useEffect(() => {
+        setCurrentImageUrl(imageUrl || DEFAULT_IMAGE_URL);
+        setHasImageError(false);
+    }, [imageUrl]);
+
+    const handleImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
+        if (!hasImageError) {
+            {/* System to stop a infinite loop if default image does not work either */}
+            setCurrentImageUrl(DEFAULT_IMAGE_URL);
+            setHasImageError(true);
+            }
+        }
+
+    return (
         <div className="hotel-card" hotel-id={id}>
               <div className="hotel-card-image-container">
                 <img
-                    // Use provided imageUrl or fallback to default
-                    src={imageUrl || DEFAULT_IMAGE_URL}
-                    alt={imageAlt || 'Hotel room or property'}
+                    src={currentImageUrl}
+                    alt={imageAlt}
                     // On Error use placeholder
-                    onError={e => {
-                            if(this.state.imageLoadError) {
-                                this.setState({
-                                    imageLoadError: false
-                                });
-                                e.currentTarget.src = DEFAULT_IMAGE_URL;
-                            }
-                        }}
+                    onError={handleImageError}
                 />
               </div>
 
@@ -44,17 +64,8 @@ function HotelCard({
               {children && <div className="hotel-card-actions">{children}</div>}
             </div>
       )
-  }
+    }
 
-
-HotelCard.propTypes = {
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    imageUrl: PropTypes.string,
-    imageAlt: PropTypes.string,
-    title: PropTypes.string,
-    description: PropTypes.string,
-    children: PropTypes.node,
-};
 
 HotelCard.defaultProps = {
   imageUrl: DEFAULT_IMAGE_URL,

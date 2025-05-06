@@ -1,24 +1,79 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import './SearchPage.css';
-import HotelCard from "../../components/HotelCard/HotelCard.jsx"
+import HotelCard from "../../components/HotelCard/HotelCard.tsx"
+
+interface Hotel {
+    id: string;
+    name: string;
+    location: string;
+    description: string;
+    imageUrl: string;
+}
+
+
 
 function SearchPage() {
-    {/* Fake Temporary data */}
-    const [hotels, setHotels] = useState([
-        { id: '1', name: 'Hotel 1', location: 'Location 1', description: 'This hotel has a nice view', imageUrl: '/images/hotel-room-1.jpg' },
-        { id: '2', name: 'Hotel 2', location: 'Location 2', description: 'This hotel has a nice  oceanside view', imageUrl: '/images/hotel-room-2.jpg' },
 
-      ]);
-    {/* Temporary until we swap to the Api date picker */}
-    const [dateFrom, setDateFrom] = useState('2024-08-01');
-    const [dateTo, setDateTo] = useState('2024-08-10');
+    {/* Fake Temporary data its set up differently since it will display every hotelcard it gets, so its not every hotel */}
+    const [hotels, setHotels] = useState<Hotel[]>([
+            { id: '1', name: 'Hotel 1', location: 'Location 1',
+                description: 'This hotel has a nice view', imageUrl: '/images/hotel-room-1.jpg' },
+            { id: '2', name: 'Hotel 2', location: 'Location 2',
+                description: 'This hotel has a nice  oceanside view', imageUrl: '/images/hotel-room-2.jpg' },
+        ]);
+
+    const [searchParams] = useSearchParams();
+
+    // Changed to allow null as well
+    const [hotelName, setHotelName] = useState<string | null>(() => searchParams.get('hotelName'));
+    const [location, setLocation] = useState<string | null>(() => searchParams.get('location'));
+    const [fromDate, setFromDate] = useState<string | null>(() => searchParams.get('from'));
+    const [toDate, setToDate] = useState<string | null>(() => searchParams.get('to'));
+
+    {/* Temporary until we swap to the Api date picker, will be swapped to useState<string | null>(null); later */}
+    //setFromDate('2024-08-01');
+
+    // UseEffect to react to changes like user navigating backward
+    useEffect(() => {
+        // Load values after change to website
+        const hotelNameParam = searchParams.get('hotelName');
+        const locationParam = searchParams.get('location');
+        const fromParam = searchParams.get('from');
+        const toParam = searchParams.get('to');
+
+        // Save the new variables
+        setHotelName(hotelNameParam);
+        setLocation(locationParam);
+        setFromDate(fromParam);
+        setToDate(toParam);
+
+        {/* Here we will filter based on the data */}
+
+    }, [searchParams]); // Set to only run when searchParams gets changed
 
     const navigate = useNavigate();
-    function GoToDeal(id) {
-        {/* Depending on how data is gotten and handled fromDate and toDate might need to be formatted before being put in the url */}
-        let url = `/room/${id}?from=${dateFrom}&to=${dateTo}`;
+    {/* Using string | null since the user does not need to set a date */}
+    function GoToDeal(id: string, fromDate: string | null, toDate: string | null): void {
+        {/* Since fromDate and toDate, can now be null the need to be formatted and tested */}
+        const formattedFrom = fromDate || '';
+        const formattedTo = toDate || '';
+        let url = `/room/${id}`;
+
+        const queryParams: string[] = [];
+        {/* Using encodeURIComponent() since it can encode & which allows multiple parameters in a query */}
+        if (formattedFrom) {
+            queryParams.push(`from=${encodeURIComponent(formattedFrom)}`)
+        }
+        if (formattedTo) {
+            queryParams.push(`to=${encodeURIComponent(formattedTo)}`)
+        }
+
+        if (queryParams.length > 0) {
+            url += `?${queryParams.join('&')}`;
+        }
         navigate(url);
     }
   return (
@@ -76,7 +131,7 @@ function SearchPage() {
                 {/* Using buttons as children was an idea given by AI since i could not figure out how to use different buttons depending on the page while they were still connected */}
                       <button
                          className="deal-btn"
-                         onClick={() => GoToDeal(hotel.id)}
+                         onClick={() => GoToDeal(hotel.id, fromDate, toDate)}
                          >
                             Go to Deal
                          </button>

@@ -1,9 +1,12 @@
+import { useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import '../../styles/main.css';
 import homePageStyle from './HomePage.module.css';
 
 
-import Footer from '../../components/layout/Footer.jsx';
-import Header from '../../components/layout/Header.jsx';
+import Footer from '../../components/layout/Footer.tsx';
+import Header from '../../components/layout/Header.tsx';
 import amsterdamImg from '../../Images/Amsterdam placeholder.jpg';
 import bergenImg from '../../Images/Bergen placeholder.jpg';
 import mainRoomImg from '../../Images/main page room placeholder.jpg';
@@ -12,6 +15,37 @@ import aalesundImg from '../../Images/Ålesund placeholder.jpg';
 
 
 function HomePage() {
+
+    const navigate = useNavigate();
+        {/* Using string | null since the user does not need to set a date
+            Also should be connected to clicking the search button later */}
+        function Search(hotelName: string | null, location: string | null, fromDate: string | null, toDate: string | null): void {
+            {/* Since fromDate and toDate, can now be null the need to be formatted and tested */}
+            const formattedFrom = fromDate || '';
+            const formattedTo = toDate || '';
+
+            let url = `/search`;
+            const queryParams: string[] = [];
+
+            {/* Using encodeURIComponent() since it can encode & which allows multiple parameters in a query */}
+            if (hotelName) {
+                queryParams.push(`hotelName=${encodeURIComponent(hotelName)}`)
+            }
+            if (location) {
+                queryParams.push(`location=${encodeURIComponent(location)}`)
+            }
+            if (formattedFrom) {
+                queryParams.push(`from=${encodeURIComponent(formattedFrom)}`)
+            }
+            if (formattedTo) {
+                queryParams.push(`to=${encodeURIComponent(formattedTo)}`)
+            }
+
+            if (queryParams.length > 0) {
+                url += `?${queryParams.join('&')}`;
+            }
+            navigate(url);
+        }
     return (
       <div>
         <Header />
@@ -28,8 +62,9 @@ function HomePage() {
               <div className={homePageStyle.searchbarcontainer}>
                 <button className={homePageStyle.buttons1}>Search for hotel or location!</button>
                 <button className={homePageStyle.buttons1}>Room type?</button>
-                <button className={homePageStyle.buttons2}>How many?</button>
-                <button className={homePageStyle.buttons3}>Search</button>
+                {/* Temporary buttons to test */}
+                <button onClick={() => Search(null, null, '2024-10-03', '2024-10-09')} className={homePageStyle.buttons2}>How many?</button>
+                <button onClick={() => Search(null, null, '2024-10-01', '2024-10-07')} className={homePageStyle.buttons3} >Search</button>
               </div>
             </div>
           </section>
