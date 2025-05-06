@@ -1,4 +1,4 @@
-//import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 import '../../styles/main.css';
@@ -29,20 +29,20 @@ function HomePage() {
 
             {/* Using encodeURIComponent() since it can encode & which allows multiple parameters in a query */}
             if (hotelName) {
-                query.push(`hotelName=${encodeURIComponent(hotelName)}`)
+                queryParams.push(`hotelName=${encodeURIComponent(hotelName)}`)
             }
             if (location) {
-                query.push(`location=${encodeURIComponent(location)}`)
+                queryParams.push(`location=${encodeURIComponent(location)}`)
             }
             if (formattedFrom) {
-                query.push(`from=${encodeURIComponent(formattedFrom)}`)
+                queryParams.push(`from=${encodeURIComponent(formattedFrom)}`)
             }
             if (formattedTo) {
-                query.push(`to=${encodeURIComponent(formattedTo)}`)
+                queryParams.push(`to=${encodeURIComponent(formattedTo)}`)
             }
 
-            if (query > 0) {
-                url += `?${query.join('&')}`;
+            if (queryParams.length > 0) {
+                url += `?${queryParams.join('&')}`;
             }
             navigate(url);
         }

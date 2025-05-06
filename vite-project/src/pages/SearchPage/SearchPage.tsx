@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import './SearchPage.css';
-import HotelCard from "../../components/HotelCard/HotelCard.jsx"
+import HotelCard from "../../components/HotelCard/HotelCard.tsx"
 
 interface Hotel {
     id: string;
@@ -26,14 +26,33 @@ function SearchPage() {
         ]);
 
     const [searchParams] = useSearchParams();
-    const initialFromDate = useState(searchParams.get('from'));
-    const initialToDate = useState(searchParams.get('to'));
 
-    const [fromDate, setFromDate] = useState<string | null>(initialFromDate);
-    const [toDate, setToDate] = useState<string | null>(initialToDate);
+    // Changed to allow null as well
+    const [hotelName, setHotelName] = useState<string | null>(() => searchParams.get('hotelName'));
+    const [location, setLocation] = useState<string | null>(() => searchParams.get('location'));
+    const [fromDate, setFromDate] = useState<string | null>(() => searchParams.get('from'));
+    const [toDate, setToDate] = useState<string | null>(() => searchParams.get('to'));
+
     {/* Temporary until we swap to the Api date picker, will be swapped to useState<string | null>(null); later */}
-    setFromDate('2024-08-01');
+    //setFromDate('2024-08-01');
 
+    // UseEffect to react to changes like user navigating backward
+    useEffect(() => {
+        // Load values after change to website
+        const hotelNameParam = searchParams.get('hotelName');
+        const locationParam = searchParams.get('location');
+        const fromParam = searchParams.get('from');
+        const toParam = searchParams.get('to');
+
+        // Save the new variables
+        setHotelName(hotelNameParam);
+        setLocation(locationParam);
+        setFromDate(fromParam);
+        setToDate(toParam);
+
+        {/* Here we will filter based on the data */}
+
+    }, [searchParams]); // Set to only run when searchParams gets changed
 
     const navigate = useNavigate();
     {/* Using string | null since the user does not need to set a date */}
@@ -46,14 +65,14 @@ function SearchPage() {
         const queryParams: string[] = [];
         {/* Using encodeURIComponent() since it can encode & which allows multiple parameters in a query */}
         if (formattedFrom) {
-            query.push(`from=${encodeURIComponent(formattedFrom)}`)
+            queryParams.push(`from=${encodeURIComponent(formattedFrom)}`)
         }
         if (formattedTo) {
-            query.push(`to=${encodeURIComponent(formattedTo)}`)
+            queryParams.push(`to=${encodeURIComponent(formattedTo)}`)
         }
 
-        if (query > 0) {
-            url += `?${query.join('&')}`;
+        if (queryParams.length > 0) {
+            url += `?${queryParams.join('&')}`;
         }
         navigate(url);
     }
