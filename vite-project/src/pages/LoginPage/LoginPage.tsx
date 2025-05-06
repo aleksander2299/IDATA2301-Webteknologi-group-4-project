@@ -25,12 +25,20 @@ function LoginPage() {
             const token = response.data.token;
 
             if (token) {
-                // Decodes the token to get user data
+                // Extract token
                 const decodedToken = jwtDecode<any>(token);
+
+                // Extract role
+                const role = decodedToken.role?.[0]?.authority;
+
                 console.log('Decoded JWT token:', decodedToken);
-                
-                // Store token
+                console.log('Extracted role:', role);
+
+                // Store token and role
                 localStorage.setItem('token', token);
+                if (role) {
+                    localStorage.setItem('role', role);
+                }
 
                 // Navigates to home
                 navigate('/');

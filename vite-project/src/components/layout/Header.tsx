@@ -1,7 +1,17 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../styles/main.css';
 
+
 function Header() {
+  const [role, setRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem('role');
+    setRole(storedRole);
+    console.log(storedRole);
+  }, []);
+  
   return (
     <header style={{ 
       display: 'flex', 
@@ -22,20 +32,38 @@ function Header() {
 
       {/* Container for buttons on the right */}
       <div className="right-buttons" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-
-        { /* Log in button */ }
-        <Link to="/login">
+        {role == 'USER' && (
+          <>
+          { /* favorites page */}
+          <Link to="/favorites">
           <button className="home-buttons right-button">
-            <b>Log In</b>
+            <b>Favorites</b>
           </button>
-        </Link>
+          </Link>
+          </>
+          
+        )
 
-        {/* Sign up button */}
-        <Link to="/register">
-          <button className="home-buttons right-button">
-            <b>Sign Up</b>
-          </button>
-        </Link>
+        }
+
+        {!role && (
+          <>
+          { /* Log in button */ }
+          <Link to="/login">
+            <button className="home-buttons right-button">
+              <b>Log In</b>
+            </button>
+          </Link>
+  
+          {/* Sign up button */}
+          <Link to="/register">
+            <button className="home-buttons right-button">
+              <b>Sign Up</b>
+            </button>
+          </Link>
+          </>
+        )}
+        
       </div>
     </header>
   );
