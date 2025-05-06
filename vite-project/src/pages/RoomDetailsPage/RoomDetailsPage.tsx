@@ -41,8 +41,15 @@ function RoomDetailsPage () {
     {/* Id is based on url so it needs to be tested since it can still be null or undefined */}
     const { id } = useParams<{ id: string }>();
     const [searchParams] = useSearchParams();
-    const dateFrom = searchParams.get('from');
-    const dateTo = searchParams.get('to');
+    const [fromDate, setFromDate] = useState(searchParams.get('from'));
+    const [toDate, setToDate] = useState(searchParams.get('to'));
+
+    if (!fromDate) {
+        fromDate.setFromDate = 'empty';
+        }
+    if (!toDate) {
+        toDate.setToDate = 'empty';
+        }
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     {/* roomDetails and error can both be an object or null since they start out as null and then can get objects */}

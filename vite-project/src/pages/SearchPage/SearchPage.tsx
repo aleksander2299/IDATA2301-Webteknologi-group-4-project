@@ -25,8 +25,8 @@ function SearchPage() {
         ]);
 
     {/* Temporary until we swap to the Api date picker, will be swapped to useState<string | null>(null); later */}
-    const [dateFrom, setDateFrom] = useState('2024-08-01');
-    const [dateTo, setDateTo] = useState('');
+    const [fromDate, setFromDate] = useState('2024-08-01');
+    const [toDate, setToDate] = '';
 
     const navigate = useNavigate();
     {/* Using string | null since the user does not need to set a date */}
@@ -105,7 +105,7 @@ function SearchPage() {
                 {/* Using buttons as children was an idea given by AI since i could not figure out how to use different buttons depending on the page while they were still connected */}
                       <button
                          className="deal-btn"
-                         onClick={() => GoToDeal(hotel.id, dateFrom, dateTo)}
+                         onClick={() => GoToDeal(hotel.id, fromDate, toDate)}
                          >
                             Go to Deal
                          </button>
