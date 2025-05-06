@@ -1,33 +1,93 @@
 import '../../styles/main.css';
 import './RegisterPage.css';
 
+import { jwtDecode } from 'jwt-decode';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../../AxiosInstance';
+
 import Footer from '../../components/layout/Footer.jsx';
 import Header from '../../components/layout/Header.jsx';
 
 
 
 function RegisterPage() {
-    return (
-      <div>
-        <Header />
-        <main>
-          <form action="" method="post">
-            <div className="register">
-              <h1 className="fRegister">Register</h1>
-              <label htmlFor="fusername">Username:</label><br />
-              <input type="text" id="fusername" name="fusername" placeholder="enter username you want" /><br />
-              <label htmlFor="lpass">Password:</label><br />
-              <input type="text" id="lpass" name="lpass" placeholder="enter password you want" /><br />
-              <label htmlFor="cpass">Confirm password:</label><br />
-              <input type="text" name="cpass" id="cpass" placeholder="confirm password" />
-              <button className="submit" type="submit">Register</button>
-            </div>
-          </form>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [role, setRole] = useState('');
+    const navigate = useNavigate();
+
+    const handleRegister = async (e: React.FormEvent) => {
+      e.preventDefault();
+  
+      try {
+        const response = await axiosInstance.post('/authenticate/register', {
+          username,
+          password,
+          role,
+        });
+  
+        const token = response.data.token;
+        if (token) {
+          const decodedToken = jwtDecode<any>(token);
+          const role = decodedToken.role?.[0]?.authority;
+  
+          localStorage.setItem('token', token);
+          if (role) {
+            localStorage.setItem('role', role);
+          }
+
+          // Navigates to home
+          navigate('/');
+        }
+      } catch (err) {
+        console.error('Registration error:', err);
+        alert('Failed to register. That username might already be taken.');
+      }
+    };
+
+  return (
+    <div>
+      <Header />
+      <main>
+        <form onSubmit={handleRegister}>
+          <div className="register">
+            <h1 className="fRegister">Register</h1>
+            <label htmlFor="rusername">Username:</label><br />
+            <input
+              type="text"
+              id="rusername"
+              name="rusername"
+              placeholder="choose a username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            /><br />
+            <label htmlFor="rpass">Password:</label><br />
+            <input
+              type="password"
+              id="rpass"
+              name="rpass"
+              placeholder="choose a password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            /><br />
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              required>
+                <option value="">Select Role</option>
+                <option value="USER">User</option>
+                <option value="PROVIDER">Provider</option>
+                <option value="ADMIN">Admin</option>
+              </select>
+            <button className="submit" type="submit">Register</button>
+          </div>
+        </form>
+      </main>
+      <Footer />
+    </div>
+  );
+}
   
   export default RegisterPage;
   
