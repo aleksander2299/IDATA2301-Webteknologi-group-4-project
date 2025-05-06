@@ -12,20 +12,21 @@ interface hotels {
     imageUrl: string;
 }
 
-{/* Fake Temporary data its set up differently since it will display every hotelcard it gets, so its not every hotel */}
-const [hotels, setHotels] = useState<Hotel[]>([
-        { id: '1', name: 'Hotel 1', location: 'Location 1',
-            description: 'This hotel has a nice view', imageUrl: '/images/hotel-room-1.jpg' },
-        { id: '2', name: 'Hotel 2', location: 'Location 2',
-            description: 'This hotel has a nice  oceanside view', imageUrl: '/images/hotel-room-2.jpg' },
-    ]);
 
 
 function SearchPage() {
 
+    {/* Fake Temporary data its set up differently since it will display every hotelcard it gets, so its not every hotel */}
+    const [hotels, setHotels] = useState<Hotel[]>([
+            { id: '1', name: 'Hotel 1', location: 'Location 1',
+                description: 'This hotel has a nice view', imageUrl: '/images/hotel-room-1.jpg' },
+            { id: '2', name: 'Hotel 2', location: 'Location 2',
+                description: 'This hotel has a nice  oceanside view', imageUrl: '/images/hotel-room-2.jpg' },
+        ]);
+
     {/* Temporary until we swap to the Api date picker, will be swapped to useState<string | null>(null); later */}
     const [dateFrom, setDateFrom] = useState('2024-08-01');
-    const [dateTo, setDateTo] = useState('2024-08-10');
+    const [dateTo, setDateTo] = useState('');
 
     const navigate = useNavigate();
     {/* Using string | null since the user does not need to set a date */}
@@ -35,9 +36,18 @@ function SearchPage() {
         const formattedTo = toDate || '';
         let url = `/room/${id}`;
 
+        const query: string[] = [];
+        {/* Using encodeURIComponent() since it can encode & which allows multiple parameters in a query */}
+        if (formattedFrom) {
+            query.push(`from=${encodeURIComponent(formattedFrom)}`)
+        }
+        if (formattedTo) {
+            query.push(`to=${encodeURIComponent(formattedTo)}`)
+        }
 
-
-
+        if (query > 0) {
+            url += `?${query.join('&')}`;
+        }
         navigate(url);
     }
   return (
@@ -95,7 +105,7 @@ function SearchPage() {
                 {/* Using buttons as children was an idea given by AI since i could not figure out how to use different buttons depending on the page while they were still connected */}
                       <button
                          className="deal-btn"
-                         onClick={() => GoToDeal(hotel.id)}
+                         onClick={() => GoToDeal(hotel.id, dateFrom, dateTo)}
                          >
                             Go to Deal
                          </button>
