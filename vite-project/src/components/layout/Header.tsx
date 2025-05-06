@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/main.css';
 
 
@@ -12,10 +12,12 @@ function Header() {
     console.log(storedRole);  
   }, []);
   
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
-    window.location.reload();
+    navigate('/');
   };
   
   return (
@@ -95,7 +97,7 @@ function Header() {
           {/* Log out button */}
             <button className="home-buttons right-button" onClick={handleLogout}>
               <b>Log Out</b>
-              </button>
+            </button>
           </>
         )
         }
