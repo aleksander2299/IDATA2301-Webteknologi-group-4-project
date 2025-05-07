@@ -9,8 +9,6 @@ import { axiosInstance } from '../../AxiosInstance';
 import Footer from '../../components/layout/Footer.jsx';
 import Header from '../../components/layout/Header.jsx';
 
-
-
 function RegisterPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');

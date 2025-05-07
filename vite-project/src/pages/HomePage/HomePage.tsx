@@ -1,4 +1,3 @@
-import { useParams, useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 import '../../styles/main.css';
@@ -49,7 +48,8 @@ function HomePage() {
     return (
       <div>
         <Header />
-        <main style={{ marginTop: '20px' }}>
+        
+        <main className={homePageStyle["content-wrapper"]}style={{ marginTop: '20px' }}>
           <section className={homePageStyle.container}>
             <div className={homePageStyle.introductionbox}>
               <div className={homePageStyle.introductiontext}>Welcome to Stay Finder! Find your dream stay today!</div>
