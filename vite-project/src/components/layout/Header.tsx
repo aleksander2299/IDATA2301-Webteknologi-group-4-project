@@ -18,6 +18,7 @@ function Header() {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     navigate('/');
+    window.location.reload();
   };
   
   return (
