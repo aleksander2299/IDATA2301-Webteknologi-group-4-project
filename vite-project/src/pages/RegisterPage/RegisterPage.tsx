@@ -69,6 +69,7 @@ function RegisterPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             /><br />
+            <label htmlFor="rusername">Role:</label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
