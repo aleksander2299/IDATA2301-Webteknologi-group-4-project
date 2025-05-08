@@ -27,6 +27,14 @@ button {
     cursor: pointer;
 }
 
+.header-text {
+  font-family: "Poppins", sans-serif;
+  font-size: 2rem;
+  color: rgb(180, 40, 180);
+  text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+  display: flex;
+  
+}
 
 .home-buttons:hover {
     color: hsl(300, 64%, 35%);
@@ -72,5 +80,15 @@ header {
 footer {
     font-family: "Poppins", sans-serif;
     font-weight: 100;
-    color: white;
+    margin-top: 50px;
+    padding-bottom: 200px;
+    background-color: rgba(60, 58, 58, 0.9);
+    border-top: 2px solid;
 }
+
+.footer-text {
+  color: white;
+  padding-top: 10px;
+}
+
+

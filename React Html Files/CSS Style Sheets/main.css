@@ -10,7 +10,7 @@ body {
     background: radial-gradient(circle,rgb(216, 112, 216),rgb(179, 38, 179))
 }
 
-button {
+.button {
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     cursor: pointer;

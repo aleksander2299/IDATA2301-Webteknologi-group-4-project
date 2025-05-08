@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/main.css';
 
 
@@ -9,8 +9,17 @@ function Header() {
   useEffect(() => {
     const storedRole = localStorage.getItem('role');
     setRole(storedRole);
-    console.log(storedRole);
+    console.log(storedRole);  
   }, []);
+  
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    navigate('/');
+    window.location.reload();
+  };
   
   return (
     <header style={{ 
@@ -32,6 +41,9 @@ function Header() {
 
       {/* Container for buttons on the right */}
       <div className="right-buttons" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        {role && (
+          <b className="header-text">Hello {role}</b>
+        )}
         {role == 'USER' && (
           <>
           { /* favorites page */}
@@ -41,9 +53,26 @@ function Header() {
           </button>
           </Link>
           </>
-          
         )
+        }
 
+        {role == 'ADMIN' && (
+          <>
+          { /* Admin page */}
+          <Link to="/admin">
+          <button className="home-buttons right-button">
+            <b>Admin Page</b>
+          </button>
+          </Link>
+          </>
+        )
+        }
+
+        {role == 'PROVIDER' && (
+          <>
+          <b>hello</b>
+          </>
+        )
         }
 
         {!role && (
@@ -54,7 +83,7 @@ function Header() {
               <b>Log In</b>
             </button>
           </Link>
-  
+
           {/* Sign up button */}
           <Link to="/register">
             <button className="home-buttons right-button">
@@ -63,6 +92,16 @@ function Header() {
           </Link>
           </>
         )}
+
+        {role && (
+          <>
+          {/* Log out button */}
+            <button className="home-buttons right-button" onClick={handleLogout}>
+              <b>Log Out</b>
+            </button>
+          </>
+        )
+        }
         
       </div>
     </header>

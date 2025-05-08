@@ -3,7 +3,9 @@ import '../../styles/main.css';
 function Footer() {
     return (
         <footer>
-          &copy;{new Date().getFullYear()} Stay Finder
+          <div className="footer-text">
+            &copy;{new Date().getFullYear()} Stay Finder
+          </div>
         </footer>
     );
 }

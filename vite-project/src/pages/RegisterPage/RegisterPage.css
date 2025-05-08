@@ -1,36 +1,3 @@
-
-*{
-    margin: 0;
-}
-
-body {
-    
-    font-family: sans-serif;
-    background: radial-gradient(circle,rgb(216, 112, 216),rgb(179, 38, 179))
-    
-  }
-
-  header {
-    background: radial-gradient(circle, rgb(60, 58, 58), rgb(90, 88, 88)) !important;
-    width: 100%;
-    height: 5rem;
-    display: flex; 
-    justify-content: flex-start; 
-    align-items: center; 
-    border-bottom: 2px solid;
-    
-  }
-  
-  .home {
-    padding: 1rem;
-    font-size: 2rem; /* Increase font size */
-    color: rgb(180, 40, 180);
-    font-weight: bold;
-    border: 100px;
-    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
-  }
-
-
   a{
 
     color: rgb(27, 25, 25);
@@ -50,6 +17,7 @@ body {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     padding-top: 0.5rem;
+    margin-bottom: 25rem;
 }
 
 
@@ -76,8 +44,34 @@ body {
 }
 
 
+.register select {
+  padding: 0.4rem 0.6rem;
+  font-size: 1.1rem;
+  border-radius: 0.5rem;
+  background-color: #3c3a3a;
+  color: rgb(180, 40, 180);
+  border: 1px solid rgb(180, 40, 180);
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-  form{
+.register select:hover,
+.register select:focus {
+  background-color: #3c3a3a;
+  color: rgb(180, 40, 180);
+  border-color: rgb(200, 80, 200);
+  box-shadow: none;
+}
+
+.register select option {
+  background-color: #3c3a3a;
+  color: rgb(180, 40, 180);
+}
+
+  .form{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -89,7 +83,7 @@ body {
 
 
   @media (max-width: 1024px) {
-    form{
+    .form{
       display: flex;
       font-size: 1.3rem;
       justify-content: center;
@@ -105,7 +99,7 @@ body {
     
     @media (max-width: 768px) {
      
-      form{
+      .form{
       display: flex;
       font-size: 1.3rem;
       justify-content: center;
@@ -121,7 +115,7 @@ body {
   
     @media (max-width: 360px) {
      
-      form{
+      .form{
       display: flex;
       justify-content: center;
       font-size: 1.3rem;
@@ -138,7 +132,7 @@ body {
   
     @media (min-width: 1024px) {
      
-      form{
+      .form{
       display: flex;
       font-size: 1.4rem;
       justify-content: center;

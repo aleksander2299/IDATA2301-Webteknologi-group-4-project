@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import '../../styles/main.css';
 import './RoomDetailsPage.css';
 
 import Footer from '../../components/layout/Footer.jsx';
+import Header from '../../components/layout/Header.tsx';
 
 import roomImg from '../../Images/room image placeholder.jpg';
 
@@ -91,9 +92,7 @@ function RoomDetailsPage () {
 
     return (
         <div>
-            <header>
-                <div className="home"><b>Stay Finder</b></div>
-            </header>
+            <Header />
             <div className="content-container">
                 <h1 className="roomnametext">{roomDetails.name} , {roomDetails.location}.</h1>
             </div>
