@@ -2,12 +2,14 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import AdminPage from './pages/AdminPage/AdminPage.jsx';
-import HomePage from './pages/HomePage/HomePage.jsx';
-import LoginPage from './pages/LoginPage/LoginPage.jsx';
-import RegisterPage from './pages/RegisterPage/RegisterPage.jsx';
-import RoomDetailsPage from './pages/RoomDetailsPage/RoomDetailsPage.jsx';
-import SearchPage from './pages/SearchPage/SearchPage.jsx';
+import AdminPage from './pages/AdminPage/AdminPage.tsx';
+import HomePage from './pages/HomePage/HomePage.tsx';
+import LoginPage from './pages/LoginPage/LoginPage.tsx';
+import RegisterPage from './pages/RegisterPage/RegisterPage.tsx';
+import RoomDetailsPage from './pages/RoomDetailsPage/RoomDetailsPage.tsx';
+import SearchPage from './pages/SearchPage/SearchPage.tsx';
+import UserBookingsPage from './pages/UserBookingsPage/UserBookingsPage.tsx';
+import FavouritesPage from './pages/FavouritesPage/FavouritesPage.tsx';
 
 const router = createBrowserRouter ([
   { path: '/', element: <HomePage /> },
@@ -16,6 +18,8 @@ const router = createBrowserRouter ([
   { path: '/search', element: <SearchPage /> },
   { path: '/room/:id', element: <RoomDetailsPage /> },
   { path: '/admin', element: <AdminPage />},
+  { path: '/booking', element: <UserBookingsPage /> },
+  { path: '/favourites', element: <FavouritesPage /> },
 
 
 ]);
