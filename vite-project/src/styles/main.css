@@ -11,7 +11,7 @@ body {
     /* background: linear-gradient(0deg, #d56723, rgb(210, 0, 140), rgb(251, 67, 135), #d56723); */
     background: linear-gradient(0deg, #fd8941d9, rgba(231, 123, 0, 0.845), rgba(251, 67, 134, 0.873), #ff873cd3);
     background-size: 300% 300%;
-    animation: color 5s ease-in-out infinite;
+    animation: color 10s ease-in-out infinite;
 }
 
 #root > div {
