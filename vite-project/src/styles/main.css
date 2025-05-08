@@ -14,6 +14,12 @@ body {
     animation: color 5s ease-in-out infinite;
 }
 
+#root > div {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+}
+
 @keyframes color{
 
   0% {
