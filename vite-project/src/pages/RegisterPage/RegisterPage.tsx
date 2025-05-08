@@ -51,7 +51,7 @@ function RegisterPage() {
         <form className='form' onSubmit={handleRegister}>
           <div className="register">
             <h1 className="fRegister">Register</h1>
-            <label htmlFor="rusername">Username:</label><br />
+            <label htmlFor="rusername">Username:</label>
             <input
               type="text"
               id="rusername"
@@ -60,7 +60,7 @@ function RegisterPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             /><br />
-            <label htmlFor="rpass">Password:</label><br />
+            <label htmlFor="rpass">Password:</label>
             <input
               type="password"
               id="rpass"

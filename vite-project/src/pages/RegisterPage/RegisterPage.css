@@ -8,7 +8,7 @@
     border-style: solid;
     border-radius: 1rem;
     display: flex;
-    background: radial-gradient(circle, rgb(60, 58, 58), rgb(90, 88, 88)) !important;
+    background: rgba(50, 50, 50, 0.85) !important;
     justify-content: center;
     align-items: center;
     flex-flow: column;
@@ -18,18 +18,19 @@
     padding-right: 1.5rem;
     padding-top: 0.5rem;
     margin-bottom: 25rem;
+    color: #fb4386;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);  
 }
 
 
   .register label{
     font-size: 1.4rem;
     margin: 0.6rem;
-    color: rgb(180, 40, 180);
   }
 
   .register h1{
     font-size: 2.5rem;
-    color: rgb(180, 40, 180);
+
   }
 
   .register input{
@@ -38,9 +39,26 @@
   }
 
   .submit{
-   padding: 1.2rem;
-   font-size: 1.5rem;
-    margin: 1.5rem;    
+    padding: 1.2rem;
+    font-size: 1.5rem;
+    margin: 1.5rem;
+    color: #fb4386;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    background-color: #3c3a3a;
+    border-radius: 10px;
+    border: 3px solid #fb4386;
+}
+
+.submit:hover {
+  background-color: rgba(49, 49, 49, 0.85);
+    border-color: #fb4386;
+    color: rgb(251, 67, 134);
+}
+
+.register input {
+  border-radius: 10px;
+  border-color: #fb4386;
+  border-width: 4px;
 }
 
 
@@ -49,26 +67,28 @@
   font-size: 1.1rem;
   border-radius: 0.5rem;
   background-color: #3c3a3a;
-  color: rgb(180, 40, 180);
-  border: 1px solid rgb(180, 40, 180);
+  color: #fb4386;
+  border: 3px solid #fb4386;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
   outline: none;
   width: 100%;
   box-sizing: border-box;
+  text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
 }
 
 .register select:hover,
 .register select:focus {
-  background-color: #3c3a3a;
-  color: rgb(180, 40, 180);
-  border-color: rgb(200, 80, 200);
+  background-color: rgba(49, 49, 49, 0.85);
+  color: #fb4386;
+  border-color: #fb4386;
   box-shadow: none;
+  text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
 }
 
 .register select option {
   background-color: #3c3a3a;
-  color: rgb(180, 40, 180);
+  color: #fb4386;
 }
 
   .form{
@@ -76,7 +96,6 @@
     justify-content: center;
     align-items: center;
     margin-top: 2rem;
-   
   }
 
 
