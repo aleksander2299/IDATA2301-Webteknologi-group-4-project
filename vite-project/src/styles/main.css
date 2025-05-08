@@ -111,6 +111,7 @@ header {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    border-bottom: solid 2px;
 }
 
 footer {
@@ -119,6 +120,7 @@ footer {
     margin-top: 50px;
     padding-bottom: 200px;
     background-color: rgba(50, 50, 50, 0.85);
+    border-top: solid 2px;
 }
 
 .footer-text {

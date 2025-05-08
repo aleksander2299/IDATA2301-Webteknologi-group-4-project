@@ -41,7 +41,8 @@
     margin-left: 1rem;
     margin-right: 1rem;
     position: relative;
-    border: solid 2px rgba(255, 255, 255, 0.9);
+    
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
 .backgroundbox img {
@@ -121,8 +122,6 @@
     align-items: center;
     width: 100%;
     gap: 10px;
-    
-    
 }
 
 .popular-title-box {
@@ -154,11 +153,10 @@
     width: 19rem;
     height: 20rem;
     border-radius: 10px;
-    border-color: rgba(255, 255, 255, 0.9);
     background-color: rgba(255, 255, 255, 0.9);
-    border-width: 2px;
     padding: 2px;
     position: relative;
+    border: none;
 }
 
 .recommendbox img {
