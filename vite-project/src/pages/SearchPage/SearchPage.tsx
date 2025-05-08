@@ -4,6 +4,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 
 import './SearchPage.css';
 import HotelCard from "../../components/HotelCard/HotelCard.tsx"
+//import CustomDatePicker from "../../components/DatePicker/CustomDatePicker.tsx"
 
 interface Hotel {
     id: string;
