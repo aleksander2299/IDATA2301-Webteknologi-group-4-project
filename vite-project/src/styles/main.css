@@ -4,6 +4,12 @@
     margin: 0;
 }
 
+html, body, #root {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
 body {
     font-family: "Poppins", sans-serif;
     font-weight: 100;
@@ -12,6 +18,15 @@ body {
     background: linear-gradient(0deg, #fd8941d9, rgba(231, 123, 0, 0.845), rgba(251, 67, 134, 0.873), #ff873cd3);
     background-size: 300% 300%;
     animation: color 10s ease-in-out infinite;
+}
+
+#root > div {
+    display: flex;
+    flex-flow: column nowrap;
+    min-height: 100vh;
+}
+#root > div > main {
+    flex-grow: 1;
 }
 
 @keyframes color{
