@@ -48,7 +48,7 @@ function RegisterPage() {
     <div>
       <Header />
       <main>
-        <form onSubmit={handleRegister}>
+        <form className='form' onSubmit={handleRegister}>
           <div className="register">
             <h1 className="fRegister">Register</h1>
             <label htmlFor="rusername">Username:</label><br />

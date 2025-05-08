@@ -53,7 +53,7 @@ function LoginPage() {
         <div>
             <Header />
             <main>
-                <form onSubmit={handleLogin}>
+                <form className="form" onSubmit={handleLogin}>
                     <div className="login">
                         <h1 className="fLogin">Login</h1>
                         <label htmlFor="fusername">Username:</label><br />
