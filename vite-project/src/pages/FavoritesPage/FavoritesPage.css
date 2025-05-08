@@ -1,11 +1,11 @@
-html {
+.html {
 	font-size: 62.5%;
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
 
-body {
+.body {
 	font-family: sans-serif;
 	background: radial-gradient(circle,rgb(216, 112, 216),rgb(179, 38, 179));
 	margin: 0;
@@ -13,15 +13,15 @@ body {
 	box-sizing: border-box;
 }
 
-h1 {
+.h1 {
 	font-size: 3rem;
 }
 
-p {
+.p {
 	font-size:2rem;
 }
 
-header {
+.header {
 	z-index: 100;
 	background: radial-gradient(circle, rgba(60, 58, 58, 0.8), rgb(90, 88, 88)); 
 	width: 100%;
