@@ -86,7 +86,7 @@ button {
   
   .right-button:active {
     font-size: 1.3rem;
-  } 
+  }
   
 header {
     background-color: rgba(50, 50, 50, 0.85);
@@ -96,7 +96,6 @@ header {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    border-bottom: 2px solid;
 }
 
 footer {
@@ -105,7 +104,6 @@ footer {
     margin-top: 50px;
     padding-bottom: 200px;
     background-color: rgba(50, 50, 50, 0.85);
-    border-top: 2px solid;
 }
 
 .footer-text {
