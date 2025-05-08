@@ -1,2 +1,10 @@
 import '../../styles/main.css';
-import UserBookingsPage.module.css from './UserBookingsPage.module.css';
+import userBookingsPageStyle from './UserBookingsPage.module.css';
+
+function UserBookingsPage () {
+    return (
+        <>
+        </>
+        );
+    }
+export default UserBookingsPage;
