@@ -2,12 +2,6 @@
 CSS Made with help from AI gonna be used temporarily
  */
 /* General styles */
-.body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: radial-gradient(circle,rgb(216, 112, 216),rgb(179, 38, 179))
-}
 
 .container {
     display: flex;

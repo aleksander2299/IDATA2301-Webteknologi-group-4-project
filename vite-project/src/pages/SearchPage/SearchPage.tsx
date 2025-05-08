@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import '../../styles/main.css';
 import './SearchPage.css';
-import HotelCard from "../../components/HotelCard/HotelCard.tsx"
+
+import HotelCard from "../../components/HotelCard/HotelCard.tsx";
+import Footer from '../../components/layout/Footer.tsx';
+import Header from '../../components/layout/Header.tsx';
 
 interface Hotel {
     id: string;
@@ -78,6 +81,7 @@ function SearchPage() {
     }
   return (
     <main>
+      <Header />
       {/* Search Bar Section temporary until function is made */}
       <section className="container search-section" style={{ marginTop: '20px' }}>
         <div className="searchbarbox">
@@ -145,6 +149,7 @@ function SearchPage() {
                   )
         }
       </div>
+      <Footer />
     </main>
   );
 }
