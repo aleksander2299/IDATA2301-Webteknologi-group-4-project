@@ -4,6 +4,12 @@
     margin: 0;
 }
 
+html, body, #root {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
 body {
     font-family: "Poppins", sans-serif;
     font-weight: 100;
@@ -17,6 +23,9 @@ body {
 #root > div {
     display: flex;
     flex-flow: column nowrap;
+    min-height: 100vh;
+}
+#root > div > main {
     flex-grow: 1;
 }
 
