@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
+import axios from 'axios'
 
 import '../../styles/main.css';
 import './RoomDetailsPage.css';
@@ -10,7 +11,7 @@ import Header from '../../components/layout/Header.tsx';
 import roomImg from '../../Images/room image placeholder.jpg';
 
 {/* Interface with all datatypes to be taken from database */}
-interface RoomDetails {
+interface RoomDetailsDummy {
   id: string;
   name: string;
   location: string;
@@ -27,12 +28,22 @@ interface RoomDetails {
   pets: string;
 }
 
+
+interface RoomDetails{
+    id: string;
+    name: string;
+    description: string;
+    roomType: string;
+    imageUrl: string;
+    
+}
+
 {/* Fake temporary data */}
-const ALL_HOTEL_DETAILS: Record<string, RoomDetails> = {
-    '1': { id: '1', name: 'Hotel 1 - Grand View', location: 'Location 1', description: 'This hotel has a nice view and premium amenities.',
+const ALL_HOTEL_DETAILS: Record<string, RoomDetailsDummy> = {
+    '1': { id: '1', name: 'Hotel 1 - Grand View', location: 'Location 1', description: 'This Room has a nice view and premium amenities.',
         imageUrl: '/images/hotel-room-1.jpg', roomType: 'Suite', bedType: 'King', roomCapacity: '2',
         checkIn: '3:00 PM', checkOut: '11:00 AM', internet: 'Included', parking: 'Available', gym: 'Available', pets: 'No' },
-    '2': { id: '2', name: 'Hotel 2 - Ocean Breeze', location: 'Location 2', description: 'This hotel has a nice oceanside view and relaxing atmosphere.',
+    '2': { id: '2', name: 'Hotel 2 - Ocean Breeze', location: 'Location 2', description: 'This Room has a nice oceanside view and relaxing atmosphere.',
         imageUrl: '/images/hotel-room-2.jpg', roomType: 'Double', bedType: 'Queen', roomCapacity:'3', checkIn: '2:00 PM', checkOut: '12:00 PM',
         internet: 'Included', parking: 'Available', gym: 'Not Available', pets: 'Yes' },
 };
@@ -41,6 +52,7 @@ function RoomDetailsPage () {
 
     {/* Id is based on url so it needs to be tested since it can still be null or undefined */}
     const { id } = useParams<{ id: string }>();
+    const numericId = id ? parseInt(id, 10) : null;
     const [searchParams] = useSearchParams();
 
     const [fromDate, setFromDate] = useState<string | null>(() => searchParams.get('from'));
@@ -64,22 +76,26 @@ function RoomDetailsPage () {
             {/* Exit Early */}
             return;
         }
+        
+        axios.get(`http://localhost:8080/api/rooms/${numericId}`).then((Response) => 
+        {
+            setRoomDetails(Response.data);
+            console.log(Response.data + 'hahahahahahahaha')
+            console.log({numericId})
 
-        {/* Potentially undefined and will be API call instead later */}
-        const details: RoomDetails | undefined = ALL_HOTEL_DETAILS[id];
-
-        if (details) {
-            setRoomDetails(details);
-            console.log(`Found details: ${details.name}`);
-        } else {
-            setError(`No hotel with ID ${id} found`)
-        }
-        setIsLoading(false);
+        })
+        .catch((err) => {
+       
+            console.error(err.data)
+      
+        });
 
 
 
 
     }, [id, fromDate, toDate]);
+
+
     if (!roomDetails) {
         if (isLoading) return <div>Loading...</div>;
         if (error) return <div>Error: {error}</div>; // Show error if any
@@ -90,15 +106,16 @@ function RoomDetailsPage () {
             return <div>Room details not available.</div>;
     }
 
+
     return (
         <div>
             <Header />
             <div className="content-container">
-                <h1 className="roomnametext">{roomDetails.name} , {roomDetails.location}.</h1>
+                <h1 className="roomnametext">{roomDetails.name}</h1>
             </div>
             <section className="content-container">
                 <div className="image">
-                    <img src={roomImg} alt="RoomDetailsPlaceholderImg"/>
+                    <img src={roomDetails.imageUrl} alt="RoomDetailsPlaceholderImg"/>
                 </div>
                 <section className="bookingbox">
                     <div className="bookingboxtext">How long will you stay?</div>
@@ -119,14 +136,16 @@ function RoomDetailsPage () {
                         <h2 className="bigwhitetext">Room Specifications</h2>
                         <p className="smallwhitetext">
                             Room type: {roomDetails.roomType}<br />
-                            Bed type: {roomDetails.bedType}<br />
-                            Room capacity: {roomDetails.roomCapacity}<br />
+                          
+                           {/* 
                             Check-in: {roomDetails.checkIn}<br />
                             Check-out: {roomDetails.checkOut}<br />
+                            Bed type: {roomDetails.bedType}<br />
+                            Room capacity: {roomDetails.roomCapacity}<br />
                             Internet: {roomDetails.internet}<br />
                             Parking: {roomDetails.parking}<br />
                             Gym: {roomDetails.gym}<br />
-                            Pet Friendly: {roomDetails.pets}<br />
+                            Pet Friendly: {roomDetails.pets}<br />*/}
                         </p>
                     </div>
                 </div>
@@ -135,5 +154,6 @@ function RoomDetailsPage () {
     );
 
 }
+
 
 export default RoomDetailsPage;
