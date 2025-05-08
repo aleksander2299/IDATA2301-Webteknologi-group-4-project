@@ -1,0 +1,140 @@
+.img {
+	text-align: center;
+	color: white;
+	font-size: 2.5rem;
+}
+
+.home {
+	margin-left: 2rem;
+	font-size: 2rem;
+	color: rgb(180, 40, 180);
+	font-weight: bold;
+	text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+}
+
+.content > .h1 {
+	text-align: center;
+	background-color: rgba(60, 58, 58, 0.8);
+	width: 80%;
+	margin: 2rem auto;
+	border-radius: 1rem;
+}
+
+.bookingList {
+	display: flex;
+	flex-flow: column;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 2rem;
+}
+
+.booking-card {
+	max-width: 90%;
+  width: 900px;
+	height: 15rem;
+	margin: 1rem ;
+	background-color: rgba(60, 58, 58, 0.8);
+	border-radius: 1rem;
+	overflow: hidden;
+	display: grid;
+	grid-template-rows: auto auto;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-areas:
+		"img name name button"
+		"img startDate endDate button";
+
+}
+
+.booking-card > .img {
+	grid-area: img;
+	width: 100%;
+	height: 100%;
+	object-fit: none;
+	border-radius: 0.5rem;
+}
+
+.booking-card .roomName {
+	grid-area: name;
+}
+.booking-card .startTime {
+	grid-area: startDate;
+}
+.booking-card .endTime {
+	grid-area: endDate;
+}
+.booking-card .cancelButton {
+	grid-area: button;
+	justify-self: center;
+	width: 90%;
+	height: 50%;
+	border-radius: 2rem;
+	margin: auto;
+	background-color: rgb(180, 40, 180);
+	color: white;
+	border: none;
+	font-size: 1.6rem;
+	cursor: pointer;
+	transition: background 0.3s ease;
+}
+
+.booking-card .cancelButton:hover {
+	background-color: rgb(150, 30, 150);
+}
+
+.roomName {
+	font-size: 1.8rem;
+	font-weight: bold;
+}
+
+.booking-times {
+	display: flex;
+	justify-content: flex-start;
+	gap: 2rem;
+}
+
+.startTime, .endTime {
+	font-size: 1.6rem;
+}
+
+.booking-card p {
+	background-color: rgba(40, 22, 18, 0.8);
+}
+
+
+
+@media screen and (max-width: 768px) {
+	.booking-card {
+		width: 80%;
+		height: 36rem;
+		display: grid;
+		grid-template-rows: repeat(4, 1fr);
+		grid-template-columns: repeat(4, 1fr);
+		grid-template-areas:
+			"img img startDate startDate"
+			"img img endDate endDate"
+			"name name name name"
+			"button button button button";
+		align-items: center;
+		gap: 1rem;
+		padding: 1rem;
+	}
+	.booking-card > .img {
+		grid-area: img;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: 0.5rem;
+	}
+	.booking-card .roomName {
+		grid-area: name;
+	}
+	.booking-card .startTime {
+		grid-area: startDate;
+	}
+	.booking-card .endTime {
+		grid-area: endDate;
+	}
+	.booking-card .cancelButton {
+		grid-area: button;
+	}
+}

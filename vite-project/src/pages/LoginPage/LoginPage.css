@@ -1,4 +1,4 @@
-  a{
+  .a{
 
     color: rgb(27, 25, 25);
   }
@@ -42,7 +42,7 @@
    margin: 1.5rem;    
 }
 
-  form{
+  .form{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -60,7 +60,7 @@
 
 
   @media (max-width: 1024px) {
-  form{
+  .form{
     display: flex;
     font-size: 1.3rem;
     justify-content: center;
@@ -76,7 +76,7 @@
   
   @media (max-width: 768px) {
    
-    form{
+    .form{
     display: flex;
     font-size: 1.3rem;
     justify-content: center;
@@ -92,7 +92,7 @@
 
   @media (max-width: 360px) {
    
-    form{
+    .form{
     display: flex;
     justify-content: center;
     font-size: 1.3rem;
@@ -109,7 +109,7 @@
 
   @media (min-width: 1024px) {
    
-    form{
+    .form{
     display: flex;
     font-size: 1.4rem;
     justify-content: center;
