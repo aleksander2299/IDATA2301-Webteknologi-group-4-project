@@ -40,39 +40,42 @@ function formatDisplayDate(date: Date | null): string {
         return '-- / -- / --';
     }
     return date.toLocaleDateString(undefined, {
-        month: '2-digit',
         day: '2-digit',
+        month: '2-digit',
         year: '2-digit',
     });
 }
 
+// Props for the input component
 interface CustomButtonProps {
   value?: string; // DatePicker passes the current value, we don't need to display it for an icon
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void; // DatePicker passes this to open/close
   currentDisplayStartDate: Date | null;
   currentDisplayEndDate: Date | null;
+  className?: string;
 }
 
-const CustomButton = forwardRef<HTMLButtonElement, CustomButtonProps>(
-  ({ onClick , currentDisplayStartDate, currentDisplayEndDate }, ref) => (
+// Custom input component
+const CustomButton = forwardRef<HTMLDivElement, CustomButtonProps>(
+  ({ onClick , currentDisplayStartDate, currentDisplayEndDate , className}, ref) => (
     <div
       role="button"
-      className="trigger-button"
+      className={`trigger-button ${className || ''}`}
       onClick={onClick}
       ref={ref}
-      aria-label="Open date range picker"
+      aria-label="Select check-in and check-out dates"
     >
       <CalendarIcon />
       <div className="date-section check-in-section">
-              <span className="date-label">Check in</span>
-              <span className="date-value">{formatDisplayDate(currentDisplayStartDate)}</span>
-            </div>
-            <div className="separator"></div>
-            <div className="date-section check-out-section">
-              <span className="date-label">Check out</span>
-              <span className="date-value">{formatDisplayDate(currentDisplayEndDate)}</span>
-            </div>
-          </div>
+          <span className="date-label">Check in</span>
+          <span className="date-value">{formatDisplayDate(currentDisplayStartDate)}</span>
+        </div>
+        <div className="separator"></div>
+        <div className="date-section check-out-section">
+          <span className="date-label">Check out</span>
+          <span className="date-value">{formatDisplayDate(currentDisplayEndDate)}</span>
+        </div>
+      </div>
   )
 );
 
@@ -101,7 +104,7 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
   onDatesSelected,
   initialStartDate = null,
   initialEndDate = null,
-  buttonClassName,
+  className,
 }) => {
   const [startDate, setStartDate] = useState<Date | null>(initialStartDate);
   const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
@@ -127,12 +130,16 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
       startDate={startDate}
       endDate={endDate}
       onChange={handleDateChange}
-
       // Prevent dates before current date
       minDate={new Date()}
 
       // Using Only an Icon as the Trigger
-      customInput={<CustomButton className={buttonClassName} />}
+      customInput={<CustomButton
+          currentDisplayStartDate = {startDate}
+          currentDisplayEndDate = {endDate}
+          className = {className}
+          />
+      }
 
       popperPlacement="bottom-start"
       monthsShown={1}
@@ -140,6 +147,7 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
       shouldCloseOnSelect={false}
       showDisabledMonthNavigation  // Allows navigating through months even if some are disabled.
       placeholderText="Select a date range" // Useful for accessibility if the input was visible
+      dateFormat="dd/MM/yyyy"
 
     />
   );
