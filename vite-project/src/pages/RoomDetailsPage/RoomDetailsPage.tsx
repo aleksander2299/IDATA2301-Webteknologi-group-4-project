@@ -35,8 +35,22 @@ interface RoomDetails{
     description: string;
     roomType: string;
     imageUrl: string;
-    
 }
+
+interface RoomProvider {
+    roomProviderId: number;
+    roomPrice: number;
+    provider: {
+      providerId: number;
+      providerName: string;
+    };
+  }
+
+  interface Booking {
+    checkInDate: string; 
+    checkOutDate: string; 
+  }
+
 
 {/* Fake temporary data */}
 const ALL_HOTEL_DETAILS: Record<string, RoomDetailsDummy> = {
@@ -48,15 +62,23 @@ const ALL_HOTEL_DETAILS: Record<string, RoomDetailsDummy> = {
         internet: 'Included', parking: 'Available', gym: 'Not Available', pets: 'Yes' },
 };
 
+
+
+
+
 function RoomDetailsPage () {
+    
 
     {/* Id is based on url so it needs to be tested since it can still be null or undefined */}
     const { id } = useParams<{ id: string }>();
     const numericId = id ? parseInt(id, 10) : null;
     const [searchParams] = useSearchParams();
+    const token = localStorage.getItem('token');
 
     const [fromDate, setFromDate] = useState<string | null>(() => searchParams.get('from'));
     const [toDate, setToDate] = useState<string | null>(() => searchParams.get('to'));
+    const [roomProviders,setProviders] = useState<RoomProvider[]>([]);
+    const [selectedProvider, setSelectedProvider] = useState<number | null>(null);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     {/* roomDetails and error can both be an object or null since they start out as null and then can get objects */}
@@ -77,23 +99,68 @@ function RoomDetailsPage () {
             return;
         }
         
-        axios.get(`http://localhost:8080/api/rooms/${numericId}`).then((Response) => 
-        {
-            setRoomDetails(Response.data);
-            console.log(Response.data + 'hahahahahahahaha')
-            console.log({numericId})
+        axios.get(`http://localhost:8080/api/rooms/${numericId}`)
+          .then((response) => {
+            setRoomDetails(response.data);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+        
 
-        })
-        .catch((err) => {
-       
-            console.error(err.data)
-      
+
+
+        axios.get(`http://localhost:8080/api/rooms/${numericId}/roomProviders`)
+        .then((Response) => 
+        {
+           {/*log(JSON.stringify(Response.data, null, 2) + "here is roomproviders"); */} 
+            setProviders(Response.data)
+        
+        }
+        ).catch((error) => 
+        {
+            console.error(error.data + " HERE IS THE ERROR FOR NUMERICID")
         });
 
 
 
 
     }, [id, fromDate, toDate]);
+
+    function changeProvider(e : React.ChangeEvent<HTMLSelectElement>){
+        setSelectedProvider(parseInt(e.target.value))
+        console.log(parseInt(e.target.value))
+    }
+
+    function bookRoom(){
+
+        const booking: Booking = {
+            checkInDate: fromDate ?? "",
+            checkOutDate: toDate ?? "", 
+        };
+
+
+        axios.post(`http://localhost:8080/api/booking/withIds/${selectedProvider}/${localStorage.getItem('username')}`,booking,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+              },
+        })
+        .then((Response) => 
+            {
+                console.log(localStorage.getItem("token"))
+             
+    
+           
+        }
+    ).catch((error) => 
+    {
+        console.error(error.data)
+        console.log(token + " TOKEN HERE ")
+    });
+            
+    }
+    
 
 
     if (!roomDetails) {
@@ -121,7 +188,23 @@ function RoomDetailsPage () {
                     <div className="bookingboxtext">How long will you stay?</div>
                     <button className="button1">{fromDate || 'N/A'}</button>
                     <button className="button2">{toDate || 'N/A'}</button>
-                    <button className="button3">BOOK NOW!</button>
+                    <select value={selectedProvider ?? ""} onChange={changeProvider}>
+                
+                    <option value="" disabled>
+                        Choose your provider here
+                    </option>
+                    {roomProviders.length > 0 ?
+                    roomProviders.map((rp) => (
+                    <option key={rp.roomProviderId} value={rp.roomProviderId}>
+                    {rp.provider.providerName} - ${rp.roomPrice}
+                     </option>
+                    )) :
+                    (
+                        <option value="">no room providers</option>
+                    )    
+                }
+                </select>
+                <button onClick={bookRoom}>Book room</button>
                 </section>
             </section>
             <section className="content-container">
@@ -154,6 +237,7 @@ function RoomDetailsPage () {
     );
 
 }
+
 
 
 export default RoomDetailsPage;
