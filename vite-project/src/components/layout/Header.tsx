@@ -2,9 +2,13 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/main.css';
 
+import HamburgerIcon from '../../assets/burgerIcon.svg?react';
+import CrossIcon from '../../assets/crossIcon.svg?react';
+
 
 function Header() {
   const [role, setRole] = useState<string | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const storedRole = localStorage.getItem('role');
@@ -20,6 +24,10 @@ function Header() {
     navigate('/');
     window.location.reload();
   };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown state
+  };
   
   return (
     <header style={{ 
@@ -30,7 +38,6 @@ function Header() {
       height: '5rem',
       width: '100%',
       boxSizing: 'border-box',
-      overflowX: 'hidden'
     }}>
       {/* Site Logo */}
       <Link to="/">
@@ -102,7 +109,33 @@ function Header() {
           </>
         )
         }
-        
+
+        { /* Dropdown bar */ }
+        <div className="dropdown" style={{ position: 'relative' }}>
+          <button
+            className="home-buttons right-button"
+            onClick={toggleDropdown}
+            style={{ background: 'transparent', border: 'none' }}
+          >
+            {/* Conditionally render SVGs based on dropdown state */}
+            {isDropdownOpen ? (
+              <CrossIcon width="40" height="40" />
+            ) : (
+              <HamburgerIcon width="50" height="50" />
+            )}
+          </button>
+
+          {/* Dropdown menu */}
+          {isDropdownOpen && (
+            <div className="dropdown-menu" style={{ position: 'absolute', top: '100%', right: '0' }}>
+              <ul>
+                <li>Option 1</li>
+                <li>Option 2</li>
+                <li>Option 3</li>
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

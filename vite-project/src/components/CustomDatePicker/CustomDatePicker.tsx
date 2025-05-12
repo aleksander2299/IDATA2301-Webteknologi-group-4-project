@@ -9,10 +9,12 @@ import DatePicker from 'react-datepicker';
 
 // Styles for react-datepicker's calendar
 import 'react-datepicker/dist/react-datepicker.css';
+import styles from './CustomDatePicker.module.css';
 
 
 const CalendarIcon = () => (
   <svg
+    className={styles.calendarIcon}
     xmlns="http://www.w3.org/2000/svg"
     width="1.5em" // Made slightly larger for easier clicking
     height="1.5em"
@@ -35,22 +37,48 @@ const CalendarIcon = () => (
   </svg>
 );
 
-interface CustomIconButtonProps {
-  value?: string; // DatePicker passes the current value, we don't need to display it for an icon
-  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void; // DatePicker passes this to open/close
+function formatDisplayDate(date: Date | null): string {
+    if (!date) {
+        return '-- / -- / --';
+    }
+    return date.toLocaleDateString(undefined, {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+    });
 }
 
-const CustomIconButton = forwardRef<HTMLButtonElement, CustomIconButtonProps>(
-  ({ onClick }, ref) => (
-    <button
-      type="button"
-      className="icon-trigger-button"
+// Props for the input component
+interface CustomButtonProps {
+  value?: string; // DatePicker passes the current value, we don't need to display it for an icon
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void; // DatePicker passes this to open/close
+  currentDisplayStartDate: Date | null;
+  currentDisplayEndDate: Date | null;
+  className?: string;
+}
+
+// Custom input component
+const CustomButton = forwardRef<HTMLDivElement, CustomButtonProps>(
+  ({ onClick , currentDisplayStartDate, currentDisplayEndDate , className}, ref) => (
+    <div
+      role="button"
+      className={`${styles.dateRangeDisplayInput} ${className || ''}`}
       onClick={onClick}
       ref={ref}
-      aria-label="Open date range picker"
+      aria-label="Select check-in and check-out dates"
     >
-      <CalendarIcon />
-    </button>
+
+      <div className={`${styles.dateSection} ${styles.checkInSection || ''}`}>
+          <span className={styles.dateLabel}>Check in</span>
+          <span className={styles.dateValue}>{formatDisplayDate(currentDisplayStartDate)}</span>
+      </div>
+        <div className={styles.separator}></div> {/* Separator class */}
+       <div className={styles.dateSection}>
+          <span className={styles.dateLabel}>Check out</span>
+          <span className={styles.dateValue}>{formatDisplayDate(currentDisplayEndDate)}</span>
+       </div>
+       <CalendarIcon />
+      </div>
   )
 );
 
@@ -66,6 +94,7 @@ interface CustomDatePickerProps {
   initialStartDate?: Date | null;
   /** Optional initial end date */
   initialEndDate?: Date | null;
+  className?: string;
 }
 
 
@@ -78,7 +107,7 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
   onDatesSelected,
   initialStartDate = null,
   initialEndDate = null,
-  buttonClassName,
+  className,
 }) => {
   const [startDate, setStartDate] = useState<Date | null>(initialStartDate);
   const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
@@ -104,20 +133,25 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
       startDate={startDate}
       endDate={endDate}
       onChange={handleDateChange}
-
       // Prevent dates before current date
       minDate={new Date()}
 
       // Using Only an Icon as the Trigger
-      customInput={<CustomIconButton className={buttonClassName} />}
+      customInput={<CustomButton
+          currentDisplayStartDate = {startDate}
+          currentDisplayEndDate = {endDate}
+          className = {className}
+          />
+      }
 
       popperPlacement="bottom-start"
-      monthsShown={2}
-      isClearable={true}
+      monthsShown={1}
+      //isClearable={true}
       shouldCloseOnSelect={false}
       showDisabledMonthNavigation  // Allows navigating through months even if some are disabled.
       placeholderText="Select a date range" // Useful for accessibility if the input was visible
-
+      dateFormat="dd/MM/yyyy"
+      weekStartsOn={1}
     />
   );
 };
