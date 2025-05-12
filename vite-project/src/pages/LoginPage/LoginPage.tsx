@@ -34,8 +34,9 @@ function LoginPage() {
                 console.log('Decoded JWT token:', decodedToken);
                 console.log('Extracted role:', role);
 
-                // Store token and role
+                // Store token, username and role
                 localStorage.setItem('token', token);
+                localStorage.setItem('username', username);
                 if (role) {
                     localStorage.setItem('role', role);
                 }

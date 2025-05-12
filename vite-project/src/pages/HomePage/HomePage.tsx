@@ -45,6 +45,11 @@ function HomePage() {
             }
             navigate(url);
         }
+
+        // TEMPORARY TO SEE IF YOU ARE LOGGED IN.
+        const username = localStorage.getItem('username');
+
+        console.log('Logged in as:', username);
     return (
       <div>
         <Header />
