@@ -31,6 +31,7 @@ function RegisterPage() {
           const role = decodedToken.role?.[0]?.authority;
   
           localStorage.setItem('token', token);
+          localStorage.setItem('username', username);
           if (role) {
             localStorage.setItem('role', role);
           }
