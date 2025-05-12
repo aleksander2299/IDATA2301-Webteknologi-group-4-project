@@ -1,0 +1,71 @@
+/* Style the main wrapper div
+   Generated with help from AI since
+*/
+
+.dateRangeDisplayInput {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px; /* Adjust padding */
+  border: 1px solid #555; /* Adjust border color/style */
+  border-radius: 4px;
+  background-color: #2a2a2a;
+  color: #ccc;
+  cursor: pointer;
+  min-width: 250px;
+  font-size: 1.5em;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.dateRangeDisplayInput:hover {
+  border-color: #888; /* Example hover effect */
+}
+
+.dateRangeDisplayInput:focus-visible { /* Accessibility focus style */
+    outline: 2px solid dodgerblue;
+    outline-offset: 1px;
+}
+
+
+.calendarIcon {
+  margin-left: 15px; /* Space between icon and text */
+  flex-shrink: 0; /* Prevent icon from shrinking */
+  color: #fff; /* Example icon color */
+  size: 3em;
+}
+
+/* Style each date section (Check in / Check out) */
+.dateSection {
+  display: flex;
+  flex-direction: column; /* Stack label and value vertically */
+  text-align: left;
+}
+
+/* Style the labels */
+.dateLabel {
+  font-size: 0.85em; /* Smaller label text */
+  color: #aaa; /* Lighter label color */
+  margin-bottom: 2px;
+}
+
+/* Style the date value/placeholder */
+.dateValue {
+  font-weight: bold;
+  color: #eee;
+  min-width: 75px; /* Ensure some minimum space for date DD/MM/YY */
+}
+
+/* Style the vertical separator line */
+.separator {
+  width: 1px;
+  background-color: #555; /* Separator color */
+  height: 30px;
+  margin: 0 15px; /* Space around the separator */
+  align-self: center; /* Center vertically */
+}
+
+/* Ensure the calendar popup appears correctly */
+/* You might need to target this globally if the popper is rendered outside the component root */
+:global(.react-datepicker-popper) {
+  z-index: 9999 !important; /* Use !important cautiously if needed to override */
+}
