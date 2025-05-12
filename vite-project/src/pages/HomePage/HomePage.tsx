@@ -1,11 +1,13 @@
+import { useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import '../../styles/main.css';
 import homePageStyle from './HomePage.module.css';
 
-
+import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
+
 import amsterdamImg from '../../Images/Amsterdam placeholder.jpg';
 import bergenImg from '../../Images/Bergen placeholder.jpg';
 import mainRoomImg from '../../Images/main page room placeholder.jpg';
@@ -16,6 +18,18 @@ import aalesundImg from '../../Images/Ålesund placeholder.jpg';
 function HomePage() {
 
     const navigate = useNavigate();
+
+    // State to hold the dates selected by the picker
+    const [checkInDate, setCheckInDate] = useState<Date | null>(null);
+    const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
+
+    // Function to receive dates from the CustomDatePicker component
+    const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
+    console.log('HomePage received dates (for testing):', selected.startDate, selected.endDate);
+    setCheckInDate(selected.startDate);
+    setCheckOutDate(selected.endDate);
+    };
+
         {/* Using string | null since the user does not need to set a date
             Also should be connected to clicking the search button later */}
         function Search(hotelName: string | null, location: string | null, fromDate: string | null, toDate: string | null): void {
@@ -69,6 +83,14 @@ function HomePage() {
                 <button className={homePageStyle.buttons1}>Room type?</button>
                 {/* Temporary buttons to test */}
                 <button onClick={() => Search(null, null, '2024-10-03', '2024-10-09')} className={homePageStyle.buttons2}>How many?</button>
+                {/* Place the date picker component here */}
+                                 <div style={{ display: 'flex', alignItems: 'center' }}> {/* Optional wrapper for layout */}
+                                     <CustomDatePicker
+                                         onDatesSelected={handleDatesUpdate} // Pass the handler function
+                                         initialStartDate={checkInDate}      // Pass the current state
+                                         initialEndDate={checkOutDate}        // Pass the current state
+                                     />
+                                 </div>
                 <button onClick={() => Search(null, null, '2024-10-01', '2024-10-07')} className={homePageStyle.buttons3} >Search</button>
               </div>
             </div>
