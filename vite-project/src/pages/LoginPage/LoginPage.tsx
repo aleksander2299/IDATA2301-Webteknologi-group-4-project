@@ -43,6 +43,8 @@ function LoginPage() {
 
                 // Navigates to home
                 navigate('/');
+                console.log(role + "here should be role non null")
+                console.log(token + " jwt token here")
             }
         } catch (err) {
             console.error('Login error:', err);

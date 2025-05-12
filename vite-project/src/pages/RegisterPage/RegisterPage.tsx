@@ -31,13 +31,15 @@ function RegisterPage() {
           const role = decodedToken.role?.[0]?.authority;
   
           localStorage.setItem('token', token);
-          localStorage.setItem('username', username);
+          localStorage.setItem('username',username);
           if (role) {
             localStorage.setItem('role', role);
           }
 
           // Navigates to home
           navigate('/');
+          console.log(role + " here should be role non null")
+          console.log(token + " jwt token here")
         }
       } catch (err) {
         console.error('Registration error:', err);
