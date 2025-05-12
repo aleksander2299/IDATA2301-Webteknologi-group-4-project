@@ -4,10 +4,42 @@
     margin: 0;
 }
 
+html, body, #root {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
 body {
     font-family: "Poppins", sans-serif;
     font-weight: 100;
-    background: radial-gradient(circle,rgb(216, 112, 216),rgb(179, 38, 179))
+    width: 100%;
+    /* background: linear-gradient(0deg, #d56723, rgb(210, 0, 140), rgb(251, 67, 135), #d56723); */
+    background: linear-gradient(0deg, #fd8941d9, rgba(231, 123, 0, 0.845), rgba(251, 67, 134, 0.873), #ff873cd3);
+    background-size: 300% 300%;
+    animation: color 10s ease-in-out infinite;
+}
+
+#root > div {
+    display: flex;
+    flex-flow: column nowrap;
+    min-height: 100vh;
+}
+#root > div > main {
+    flex-grow: 1;
+}
+
+@keyframes color{
+
+  0% {
+    background-position: 0, 50%;
+  }
+  50% {
+    background-position: 100%, 50%;
+  }
+  100% {
+    background-position: 0, 50%;
+  }
 }
 
 button {
@@ -19,7 +51,7 @@ button {
 .home-buttons {
     font-family: "Poppins", sans-serif;
     font-size: 2rem;
-    color: rgb(180, 40, 180);
+    color: #fb4386;
     font-weight: 500;
     border: 100px;
     text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
@@ -30,14 +62,14 @@ button {
 .header-text {
   font-family: "Poppins", sans-serif;
   font-size: 2rem;
-  color: rgb(180, 40, 180);
+  color: rgb(251, 67, 134);
   text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
   display: flex;
   
 }
 
 .home-buttons:hover {
-    color: hsl(300, 64%, 35%);
+  color: rgb(205, 32, 84);
 }
 
 .home-buttons:active {
@@ -52,29 +84,34 @@ button {
   
   .right-button {
     font-size: 1.4rem;
-    color: #fff;
-    background-color: rgb(50, 50, 50);
-    border-radius: 5px; 
+    color: rgb(251, 67, 134);
     padding: 0.5rem 1rem;
-    margin-left: 1rem; 
+    margin-left: 1rem;
+    border-radius: 10px;
+    border-color: #fb4386;
+    border-width: 4px;
+    border: solid;
   }
   
   .right-button:hover {
-    background-color: rgb(100, 100, 100);
+    background-color: rgba(49, 49, 49, 0.85);
+    border-color: #fb4386;
+    color: rgb(251, 67, 134);
   }
   
   .right-button:active {
     font-size: 1.3rem;
-  } 
+  }
   
 header {
-    background: radial-gradient(circle, rgba(60, 58, 58, 0.8), rgb(90, 88, 88)); 
+    background-color: rgba(50, 50, 50, 0.85);
+    /* background-color: rgba(255, 255, 255, 0.75); */
     width: 100%;
     height: 5rem;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    border-bottom: 2px solid;
+    border-bottom: solid 2px;
 }
 
 footer {
@@ -82,13 +119,14 @@ footer {
     font-weight: 100;
     margin-top: 50px;
     padding-bottom: 200px;
-    background-color: rgba(60, 58, 58, 0.9);
-    border-top: 2px solid;
+    background-color: rgba(50, 50, 50, 0.85);
+    border-top: solid 2px;
 }
 
 .footer-text {
   color: white;
   padding-top: 10px;
+  padding-left: 10px;
 }
 
 

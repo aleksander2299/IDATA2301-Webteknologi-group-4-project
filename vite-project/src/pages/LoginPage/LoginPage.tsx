@@ -34,8 +34,9 @@ function LoginPage() {
                 console.log('Decoded JWT token:', decodedToken);
                 console.log('Extracted role:', role);
 
-                // Store token and role
+                // Store token, username and role
                 localStorage.setItem('token', token);
+                localStorage.setItem('username', username);
                 if (role) {
                     localStorage.setItem('role', role);
                 }
@@ -53,10 +54,10 @@ function LoginPage() {
         <div>
             <Header />
             <main>
-                <form onSubmit={handleLogin}>
+                <form className="form" onSubmit={handleLogin}>
                     <div className="login">
                         <h1 className="fLogin">Login</h1>
-                        <label htmlFor="fusername">Username:</label><br />
+                        <label htmlFor="fusername">Username:</label>
                         <input
                             type="text"
                             id="fusername"
@@ -65,7 +66,7 @@ function LoginPage() {
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                         /><br />
-                        <label htmlFor="lpass">Password:</label><br />
+                        <label htmlFor="lpass">Password:</label>
                         <input
                             type="password"
                             id="lpass"

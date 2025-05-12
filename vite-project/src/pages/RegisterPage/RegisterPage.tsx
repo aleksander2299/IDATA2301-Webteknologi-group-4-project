@@ -31,6 +31,7 @@ function RegisterPage() {
           const role = decodedToken.role?.[0]?.authority;
   
           localStorage.setItem('token', token);
+          localStorage.setItem('username', username);
           if (role) {
             localStorage.setItem('role', role);
           }
@@ -48,10 +49,10 @@ function RegisterPage() {
     <div>
       <Header />
       <main>
-        <form onSubmit={handleRegister}>
+        <form className='form' onSubmit={handleRegister}>
           <div className="register">
             <h1 className="fRegister">Register</h1>
-            <label htmlFor="rusername">Username:</label><br />
+            <label htmlFor="rusername">Username:</label>
             <input
               type="text"
               id="rusername"
@@ -60,7 +61,7 @@ function RegisterPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             /><br />
-            <label htmlFor="rpass">Password:</label><br />
+            <label htmlFor="rpass">Password:</label>
             <input
               type="password"
               id="rpass"
@@ -69,6 +70,7 @@ function RegisterPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             /><br />
+            <label htmlFor="rusername">Role:</label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}

@@ -59,6 +59,11 @@ function HomePage() {
             }
             navigate(url);
         }
+
+        // TEMPORARY TO SEE IF YOU ARE LOGGED IN.
+        const username = localStorage.getItem('username');
+
+        console.log('Logged in as:', username);
     return (
       <div>
         <Header />
@@ -97,22 +102,22 @@ function HomePage() {
             </div>
   
             <div className={homePageStyle["recommend-container"]}>
-              <div className={homePageStyle.recommendbox}>
+              <button onClick={() => Search(null, "Ålesund", null, null)} className={homePageStyle.recommendbox}>
                 <img src={aalesundImg} alt="Ålesund" />
                 <div className={homePageStyle.placebox}>Ålesund</div>
-              </div>
-              <div className={homePageStyle.recommendbox}>
+              </button>
+              <button onClick={() => Search(null, "Oslo", null, null)} className={homePageStyle.recommendbox}>
                 <img src={osloImg} alt="Oslo" />
                 <div className={homePageStyle.placebox}>Oslo</div>
-              </div>
-              <div className={homePageStyle.recommendbox}>
+              </button>
+              <button onClick={() => Search(null, "Bergen", null, null)} className={homePageStyle.recommendbox}>
                 <img src={bergenImg} alt="Bergen" />
                 <div className={homePageStyle.placebox}>Bergen</div>
-              </div>
-              <div className={homePageStyle.recommendbox}>
+              </button>
+              <button onClick={() => Search(null, "Amsterdam", null, null)} className={homePageStyle.recommendbox}>
                 <img src={amsterdamImg} alt="Amsterdam" />
                 <div className={homePageStyle.placebox}>Amsterdam</div>
-              </div>
+              </button>
             </div>
           </section>
         </main>

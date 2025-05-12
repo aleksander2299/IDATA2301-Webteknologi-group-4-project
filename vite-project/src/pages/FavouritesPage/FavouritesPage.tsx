@@ -1,8 +1,19 @@
-import './FavoritesPage.css';
+import './FavouritesPage.module.css';
+import '../../styles/main.css';
 
-function FavoritesPage () {
+import Footer from '../../components/layout/Footer.tsx';
+import Header from '../../components/layout/Header.tsx';
+
+function FavouritesPage () {
     return (
-        <div>hello</div>
+        <div className="favourites">
+            <Header />
+            <main>
+
+            </main>
+
+            <Footer />
+        </div>
     );
 
 }
@@ -10,4 +21,4 @@ function FavoritesPage () {
     
 
 
-export default FavoritesPage;
+export default FavouritesPage;

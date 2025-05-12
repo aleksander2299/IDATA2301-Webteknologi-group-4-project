@@ -6,16 +6,16 @@ return(
 
 <div>
     <header>
-        <div class="settings"><b>Settings</b></div>
+        <div className="settings"><b>Settings</b></div>
     </header>
-    <div class="settingscontainer">
+    <div className="settingscontainer">
     <section id="userDetails">
         <h2>user details:</h2>
         <label>Username:</label>
         <input type="text" value="username42" disabled />
         <label>Password:</label>
         <input type="password" value="password" id="password" />
-        <button class="btn show-btn">show password</button>
+        <button className="btn show-btn">show password</button>
     
     </section>
     <section id="changePassword" >
@@ -24,11 +24,11 @@ return(
         <input type="password" value="password" disabled id="changepass" />
         <label>Confirm password:</label>
         <input type="password" value="password" id="confirmpass" />
-        <button class="btn change-btn">change password</button>
+        <button className="btn change-btn">change password</button>
     </section>
 </div>
 
-<div class="deleteButton">
+<div className="deleteButton">
     <button id="deletebtn">
         Delete Account
     </button>
