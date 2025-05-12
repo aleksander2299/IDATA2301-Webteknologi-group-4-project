@@ -9,10 +9,12 @@ import DatePicker from 'react-datepicker';
 
 // Styles for react-datepicker's calendar
 import 'react-datepicker/dist/react-datepicker.css';
+import styles from './CustomDatePicker.module.css';
 
 
 const CalendarIcon = () => (
   <svg
+    className={styles.calendarIcon}
     xmlns="http://www.w3.org/2000/svg"
     width="1.5em" // Made slightly larger for easier clicking
     height="1.5em"
@@ -60,21 +62,22 @@ const CustomButton = forwardRef<HTMLDivElement, CustomButtonProps>(
   ({ onClick , currentDisplayStartDate, currentDisplayEndDate , className}, ref) => (
     <div
       role="button"
-      className={`trigger-button ${className || ''}`}
+      className={`${styles.dateRangeDisplayInput} ${className || ''}`}
       onClick={onClick}
       ref={ref}
       aria-label="Select check-in and check-out dates"
     >
-      <CalendarIcon />
-      <div className="date-section check-in-section">
-          <span className="date-label">Check in</span>
-          <span className="date-value">{formatDisplayDate(currentDisplayStartDate)}</span>
-        </div>
-        <div className="separator"></div>
-        <div className="date-section check-out-section">
-          <span className="date-label">Check out</span>
-          <span className="date-value">{formatDisplayDate(currentDisplayEndDate)}</span>
-        </div>
+
+      <div className={`${styles.dateSection} ${styles.checkInSection || ''}`}>
+          <span className={styles.dateLabel}>Check in</span>
+          <span className={styles.dateValue}>{formatDisplayDate(currentDisplayStartDate)}</span>
+      </div>
+        <div className={styles.separator}></div> {/* Separator class */}
+       <div className={styles.dateSection}>
+          <span className={styles.dateLabel}>Check out</span>
+          <span className={styles.dateValue}>{formatDisplayDate(currentDisplayEndDate)}</span>
+       </div>
+       <CalendarIcon />
       </div>
   )
 );
@@ -148,7 +151,7 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
       showDisabledMonthNavigation  // Allows navigating through months even if some are disabled.
       placeholderText="Select a date range" // Useful for accessibility if the input was visible
       dateFormat="dd/MM/yyyy"
-
+      weekStartsOn={1}
     />
   );
 };
