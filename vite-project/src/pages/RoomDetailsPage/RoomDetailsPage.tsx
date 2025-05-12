@@ -5,6 +5,7 @@ import axios from 'axios'
 import '../../styles/main.css';
 import './RoomDetailsPage.css';
 
+import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
 import Footer from '../../components/layout/Footer.jsx';
 import Header from '../../components/layout/Header.tsx';
 
@@ -68,6 +69,16 @@ const ALL_HOTEL_DETAILS: Record<string, RoomDetailsDummy> = {
 
 function RoomDetailsPage () {
     
+    // State to hold the dates selected by the picker
+        const [checkInDate, setCheckInDate] = useState<Date | null>(null);
+        const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
+
+            // Function to receive dates from the CustomDatePicker component
+        const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
+            console.log('HomePage received dates (for testing):', selected.startDate, selected.endDate);
+            setCheckInDate(selected.startDate);
+            setCheckOutDate(selected.endDate);
+        };
 
     {/* Id is based on url so it needs to be tested since it can still be null or undefined */}
     const { id } = useParams<{ id: string }>();
@@ -186,8 +197,14 @@ function RoomDetailsPage () {
                 </div>
                 <section className="bookingbox">
                     <div className="bookingboxtext">How long will you stay?</div>
-                    <button className="button1">{fromDate || 'N/A'}</button>
-                    <button className="button2">{toDate || 'N/A'}</button>
+                    {/* Place the date picker component here */}
+                         <div style={{ display: 'flex', alignItems: 'center' }}> {/* Optional wrapper for layout */}
+                               <CustomDatePicker
+                                   onDatesSelected={handleDatesUpdate} // Pass the handler function
+                                   initialStartDate={checkInDate}      // Pass the current state
+                                   initialEndDate={checkOutDate}        // Pass the current state
+                               />
+                         </div>
                     <select value={selectedProvider ?? ""} onChange={changeProvider}>
                 
                     <option value="" disabled>

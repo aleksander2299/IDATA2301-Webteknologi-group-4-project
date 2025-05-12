@@ -4,6 +4,7 @@ import {useNavigate, useSearchParams} from 'react-router-dom';
 import '../../styles/main.css';
 import './SearchPage.css';
 
+import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
 import HotelCard from "../../components/HotelCard/HotelCard.tsx";
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
@@ -18,6 +19,17 @@ interface Hotel {
 
 
 function SearchPage() {
+
+    // State to hold the dates selected by the picker
+    const [checkInDate, setCheckInDate] = useState<Date | null>(null);
+    const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
+
+        // Function to receive dates from the CustomDatePicker component
+    const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
+        console.log('HomePage received dates (for testing):', selected.startDate, selected.endDate);
+        setCheckInDate(selected.startDate);
+        setCheckOutDate(selected.endDate);
+    };
 
     {/* Fake Temporary data its set up differently since it will display every hotelcard it gets, so its not every hotel */
     }
@@ -118,7 +130,14 @@ function SearchPage() {
                             <label htmlFor="number">Number of rooms</label>
                             <input type="number" name="number" id="number" min="1"/>
                         </form>
-
+                        {/* Place the date picker component here */}
+                        <div style={{ display: 'flex', alignItems: 'center' }}> {/* Optional wrapper for layout */}
+                             <CustomDatePicker
+                                 onDatesSelected={handleDatesUpdate} // Pass the handler function
+                                 initialStartDate={checkInDate}      // Pass the current state
+                                 initialEndDate={checkOutDate}        // Pass the current state
+                            />
+                        </div>
                         {/* Search Button */}
                         <button className="search-btn active">Search</button>
                     </div>
