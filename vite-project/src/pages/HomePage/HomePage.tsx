@@ -25,9 +25,9 @@ function HomePage() {
 
     // Function to receive dates from the CustomDatePicker component
     const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
-    console.log('HomePage received dates (for testing):', selected.startDate, selected.endDate);
-    setCheckInDate(selected.startDate);
-    setCheckOutDate(selected.endDate);
+        console.log('HomePage received dates (for testing):', selected.startDate, selected.endDate);
+        setCheckInDate(selected.startDate);
+        setCheckOutDate(selected.endDate);
     };
 
         {/* Using string | null since the user does not need to set a date
