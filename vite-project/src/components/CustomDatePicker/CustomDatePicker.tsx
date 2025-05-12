@@ -9,7 +9,7 @@ import DatePicker from 'react-datepicker';
 
 // Styles for react-datepicker's calendar
 import 'react-datepicker/dist/react-datepicker.css';
-import './IconRangePickerButton.css';
+
 
 const CalendarIcon = () => (
   <svg
