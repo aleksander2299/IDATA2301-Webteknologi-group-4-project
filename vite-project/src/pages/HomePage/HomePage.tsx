@@ -23,9 +23,16 @@ function HomePage() {
     const [checkInDate, setCheckInDate] = useState<Date | null>(null);
     const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
 
+    function formatDateForURL(date: Date | null): string | null {
+        if (!date) return null;
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
     // Function to receive dates from the CustomDatePicker component
     const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
-        console.log('HomePage received dates (for testing):', selected.startDate, selected.endDate);
         setCheckInDate(selected.startDate);
         setCheckOutDate(selected.endDate);
     };
@@ -82,7 +89,7 @@ function HomePage() {
                 <button className={homePageStyle.buttons1}>Search for hotel or location!</button>
                 <button className={homePageStyle.buttons1}>Room type?</button>
                 {/* Temporary buttons to test */}
-                <button onClick={() => Search(null, null, '2024-10-03', '2024-10-09')} className={homePageStyle.buttons2}>How many?</button>
+                <button className={homePageStyle.buttons2}>How many?</button>
                 {/* Place the date picker component here */}
                                  <div style={{ display: 'flex', alignItems: 'center' }}> {/* Optional wrapper for layout */}
                                      <CustomDatePicker
@@ -91,7 +98,12 @@ function HomePage() {
                                          initialEndDate={checkOutDate}        // Pass the current state
                                      />
                                  </div>
-                <button onClick={() => Search(null, null, '2024-10-01', '2024-10-07')} className={homePageStyle.buttons3} >Search</button>
+                <button onClick={() => {
+                                    const fromDateString = formatDateForURL(checkInDate);
+                                    const toDateString = formatDateForURL(checkOutDate);
+                                    Search(null, null, fromDateString, toDateString);
+                    }}
+                     className={homePageStyle.buttons3} >Search</button>
               </div>
             </div>
           </section>
