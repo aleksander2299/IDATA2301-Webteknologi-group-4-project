@@ -54,7 +54,8 @@ function SearchPage() {
         },
     ]);
 
-    const [searchParams] = useSearchParams();
+    // Needs to be destructured to be able to be changed
+    const [searchParams, setSearchParams] = useSearchParams();
 
     // Changed to allow null as well
     const [hotelName, setHotelName] = useState<string | null>(() => searchParams.get('hotelName'));
