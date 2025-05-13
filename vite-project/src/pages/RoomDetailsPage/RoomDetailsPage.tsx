@@ -11,6 +11,24 @@ import Header from '../../components/layout/Header.tsx';
 
 import roomImg from '../../Images/room image placeholder.jpg';
 
+    // Being reused for now however is the same between pages that need it
+    function formatDateForURL(date: Date | null): string | null {
+        if (!date) return null;
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    function parseURLDate(dateString: string | null): Date | null {
+        // Copied from internet, just tests if the URL date is an actual date following ISO standards
+        if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return null;
+        const date = new Date(dateString);
+        // getTime returns NaN if the time is invalid
+        if (isNaN(date.getTime())) return null;
+        return date;
+    }
+
 {/* Interface with all datatypes to be taken from database */}
 interface RoomDetailsDummy {
   id: string;
@@ -73,21 +91,15 @@ function RoomDetailsPage () {
         const [checkInDate, setCheckInDate] = useState<Date | null>(null);
         const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
 
-            // Function to receive dates from the CustomDatePicker component
-        const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
-            console.log('HomePage received dates (for testing):', selected.startDate, selected.endDate);
-            setCheckInDate(selected.startDate);
-            setCheckOutDate(selected.endDate);
-        };
-
     {/* Id is based on url so it needs to be tested since it can still be null or undefined */}
     const { id } = useParams<{ id: string }>();
     const numericId = id ? parseInt(id, 10) : null;
-    const [searchParams] = useSearchParams();
+    // Needs to be decoupled
+    const [searchParams , setSearchParams] = useSearchParams();
     const token = localStorage.getItem('token');
 
-    const [fromDate, setFromDate] = useState<string | null>(() => searchParams.get('from'));
-    const [toDate, setToDate] = useState<string | null>(() => searchParams.get('to'));
+    const [fromDate, setFromDate] = useState<string | null>(() => parseURLDate(searchParams.get('from')));
+    const [toDate, setToDate] = useState<string | null>(() => parseURLDate(searchParams.get('to')));
     const [roomProviders,setProviders] = useState<RoomProvider[]>([]);
     const [selectedProvider, setSelectedProvider] = useState<number | null>(null);
 
@@ -98,9 +110,17 @@ function RoomDetailsPage () {
 
     {/* Never have any early returns before useEffect */}
     useEffect(() => {
+
         console.log(`Fetching Details for hotel id: ${id}`);
         setIsLoading(true); // Start loading
         setError(null);     // Clear previous errors
+
+        const fromParam = parseURLDate(searchParams.get('from'));
+        const toParam = parseURLDate(searchParams.get('to'));
+
+        // Set initial values to datepicker
+        setCheckInDate(fromParam);
+        setCheckOutDate(toParam);
 
         {/* Ensure id exists and is not null */}
         if (!id) {
@@ -136,7 +156,30 @@ function RoomDetailsPage () {
 
 
 
-    }, [id, fromDate, toDate]);
+    }, [ searchParams ]);
+
+// Used to update DatePicker on this page based on searchParams
+    const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
+            setCheckInDate(selected.startDate);
+            setCheckOutDate(selected.endDate);
+
+            const currentParams = new URLSearchParams(searchParams.toString());
+            const formattedStart = formatDateForURL(selected.startDate);
+            const formattedEnd = formatDateForURL(selected.endDate);
+
+            if (formattedStart) {
+                currentParams.set('from', formattedStart);
+            } else {
+                currentParams.delete('from');
+            }
+            if (formattedEnd) {
+                currentParams.set('to', formattedEnd);
+            } else {
+                currentParams.delete('to');
+            }
+            // Update URL. The useEffect will then react to this change.
+            setSearchParams(currentParams, { replace: true }); // Using replace to avoid too many history entries
+        };
 
     function changeProvider(e : React.ChangeEvent<HTMLSelectElement>){
         setSelectedProvider(parseInt(e.target.value))
