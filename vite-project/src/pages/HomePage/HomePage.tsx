@@ -23,7 +23,7 @@ function HomePage() {
     const [checkInDate, setCheckInDate] = useState<Date | null>(null);
     const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
 
-    function formatDateForSearch(date: Date | null): string | null {
+    function formatDateForURL(date: Date | null): string | null {
         if (!date) return null;
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -99,8 +99,8 @@ function HomePage() {
                                      />
                                  </div>
                 <button onClick={() => {
-                                    const fromDateString = formatDateForSearch(checkInDate);
-                                    const toDateString = formatDateForSearch(checkOutDate);
+                                    const fromDateString = formatDateForURL(checkInDate);
+                                    const toDateString = formatDateForURL(checkOutDate);
                                     Search(null, null, fromDateString, toDateString);
                     }}
                      className={homePageStyle.buttons3} >Search</button>

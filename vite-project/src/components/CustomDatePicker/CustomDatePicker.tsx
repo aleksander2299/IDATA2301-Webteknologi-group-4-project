@@ -4,7 +4,7 @@
  and from a guide https://refine.dev/blog/react-date-picker/
  */
 
-import React, { useState, forwardRef } from 'react';
+import React, { useState, forwardRef, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 
 // Styles for react-datepicker's calendar
@@ -90,9 +90,7 @@ const CustomButton = forwardRef<HTMLDivElement, CustomButtonProps>(
 interface CustomDatePickerProps {
   /** Callback function invoked when a date range is selected */
   onDatesSelected: (selected: { startDate: Date | null; endDate: Date | null }) => void;
-  /** Optional initial start date */
   initialStartDate?: Date | null;
-  /** Optional initial end date */
   initialEndDate?: Date | null;
   className?: string;
 }
@@ -105,12 +103,21 @@ interface CustomDatePickerProps {
  */
 const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
   onDatesSelected,
-  initialStartDate = null,
-  initialEndDate = null,
+  initialStartDate,
+  initialEndDate,
   className,
 }) => {
   const [startDate, setStartDate] = useState<Date | null>(initialStartDate);
   const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
+
+  useEffect(() => {
+    if (initialStartDate !== startDate) {
+        setStartDate(initialStartDate || null);
+    }
+    if (initialEndDate !== endDate) {
+        setEndDate(initialEndDate || null);
+    }
+  }, [initialStartDate, initialEndDate, startDate, endDate]);
 
   const handleDateChange = (dates: [Date | null, Date | null] | Date | null) => {
     let newStart: Date | null = null;
