@@ -59,6 +59,12 @@ function Header() {
             <b>Favourites</b>
           </button>
           </Link>
+          { /* settings page */ }
+          <Link to="/settings">
+          <button className="home-buttons right-button">
+            <b>Settings</b>
+          </button>
+          </Link>
           </>
         )
         }
