@@ -1,4 +1,4 @@
-import React , { useState} from 'react'
+import { useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import '../../styles/main.css';
@@ -44,38 +44,39 @@ function HomePage() {
     // This function is called BY SearchBar when its search button is clicked
     const handleSearch = (criteria: SearchCriteria) => {
         /* Since fromDate and toDate, can now be null the need to be formatted and tested */
-    }
-    console.log('HomePage received search criteria:', criteria);
 
-    const formattedFrom = formatDateForURL(criteria.startDate);
-    const formattedTo = formatDateForURL(criteria.endDate);
+        console.log('HomePage received search criteria:', criteria);
 
-    let url = `/search`;
-    const queryParams: string[] = [];
+        const formattedFrom = formatDateForURL(criteria.startDate);
+        const formattedTo = formatDateForURL(criteria.endDate);
 
-    {/* Using encodeURIComponent() since it can encode & which allows multiple parameters in a query */
-    }
-    if (criteria.searchTerm) {
-        queryParams.push(`hotelName=${encodeURIComponent(criteria.searchTerm)}`)
+        let url = `/search`;
+        const queryParams: string[] = [];
+
+        {/* Using encodeURIComponent() since it can encode & which allows multiple parameters in a query */
+        }
+        if (criteria.searchTerm) {
+            queryParams.push(`hotelName=${encodeURIComponent(criteria.searchTerm)}`)
+        }
+
+        if (criteria.roomType && criteria.roomType !== 'any') {
+            queryParams.push(`roomType=${encodeURIComponent(criteria.roomType)}`);
+        }
+
+        if (formattedFrom) {
+            queryParams.push(`from=${encodeURIComponent(formattedFrom)}`)
+        }
+
+        if (formattedTo) {
+            queryParams.push(`to=${encodeURIComponent(formattedTo)}`)
+        }
+
+        if (queryParams.length > 0) {
+            url += `?${queryParams.join('&')}`;
+        }
+        navigate(url);
     }
 
-    if (criteria.roomType && criteria.roomType !== 'any') {
-        queryParams.push(`roomType=${encodeURIComponent(criteria.roomType)}`);
-    }
-
-    if (formattedFrom) {
-        queryParams.push(`from=${encodeURIComponent(formattedFrom)}`)
-    }
-
-    if (formattedTo) {
-        queryParams.push(`to=${encodeURIComponent(formattedTo)}`)
-    }
-
-    if (queryParams.length > 0) {
-        url += `?${queryParams.join('&')}`;
-    }
-    navigate(url);
-}
 
         // TEMPORARY TO SEE IF YOU ARE LOGGED IN.
         const username = localStorage.getItem('username');
@@ -93,15 +94,15 @@ function HomePage() {
           </section>
   
           <section className={homePageStyle.container} style={{ marginTop: '20px' }}>
-              <ResponsiveSearchBar
+              <SearchBar
                   onSearch={handleSearch}
                   initialSearchTerm={initialSearchTerm}
-                  initialStartDate={initialCheckIn}
-                  initialEndDate={initialCheckOut}
+                  initialStartDate={checkInDate}
+                  initialEndDate={checkOutDate}
                   initialRoomType={initialRoomType}
                   // className={homePageStyle.customSearchBarOnHomepage} // Optional for homepage specific tweaks
               >
-              </ResponsiveSearchBar>
+              </SearchBar>
           </section>
   
           <section className={homePageStyle["popular-section"]} style={{ marginTop: '20px' }}>
@@ -109,26 +110,46 @@ function HomePage() {
               <div className={homePageStyle["popular-title"]}>Popular places to visit!</div>
             </div>
 
-              {/**
+
             <div className={homePageStyle["recommend-container"]}>
-              <button onClick={() => Search(null, "Ålesund", null, null)} className={homePageStyle.recommendbox}>
+              <button onClick={() => handleSearch({
+                  searchTerm: "Ålesund",
+                  startDate: checkInDate,
+                  endDate: checkOutDate,
+                  roomType: 'any'
+              })} className={homePageStyle.recommendbox}>
                 <img src={aalesundImg} alt="Ålesund" />
                 <div className={homePageStyle.placebox}>Ålesund</div>
               </button>
-              <button onClick={() => Search(null, "Oslo", null, null)} className={homePageStyle.recommendbox}>
+              <button onClick={() => handleSearch({
+                  searchTerm: "Oslo",
+                  startDate: checkInDate,
+                  endDate: checkOutDate,
+                  roomType: 'any'
+              })} className={homePageStyle.recommendbox}>
                 <img src={osloImg} alt="Oslo" />
                 <div className={homePageStyle.placebox}>Oslo</div>
               </button>
-              <button onClick={() => Search(null, "Bergen", null, null)} className={homePageStyle.recommendbox}>
+              <button onClick={() => handleSearch({
+                  searchTerm: "Bergen",
+                  startDate: checkInDate,
+                  endDate: checkOutDate,
+                  roomType: 'any'
+              })} className={homePageStyle.recommendbox}>
                 <img src={bergenImg} alt="Bergen" />
                 <div className={homePageStyle.placebox}>Bergen</div>
               </button>
-              <button onClick={() => Search(null, "Amsterdam", null, null)} className={homePageStyle.recommendbox}>
+              <button onClick={() => handleSearch({
+                  searchTerm: "Amsterdam",
+                  startDate: checkInDate,
+                  endDate: checkOutDate,
+                  roomType: 'any'
+              })} className={homePageStyle.recommendbox}>
                 <img src={amsterdamImg} alt="Amsterdam" />
                 <div className={homePageStyle.placebox}>Amsterdam</div>
               </button>
             </div>
-               */}
+
           </section>
         </main>
         <Footer />
