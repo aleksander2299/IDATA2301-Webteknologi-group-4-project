@@ -1,16 +1,15 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import axios from 'axios'
 
 import '../../styles/main.css';
 import './RoomDetailsPage.css';
 
+import ConfirmationBox from '../../components/ConfirmationBox/ConfirmationBox.tsx';
 import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
 import Footer from '../../components/layout/Footer.jsx';
 import Header from '../../components/layout/Header.tsx';
 
-import roomImg from '../../Images/room image placeholder.jpg';
-import { stringify } from 'querystring';
 
     // Being reused for now however is the same between pages that need it
     function formatDateForURL(date: Date | null): string | null {
@@ -72,6 +71,7 @@ interface RoomProvider {
   }
 
 
+
 {/* Fake temporary data */}
 const ALL_HOTEL_DETAILS: Record<string, RoomDetailsDummy> = {
     '1': { id: '1', name: 'Hotel 1 - Grand View', location: 'Location 1', description: 'This Room has a nice view and premium amenities.',
@@ -89,8 +89,11 @@ const ALL_HOTEL_DETAILS: Record<string, RoomDetailsDummy> = {
 function RoomDetailsPage () {
     
     // State to hold the dates selected by the picker
-        const [checkInDate, setCheckInDate] = useState<Date | null>(null);
-        const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
+    const [checkInDate, setCheckInDate] = useState<Date | null>(null);
+    const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
+
+    // State to set visibility of confirmation box
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     {/* Id is based on url so it needs to be tested since it can still be null or undefined */}
     const { id } = useParams<{ id: string }>();
@@ -195,6 +198,8 @@ function RoomDetailsPage () {
             checkOutDate: toDate ?? "", 
         };
 
+    
+
 
         axios.post(`http://localhost:8080/api/booking/withIds/${selectedProvider}/${localStorage.getItem('username')}`,booking,
         {
@@ -215,6 +220,11 @@ function RoomDetailsPage () {
         console.log(token + " TOKEN HERE ")
     });
             
+    }
+
+    function handleBookingConfirmed() {
+        setShowConfirmation(false); // Closes the confirmation box
+        bookRoom();                 // runs bookRoom function
     }
     
 
@@ -266,7 +276,9 @@ function RoomDetailsPage () {
                     )    
                 }
                 </select>
-                <button onClick={bookRoom}>Book room</button>
+                
+                <button onClick={() => setShowConfirmation(true)}>Book room</button>
+                {/* <button onClick={bookRoom}>Book room</button> */} 
                 </section>
             </section>
             <section className="content-container">
@@ -281,8 +293,7 @@ function RoomDetailsPage () {
                         <h2 className="bigwhitetext">Room Specifications</h2>
                         <p className="smallwhitetext">
                             Room type: {roomDetails.roomType}<br />
-                          
-                           {/* 
+                        {/* 
                             Check-in: {roomDetails.checkIn}<br />
                             Check-out: {roomDetails.checkOut}<br />
                             Bed type: {roomDetails.bedType}<br />
@@ -294,7 +305,14 @@ function RoomDetailsPage () {
                         </p>
                     </div>
                 </div>
-            </section><Footer />
+            </section>
+            {showConfirmation && (
+                <ConfirmationBox
+                    onConfirm={handleBookingConfirmed}
+                    onCancel={() => setShowConfirmation(false)}
+                />
+)}
+            <Footer />
         </div>
     );
 
