@@ -1,13 +1,15 @@
 import './SettingsPage.css';
-
+import Footer from '../../components/layout/Footer.tsx';
+import Header from '../../components/layout/Header.tsx';
 
 function SettingsPage(){
 return(
 
-<div>
-    <header>
-        <div className="settings"><b>Settings</b></div>
-    </header>
+<div className = "settingsWrapper">
+    
+    <Header>
+        
+    </Header>
     <div className="settingscontainer">
     <section id="userDetails">
         <h2>user details:</h2>
@@ -26,13 +28,17 @@ return(
         <input type="password" value="password" id="confirmpass" />
         <button className="btn change-btn">change password</button>
     </section>
-</div>
 
+</div>
 <div className="deleteButton">
     <button id="deletebtn">
         Delete Account
     </button>
-</div>
+    </div>
+
+<Footer>
+
+</Footer>
 </div>
 
 );
