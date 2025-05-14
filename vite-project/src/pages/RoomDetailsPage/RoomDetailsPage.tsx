@@ -191,8 +191,8 @@ function RoomDetailsPage () {
     function bookRoom(){
 
         const booking: Booking = {
-            checkInDate: fromDate ?? "",
-            checkOutDate: toDate ?? "", 
+            checkInDate: checkInDate ? checkInDate.toISOString() : "",  
+            checkOutDate: checkOutDate ? checkOutDate.toISOString() : "",
         };
 
 
@@ -204,16 +204,17 @@ function RoomDetailsPage () {
         })
         .then((Response) => 
             {
-                console.log(localStorage.getItem("token"))
-             
-    
-           
+
+                console.log(JSON.stringify(Response.data)) 
         }
-    ).catch((error) => 
-    {
-        console.error(error.data)
-        console.log(token + " TOKEN HERE ")
-    });
+    ).catch((error) => {
+        if (error.response) {
+          console.error("Status:", error.response.status); 
+          console.error("Data:", error.response.data); 
+        } else {
+          console.error("General Error:", error.message);
+        }
+      });
             
     }
     

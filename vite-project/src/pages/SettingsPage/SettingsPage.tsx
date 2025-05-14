@@ -5,28 +5,27 @@ import Header from '../../components/layout/Header.tsx';
 function SettingsPage(){
 return(
 
-<div className = "settingsWrapper">
     
-    <Header>
-        
-    </Header>
+
+<div className = "settingsWrapper">
+    <Header/>
     <div className="settingscontainer">
     <section id="userDetails">
-        <h2>user details:</h2>
+        <h2 className='h2'>user details:</h2>
         <label>Username:</label>
         <input type="text" value="username42" disabled />
         <label>Password:</label>
         <input type="password" value="password" id="password" />
-        <button className="btn show-btn">show password</button>
+        <button>show password</button>
     
     </section>
     <section id="changePassword" >
-        <h2>change password ?</h2>
+        <h2 className='h2'>change password ?</h2>
         <label>Change password:</label>
         <input type="password" value="password" disabled id="changepass" />
         <label>Confirm password:</label>
         <input type="password" value="password" id="confirmpass" />
-        <button className="btn change-btn">change password</button>
+        <button>change password</button>
     </section>
 
 </div>
@@ -35,11 +34,10 @@ return(
         Delete Account
     </button>
     </div>
-
-<Footer>
-
-</Footer>
+    <Footer/>
 </div>
+
+
 
 );
 }

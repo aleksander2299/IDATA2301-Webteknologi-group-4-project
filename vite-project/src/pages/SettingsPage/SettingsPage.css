@@ -12,26 +12,75 @@
 }
 
 
-
-
-
-.section {
+.settingscontainer{
+    display: flex;
+    flex-direction: column; 
     flex: 1;
-    padding: 2rem;
-    padding-left: 5rem;
-    padding-right: 5rem;
-    background: radial-gradient(circle, rgb(60, 58, 58), rgb(90, 88, 88)) !important;
-    border-radius: 0.9rem;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-    margin: 5rem;
+    
 }
 
 
+#userDetails{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-left: 10rem;
+    padding-right: 10rem;
+    align-items: center;
+    
+   
+}
+
+#userDetails button{
+    margin-left: 1rem;
+    padding: 0.2rem 0.2rem;
+    background: #f624b0; 
+    font-size: 1.0rem;
+    white-space: nowrap;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    
+   
+}
+
+#userDetails input, #userDetails label,#changePassword input, #changePassword label{
+    font-size: 1.0rem;
+    padding-left: 1.0rem;
+
+}
+
+#changePassword{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+}
+
+#changePassword button{
+    margin-left: 1rem;
+    padding: 0.2rem 0.2rem;
+    background: #080bd1; 
+    font-size: 1.0rem;
+    white-space: nowrap;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
 .h2 {
     text-transform: capitalize;
-    font-size: 1.7rem;
-    border-bottom: 2px solid white;
+    font-size: 1.4rem;
     padding-bottom: 5px;
+    white-space: nowrap;
+}
+
+.section{
+    flex: 1;
 }
 
 
@@ -48,18 +97,6 @@
     border: none;
     border-radius: 5px;
     background: #f5f5f5;
-}
-
-.button {
-    margin-top: 0.8rem;
-    padding: 0.8rem 1.1rem;
-    background: #d500f9; 
-    font-size: 1.2rem;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
 }
 
 
@@ -94,6 +131,9 @@
         grid-template-columns: repeat(1,1fr);
         width: 70%;
     }
+    .section{
+        flex-direction: column;
+    }
    
 }
     
@@ -103,6 +143,9 @@
         .settingscontainer {
             width: auto;
            
+        }
+        .section{
+            flex-direction: column;
         }
  }
 
@@ -114,5 +157,6 @@
           width: 70%;
           grid-template-columns: repeat(1,1fr);
           
-        }   
+        }  
+         
       }
