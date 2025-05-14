@@ -8,16 +8,12 @@ import CrossIcon from '../../assets/crossIcon.svg?react';
 
 function Header() {
   const [role, setRole] = useState<string | null>(null);
-  const [username, setUsername] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const storedRole = localStorage.getItem('role');
     setRole(storedRole);
     console.log(storedRole);
-    const storedUsername = localStorage.getItem('username');
-    setUsername(storedUsername);
-    console.log(storedUsername);
   }, []);
   
   const navigate = useNavigate();
@@ -53,7 +49,7 @@ function Header() {
       {/* Container for buttons on the right */}
       <div className="right-buttons" style={{ display: 'flex', justifyContent: 'flex-end' }}>
         {role && (
-          <b className="header-text">Hello {username}</b>
+          <b className="header-text">Hello {localStorage.getItem('username')}</b>
         )}
         {role == 'ROLE_USER' && (
           <>

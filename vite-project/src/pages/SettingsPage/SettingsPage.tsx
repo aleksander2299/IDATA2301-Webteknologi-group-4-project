@@ -15,9 +15,9 @@ function SettingsPage(){
             <section id="userDetails">
                 <h2 className="h2">user details:</h2>
                 <label className="label">Username:</label>
-                <input className="input" type="text" defaultValue="username123"/>
+                <input className="input" type="text" value={localStorage.getItem('username')} disabled/>
                 <label className="label">Password:</label>
-                <input className="input" type={showPassword ? 'text' : 'password'} value="password" id="password" />
+                <input className="input" type={showPassword ? 'text' : 'password'} value={localStorage.getItem('password')} id="password" disabled />
                 <button type="button" onClick={() => setShowPassword(prev => !prev)}>
                 {showPassword ? 'Hide Password' : 'Show Password'}
                 </button>

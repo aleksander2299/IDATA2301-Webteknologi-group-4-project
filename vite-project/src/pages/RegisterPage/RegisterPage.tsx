@@ -32,6 +32,7 @@ function RegisterPage() {
   
           localStorage.setItem('token', token);
           localStorage.setItem('username',username);
+          localStorage.setItem('password', password);
           if (role) {
             localStorage.setItem('role', role);
           }
