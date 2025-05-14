@@ -2,16 +2,22 @@ import { useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import '../../styles/main.css';
+// @ts-ignore
 import homePageStyle from './HomePage.module.css';
 
 import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 
+// @ts-ignore
 import amsterdamImg from '../../Images/Amsterdam placeholder.jpg';
+// @ts-ignore
 import bergenImg from '../../Images/Bergen placeholder.jpg';
+// @ts-ignore
 import mainRoomImg from '../../Images/main page room placeholder.jpg';
+// @ts-ignore
 import osloImg from '../../Images/Oslo placeholder.jpg';
+// @ts-ignore
 import aalesundImg from '../../Images/Ålesund placeholder.jpg';
 
 

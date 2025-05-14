@@ -1,5 +1,5 @@
-import { useState, SyntheticEvent, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
+//import PropTypes from 'prop-types';
 
 // Import the specific CSS for this component
 import './HotelCard.css';
@@ -10,7 +10,7 @@ interface HotelCardProps {
     id: string; // Only part of the prop that is not optional
     imageUrl?: string;
     imageAlt?: string;
-    tile?: string;
+    title?: string;
     description?: string;
     children?: React.ReactNode,
 }
@@ -34,7 +34,7 @@ function HotelCard({
         setHasImageError(false);
     }, [imageUrl]);
 
-    const handleImageError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
+    const handleImageError = () => {
         if (!hasImageError) {
             {/* System to stop a infinite loop if default image does not work either */}
             setCurrentImageUrl(DEFAULT_IMAGE_URL);
