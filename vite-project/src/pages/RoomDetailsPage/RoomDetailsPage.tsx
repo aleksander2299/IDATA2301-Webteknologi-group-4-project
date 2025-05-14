@@ -10,6 +10,7 @@ import Footer from '../../components/layout/Footer.jsx';
 import Header from '../../components/layout/Header.tsx';
 
 import roomImg from '../../Images/room image placeholder.jpg';
+import { stringify } from 'querystring';
 
     // Being reused for now however is the same between pages that need it
     function formatDateForURL(date: Date | null): string | null {
@@ -50,7 +51,7 @@ interface RoomDetailsDummy {
 
 interface RoomDetails{
     id: string;
-    name: string;
+    roomName: string;
     description: string;
     roomType: string;
     imageUrl: string;
@@ -133,6 +134,7 @@ function RoomDetailsPage () {
         axios.get(`http://localhost:8080/api/rooms/${numericId}`)
           .then((response) => {
             setRoomDetails(response.data);
+            console.log(response.data)
           })
           .catch((err) => {
             console.error(err);
@@ -232,7 +234,7 @@ function RoomDetailsPage () {
         <div>
             <Header />
             <div className="content-container">
-                <h1 className="roomnametext">{roomDetails.name}</h1>
+                <h1 className="roomnametext">{roomDetails.roomName}</h1>
             </div>
             <section className="content-container">
                 <div className="image">

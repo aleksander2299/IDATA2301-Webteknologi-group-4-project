@@ -53,10 +53,16 @@ function Header() {
         )}
         {role == 'USER' && (
           <>
-          { /* favorites page */}
-          <Link to="/favorites">
+          { /* favourites page */}
+          <Link to="/favourites">
           <button className="home-buttons right-button">
-            <b>Favorites</b>
+            <b>Favourites</b>
+          </button>
+          </Link>
+          { /* settings page */ }
+          <Link to="/settings">
+          <button className="home-buttons right-button">
+            <b>Settings</b>
           </button>
           </Link>
           </>

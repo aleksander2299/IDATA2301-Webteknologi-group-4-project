@@ -10,6 +10,7 @@ import RoomDetailsPage from './pages/RoomDetailsPage/RoomDetailsPage.tsx';
 import SearchPage from './pages/SearchPage/SearchPage.tsx';
 import UserBookingsPage from './pages/UserBookingsPage/UserBookingsPage.tsx';
 import FavouritesPage from './pages/FavouritesPage/FavouritesPage.tsx';
+import SettingsPage from './pages/SettingsPage/SettingsPage.tsx';
 
 const router = createBrowserRouter ([
   { path: '/', element: <HomePage /> },
@@ -20,6 +21,7 @@ const router = createBrowserRouter ([
   { path: '/admin', element: <AdminPage />},
   { path: '/booking', element: <UserBookingsPage /> },
   { path: '/favourites', element: <FavouritesPage /> },
+  { path : '/settings', element: <SettingsPage/>}, 
 
 
 ]);
