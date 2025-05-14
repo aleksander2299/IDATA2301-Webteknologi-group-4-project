@@ -1,4 +1,5 @@
 import favRoomCardStyle from './FavouriteRoomCard.module.css'
+import '../../styles/main.css';
 
 import roomImg from '../../Images/room image placeholder.jpg';
 
