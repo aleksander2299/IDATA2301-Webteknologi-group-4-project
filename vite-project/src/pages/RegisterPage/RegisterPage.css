@@ -1,9 +1,3 @@
-  a{
-
-    color: rgb(27, 25, 25);
-  }
-
-
   .register{
     border-style: solid;
     border-radius: 1rem;
@@ -51,8 +45,8 @@
 
 .submit:hover {
   background-color: rgba(49, 49, 49, 0.85);
-    border-color: #fb4386;
-    color: rgb(251, 67, 134);
+  border-color: #fb4386;
+  color: rgb(251, 67, 134);
 }
 
 .register input {
@@ -96,9 +90,6 @@
     align-items: center;
     margin-top: 2rem;
   }
-
-
-
 
   @media (max-width: 1024px) {
     .form{

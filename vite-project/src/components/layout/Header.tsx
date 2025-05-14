@@ -51,7 +51,7 @@ function Header() {
         {role && (
           <b className="header-text">Hello {role}</b>
         )}
-        {role == 'USER' && (
+        {role == 'ROLE_USER' && (
           <>
           { /* favourites page */}
           <Link to="/favourites">
@@ -69,7 +69,7 @@ function Header() {
         )
         }
 
-        {role == 'ADMIN' && (
+        {role == 'ROLE_ADMIN' && (
           <>
           { /* Admin page */}
           <Link to="/admin">
@@ -81,7 +81,7 @@ function Header() {
         )
         }
 
-        {role == 'PROVIDER' && (
+        {role == 'ROLE_PROVIDER' && (
           <>
           <b>hello</b>
           </>
