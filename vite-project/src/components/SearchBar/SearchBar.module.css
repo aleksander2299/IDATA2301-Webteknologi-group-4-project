@@ -1,0 +1,26 @@
+
+.searchBarWrapper {
+    background-color: #333;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+
+@media (max-width: 767px) {
+    .mainSearchInputs {
+        flex-direction: column; /* Stack inputs vertically */
+        align-items: stretch; /* Make items take full width */
+    }
+
+    .inputGroup {
+        min-width: 100%; /* Full width on mobile */
+    }
+
+    .searchButton {
+        width: 100%; /* Full width button on mobile */
+        margin-top: 10px;
+    }
+}
