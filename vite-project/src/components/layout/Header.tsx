@@ -134,11 +134,59 @@ function Header() {
           {/* Dropdown menu */}
           {isDropdownOpen && (
             <div className="dropdown-menu" style={{ position: 'absolute', top: '100%', right: '0' }}>
-              <ul>
-                <li>Option 1</li>
-                <li>Option 2</li>
-                <li>Option 3</li>
-              </ul>
+          {role == 'ROLE_USER' && (
+          <>
+          { /* favourites page */}
+          <Link to="/favourites" className="dropdown-link">
+            Favourites
+          </Link>
+          { /* settings page */ }
+          <Link to="/settings" className="dropdown-link">
+            Settings
+          </Link>
+          </>
+        )
+        }
+        {role == 'ROLE_ADMIN' && (
+          <>
+          { /* Admin page */}
+          <Link to="/admin" className="dropdown-link">
+            Admin Page
+          </Link>
+          </>
+        )
+        }
+
+        {role == 'ROLE_PROVIDER' && (
+          <option>
+            hello
+          </option>
+        )
+        }
+
+        {!role && (
+          <>
+          { /* Log in button */ }
+          <Link to="/login" className="dropdown-link">
+              Log In
+          </Link>
+
+          {/* Sign up button */}
+          <Link to="/register" className="dropdown-link">
+              Sign Up
+          </Link>
+          </>
+        )}
+
+        {role && (
+          <>
+          {/* Log out button */}
+            <option className="dropdown-link" onClick={handleLogout}>
+              <b>Log Out</b>
+            </option>
+          </>
+        )
+        }
             </div>
           )}
         </div>
