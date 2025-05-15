@@ -1,27 +1,38 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import axios from 'axios'
 
 import '../../styles/main.css';
 import './RoomDetailsPage.css';
 
+import ConfirmationBox from '../../components/ConfirmationBox/ConfirmationBox.tsx';
 import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
 import Footer from '../../components/layout/Footer.jsx';
 import Header from '../../components/layout/Header.tsx';
+import { features } from 'process';
+import { Console } from 'console';
 
 import { parseURLDate} from "../../utils/navigationUtils.ts";
-
 import roomImg from '../../Images/room image placeholder.jpg';
 import { stringify } from 'querystring';
 
 
 
+
 interface RoomDetails{
-    id: string;
+    roomId: number;
     roomName: string;
     description: string;
     roomType: string;
     imageUrl: string;
+}
+
+interface Source{
+   sourceId: number;
+   sourceName:  string;
+   locationType: string;
+   city:  string;
+   country: string;
 }
 
 interface RoomProvider {
@@ -33,16 +44,38 @@ interface RoomProvider {
     };
   }
 
+  interface ExtraFeatures{
+    feature: string;
+  }
+
   interface Booking {
     checkInDate: string; 
     checkOutDate: string; 
   }
 
+
+{/* Fake temporary data */}
+const ALL_HOTEL_DETAILS: Record<string, RoomDetailsDummy> = {
+    '1': { id: '1', name: 'Hotel 1 - Grand View', location: 'Location 1', description: 'This Room has a nice view and premium amenities.',
+        imageUrl: '/images/hotel-room-1.jpg', roomType: 'Suite', bedType: 'King', roomCapacity: '2',
+        checkIn: '3:00 PM', checkOut: '11:00 AM', internet: 'Included', parking: 'Available', gym: 'Available', pets: 'No' },
+    '2': { id: '2', name: 'Hotel 2 - Ocean Breeze', location: 'Location 2', description: 'This Room has a nice oceanside view and relaxing atmosphere.',
+        imageUrl: '/images/hotel-room-2.jpg', roomType: 'Double', bedType: 'Queen', roomCapacity:'3', checkIn: '2:00 PM', checkOut: '12:00 PM',
+        internet: 'Included', parking: 'Available', gym: 'Not Available', pets: 'Yes' },
+};
+
+
+
+
+
 function RoomDetailsPage () {
     
     // State to hold the dates selected by the picker
-        const [checkInDate, setCheckInDate] = useState<Date | null>(null);
-        const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
+    const [checkInDate, setCheckInDate] = useState<Date | null>(null);
+    const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
+
+    // State to set visibility of confirmation box
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     {/* Id is based on url so it needs to be tested since it can still be null or undefined */}
     const { id } = useParams<{ id: string }>();
@@ -50,6 +83,9 @@ function RoomDetailsPage () {
     // Needs to be decoupled
     const [searchParams , setSearchParams] = useSearchParams();
     const token = localStorage.getItem('token');
+    const [Source, setSource] = useState<Source | null>(null);
+    const [ExtraFeatures,setExtraFeatures] = useState<ExtraFeatures[]>([]);
+    const [BookingDates, setBookingDates] = useState<[string, string ][]>([]);
 
     const [fromDate, setFromDate] = useState<string | null>(() => parseURLDate(searchParams.get('from')));
     const [toDate, setToDate] = useState<string | null>(() => parseURLDate(searchParams.get('to')));
@@ -86,14 +122,26 @@ function RoomDetailsPage () {
         axios.get(`http://localhost:8080/api/rooms/${numericId}`)
           .then((response) => {
             setRoomDetails(response.data);
-            console.log(response.data)
+            {/*console.log(response.data)*/}
           })
           .catch((err) => {
             console.error(err);
           });
-        
 
+          axios.get(`http://localhost:8080/api/rooms/${numericId}/source`)
+          .then((response) => {
+            setSource(response.data)
+          })
+          .catch((error) => {
+            if (error.response) {
+              console.error("Status:", error.response.status); 
+              console.error("Data:", error.response.data); 
+            } else {
+              console.error("General Error:", error.message);
+            }
+          });
 
+    
 
         axios.get(`http://localhost:8080/api/rooms/${numericId}/roomProviders`)
         .then((Response) => 
@@ -106,9 +154,6 @@ function RoomDetailsPage () {
         {
             console.error(error.data + " HERE IS THE ERROR FOR NUMERICID")
         });
-
-
-
 
     }, [ searchParams ]);
 
@@ -143,9 +188,11 @@ function RoomDetailsPage () {
     function bookRoom(){
 
         const booking: Booking = {
-            checkInDate: fromDate ?? "",
-            checkOutDate: toDate ?? "", 
+            checkInDate: checkInDate ? checkInDate.toISOString() : "",  
+            checkOutDate: checkOutDate ? checkOutDate.toISOString() : "",
         };
+
+    
 
 
         axios.post(`http://localhost:8080/api/booking/withIds/${selectedProvider}/${localStorage.getItem('username')}`,booking,
@@ -156,18 +203,77 @@ function RoomDetailsPage () {
         })
         .then((Response) => 
             {
-                console.log(localStorage.getItem("token"))
-             
-    
-           
+
+                console.log(JSON.stringify(Response.data)) 
         }
-    ).catch((error) => 
-    {
-        console.error(error.data)
-        console.log(token + " TOKEN HERE ")
-    });
+    ).catch((error) => {
+        if (error.response) {
+          console.error("Status:", error.response.status); 
+          console.error("Data:", error.response.data); 
+        } else {
+          console.error("General Error:", error.message);
+        }
+      });
             
     }
+
+    function handleBookingConfirmed() {
+        setShowConfirmation(false); // Closes the confirmation box
+        bookRoom();                 // runs bookRoom function
+    }
+
+
+    useEffect(() => {
+        if(roomDetails === null){
+            return
+        }
+        axios.get(`http://localhost:8080/api/rooms/2/dates`)
+        .then((response) => {
+            setBookingDates(response.data)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+      
+    },[roomDetails])
+
+    useEffect (() =>{
+
+        if(Source === null){
+            return 
+        }
+
+        axios.get(`http://localhost:8080/api/source_extra_features/extra_features/sourceFeatures/${Source?.sourceId}`)
+        .then((response) => {
+         {/* console.log(JSON.stringify(response.data) + " here is source extra features");
+          console.log(Source?.sourceId + "SOURCEID")
+          console.log("SOURCEID SHOULD BEHERERER")
+          console.log(JSON.stringify(response.data) + " stringify ") */}
+          setExtraFeatures(response.data);
+        })
+        .catch((error) => {
+          if (error.response) {
+            {/*console.error("Status:", error.response.status); 
+            console.error("Data:", error.response.data); 
+            console.log(JSON.stringify(Source) +" SOURCE ID ?????????")*/}
+          } else {
+            {/*console.error("General Error:", error.message);*/}
+          }
+        });
+
+
+    },[Source]);
+
+
+    useEffect(() => {
+        if(BookingDates.length === 0 )
+        {
+            return
+        }
+        /* TODO ADD THAT BOOKINGDATES ARRAY IS ADDED TO LIST OF DISABLED DATES */
+
+
+    },[BookingDates])
     
 
 
@@ -186,7 +292,7 @@ function RoomDetailsPage () {
         <div>
             <Header />
             <div className="content-container">
-                <h1 className="roomnametext">{roomDetails.roomName}</h1>
+                <h1 className="roomnametext">{roomDetails.roomName + " at " + Source?.sourceName +", " + Source?.country}</h1>
             </div>
             <section className="content-container">
                 <div className="image">
@@ -218,7 +324,9 @@ function RoomDetailsPage () {
                     )    
                 }
                 </select>
-                <button onClick={bookRoom}>Book room</button>
+                
+                <button onClick={() => setShowConfirmation(true)}>Book room</button>
+                {/* <button onClick={bookRoom}>Book room</button> */} 
                 </section>
             </section>
             <section className="content-container">
@@ -231,12 +339,24 @@ function RoomDetailsPage () {
                     </div>
                     <div className="site-specification">
                         <h2 className="bigwhitetext">Room Specifications</h2>
-                        <p className="smallwhitetext">
+                        <div className="smallwhitetext">
                             Room type: {roomDetails.roomType}<br />
-                        </p>
+                            <p>Amenities :</p> 
+                            <ul>
+                                < li>{feature.feature}</li>))}
+                                 {ExtraFeatures.map((feature) => (
+                               </ul>
+                        </div>
                     </div>
                 </div>
-            </section><Footer />
+            </section>
+            {showConfirmation && (
+                <ConfirmationBox
+                    onConfirm={handleBookingConfirmed}
+                    onCancel={() => setShowConfirmation(false)}
+                />
+)}
+            <Footer />
         </div>
     );
 

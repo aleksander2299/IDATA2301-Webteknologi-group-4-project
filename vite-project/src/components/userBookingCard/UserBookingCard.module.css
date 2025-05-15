@@ -4,21 +4,25 @@
     overflow: hidden;
     border: dashed 1px lightgrey;
     border-radius: 1rem;
-    width: 30rem;
-    height: 25rem;
+    width: 20rem;
+    height: 20rem;
     position: relative;
+}
+
+.favourite_card > a {
+    width: 100%;
+    height: 100%;
 }
 
 .favourite_card img {
     width: 100%;
     height: 100%;
-    max-height: 20rem;
-    object-fit: cover;
+    object-fit: fill;
 }
 
 .favourite_card > button {
     position: absolute;
-    bottom: 2rem;
+    bottom: 0;
     left: 0;
     width: 100%;
     height: 4rem;

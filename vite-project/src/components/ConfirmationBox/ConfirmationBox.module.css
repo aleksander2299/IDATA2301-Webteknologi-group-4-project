@@ -1,0 +1,60 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modalContent {
+    background-color: #1e1e1e;
+    padding: 2rem;
+    border-radius: 10px;
+    z-index: 10000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    min-width: 300px;
+    max-width: 90%;
+    border: solid 2px rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+}
+
+.confirmationBoxContainer {
+    color: white;
+    text-align: center;
+}
+
+.h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1em;
+}
+
+.h2 {
+    font-size: 1rem;
+}
+
+.buttonRow {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1em 0;
+}
+
+.button {
+    padding: 0.5em 1.2em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #fb4386;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: rgb(251, 67, 134);
+}
