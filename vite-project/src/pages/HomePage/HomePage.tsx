@@ -56,7 +56,7 @@ function HomePage() {
         {/* Using encodeURIComponent() since it can encode & which allows multiple parameters in a query */
         }
         if (criteria.searchTerm) {
-            queryParams.push(criteria.searchTerm);
+            queryParams.push(`location=${encodeURIComponent(criteria.searchTerm)}`);
         }
         if (criteria.roomType && criteria.roomType !== 'any') {
             queryParams.push(`roomType=${encodeURIComponent(criteria.roomType)}`);
