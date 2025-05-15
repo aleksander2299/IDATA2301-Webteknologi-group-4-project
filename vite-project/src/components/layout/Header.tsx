@@ -71,7 +71,7 @@ function Header() {
 
         {role == 'ROLE_ADMIN' && (
           <>
-          { /* Admin page */}
+          { /* Admin page */ }
           <Link to="/admin">
           <button className="home-buttons right-button">
             <b>Admin Page</b>
@@ -83,7 +83,12 @@ function Header() {
 
         {role == 'ROLE_PROVIDER' && (
           <>
-          <b>hello</b>
+          { /* Provider page */ }
+          <Link to="/provider">
+            <button className="home-buttons right-button">
+              <b>Provider Page</b>
+            </button>
+          </Link>
           </>
         )
         }
@@ -158,9 +163,12 @@ function Header() {
         }
 
         {role == 'ROLE_PROVIDER' && (
-          <option>
-            hello
-          </option>
+          <>
+            { /* Provider page */ }
+            <Link to="/provider" className="dropdown-link">
+              Provider Page
+            </Link>
+          </>
         )
         }
 
