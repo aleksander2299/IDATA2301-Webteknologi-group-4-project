@@ -9,6 +9,8 @@ import ConfirmationBox from '../../components/ConfirmationBox/ConfirmationBox.ts
 import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
 import Footer from '../../components/layout/Footer.jsx';
 import Header from '../../components/layout/Header.tsx';
+import { features } from 'process';
+import { Console } from 'console';
 
 
     // Being reused for now however is the same between pages that need it
@@ -49,11 +51,19 @@ interface RoomDetailsDummy {
 
 
 interface RoomDetails{
-    id: string;
+    roomId: number;
     roomName: string;
     description: string;
     roomType: string;
     imageUrl: string;
+}
+
+interface Source{
+   sourceId: number;
+   sourceName:  string;
+   locationType: string;
+   city:  string;
+   country: string;
 }
 
 interface RoomProvider {
@@ -63,6 +73,10 @@ interface RoomProvider {
       providerId: number;
       providerName: string;
     };
+  }
+
+  interface ExtraFeatures{
+    feature: string;
   }
 
   interface Booking {
@@ -101,6 +115,9 @@ function RoomDetailsPage () {
     // Needs to be decoupled
     const [searchParams , setSearchParams] = useSearchParams();
     const token = localStorage.getItem('token');
+    const [Source, setSource] = useState<Source | null>(null);
+    const [ExtraFeatures,setExtraFeatures] = useState<ExtraFeatures[]>([]);
+    const [BookingDates, setBookingDates] = useState<[string, string ][]>([]);
 
     const [fromDate, setFromDate] = useState<string | null>(() => parseURLDate(searchParams.get('from')));
     const [toDate, setToDate] = useState<string | null>(() => parseURLDate(searchParams.get('to')));
@@ -137,14 +154,31 @@ function RoomDetailsPage () {
         axios.get(`http://localhost:8080/api/rooms/${numericId}`)
           .then((response) => {
             setRoomDetails(response.data);
-            console.log(response.data)
+            {/*console.log(response.data)*/}
           })
           .catch((err) => {
             console.error(err);
           });
+
+
+          axios.get(`http://localhost:8080/api/rooms`)
         
 
 
+          axios.get(`http://localhost:8080/api/rooms/${numericId}/source`)
+          .then((response) => {
+            setSource(response.data)
+          })
+          .catch((error) => {
+            if (error.response) {
+              console.error("Status:", error.response.status); 
+              console.error("Data:", error.response.data); 
+            } else {
+              console.error("General Error:", error.message);
+            }
+          });
+
+    
 
         axios.get(`http://localhost:8080/api/rooms/${numericId}/roomProviders`)
         .then((Response) => 
@@ -157,9 +191,6 @@ function RoomDetailsPage () {
         {
             console.error(error.data + " HERE IS THE ERROR FOR NUMERICID")
         });
-
-
-
 
     }, [ searchParams ]);
 
@@ -227,6 +258,35 @@ function RoomDetailsPage () {
         setShowConfirmation(false); // Closes the confirmation box
         bookRoom();                 // runs bookRoom function
     }
+
+
+    useEffect (() =>{
+
+        if(Source === null){
+            return 
+        }
+
+        axios.get(`http://localhost:8080/api/source_extra_features/extra_features/sourceFeatures/${Source?.sourceId}`)
+        .then((response) => {
+          console.log(JSON.stringify(response.data) + " here is source extra features");
+          console.log(Source?.sourceId + "SOURCEID")
+          console.log("SOURCEID SHOULD BEHERERER")
+          console.log(JSON.stringify(response.data) + " stringify ")
+          setExtraFeatures(response.data);
+          console.log(ExtraFeatures)
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.error("Status:", error.response.status); 
+            console.error("Data:", error.response.data); 
+            console.log(JSON.stringify(Source) +" SOURCE ID ?????????")
+          } else {
+            console.error("General Error:", error.message);
+          }
+        });
+
+
+    },[Source]);
     
 
 
@@ -245,7 +305,7 @@ function RoomDetailsPage () {
         <div>
             <Header />
             <div className="content-container">
-                <h1 className="roomnametext">{roomDetails.roomName}</h1>
+                <h1 className="roomnametext">{roomDetails.roomName + " at " + Source?.sourceName +", " + Source?.country}</h1>
             </div>
             <section className="content-container">
                 <div className="image">
@@ -294,15 +354,13 @@ function RoomDetailsPage () {
                         <h2 className="bigwhitetext">Room Specifications</h2>
                         <p className="smallwhitetext">
                             Room type: {roomDetails.roomType}<br />
-                        {/* 
-                            Check-in: {roomDetails.checkIn}<br />
-                            Check-out: {roomDetails.checkOut}<br />
-                            Bed type: {roomDetails.bedType}<br />
-                            Room capacity: {roomDetails.roomCapacity}<br />
-                            Internet: {roomDetails.internet}<br />
-                            Parking: {roomDetails.parking}<br />
-                            Gym: {roomDetails.gym}<br />
-                            Pet Friendly: {roomDetails.pets}<br />*/}
+                            <p>Amenities :</p> 
+                                <ul>
+                                 {ExtraFeatures.map((feature) => (
+                                < li>{feature.feature}</li>))}
+                               </ul>
+
+     
                         </p>
                     </div>
                 </div>
