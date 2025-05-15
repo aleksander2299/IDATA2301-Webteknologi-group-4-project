@@ -20,29 +20,26 @@ interface DisplayRoom {
     location: string;
     description: string;
     imageUrl: string;
+    roomType?: string;
+    sourceName?: string;
 }
 
 // Might need to be used to simplify filtering
 // Did use AI to help generate this interface because of its complexity
-interface ApiRoomProvider {
-    roomProviderId: number;
-    roomPrice: number;
-    provider: {
-        providerId: number;
-        providerName: string;
+interface ApiRoom {
+    roomId: number;
+    roomName: string;
+    description: string;
+    roomType: string;
+    imageUrl: string;
+    source: {
+        sourceId: number;
+        sourceName: string;
+        locationType: string;
+        city: string;
+        country: string;
     };
-    room: {
-        roomId: number;
-        name: string;
-        description: string;
-        roomType: string;
-        imageUrl: string;
-        hotel: { // This part is crucial
-            hotelId: number;
-            name: string; // Hotel name
-            location: string;
-        };
-    };
+    visible: boolean;
 }
 
 function SearchPage() {
@@ -52,8 +49,8 @@ function SearchPage() {
     const navigate = useNavigate();
 
     // Just to store all hotels however not to be changed only used to filter
-    const [allHotels, setAllHotels] = useState<DisplayRoom[]>([]);
-    const [filteredHotels, setFilteredHotels] = useState<DisplayRoom[]>([]);
+    const [allRoomsFromApi, setAllRoomsFromApi] = useState<DisplayRoom[]>([]);
+    const [filteredDisplayRooms, setFilteredDisplayRooms] = useState<DisplayRoom[]>([]);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -68,24 +65,21 @@ function SearchPage() {
     useEffect(() => {
         setIsLoading(true);
         setError(null);
-        console.log("SearchPage: Fetching all hotels...");
+        console.log("SearchPage: Fetching all rooms...");
         //Get all hotels
-        axios.get<ApiRoomProvider[]>('http://localhost:8080/api/roomProvider')
+        axios.get(`http://localhost:8080/api/rooms`)
             .then(response => {
-                console.log("Fetching all roomProviders", response.data);
-
+                console.log("Fetched all rooms", response.data);
+                setAllRoomsFromApi(response.data.filter((room => room.visible) || []))
             })
             .catch(err => {
-                console.log("Failed to Fetch all roomProviders", err);
+                console.log("Failed to Fetch all rooms", err);
+                setError("Failed to fetch all rooms.");
+                setAllRoomsFromApi([]);
             })
             .finally(() => {
                 setIsLoading(false);
             });
-        axios.get(`http://localhost:8080/api/rooms`)
-            .then(response => {
-                console.log("Fetching all rooms", response.data);
-            })
-
     }, []);
 
     //Run to get filtered hotels to display hotelcards
@@ -98,21 +92,62 @@ function SearchPage() {
         setCheckOutDate(parseURLDate(searchParams.get('to')));
         setRoomType(searchParams.get('roomType') || 'any');
 
-        if (allHotels.length === 0 && !error && isLoading) {
+        if (allRoomsFromApi.length === 0 && !error && isLoading) {
             return; // Still waiting for the initial fetch to complete or error out
         }
         if (error) { // If there was an error fetching, show no results and stop loading
-            setFilteredHotels([]);
+            setFilteredDisplayRooms([]);
             setIsLoading(false);
             return;
         }
 
-        let currentFilteredHotels = Array.from(allHotels);
-        console.log(currentFilteredHotels)
-        setFilteredHotels(currentFilteredHotels);
+        setIsLoading(true);
+
+        const searchTermParam = (searchParams.get('searchTerm') || '').toLowerCase();
+        //const fromDateParam = parseURLDate(searchParams.get('from'));
+        //const toDateParam = parseURLDate(searchParams.get('to'));
+        const roomTypeParam = (searchParams.get('roomType') || 'any').toLowerCase();
+
+        // Got help from AI to finish this filter logic
+        // Map ApiRoom to DisplayRoom
+        let mappedForDisplay: DisplayRoom[] = allRoomsFromApi.map(apiRoom => ({
+            id: String(apiRoom.roomId),
+            name: apiRoom.roomName,
+            location: apiRoom.source.city,
+            description: apiRoom.description,
+            imageUrl: apiRoom.imageUrl  || '/images/default-room.jpg',
+            roomType: apiRoom.roomType,
+            sourceName: apiRoom.source.sourceName,
+        }));
+
+        /**
+         * Filter by search term
+         */
+        if (searchTermParam) {
+            mappedForDisplay = mappedForDisplay.filter(room =>
+                room.name.toLowerCase().includes(searchTermParam) ||
+                room.location.toLowerCase().includes(searchTermParam) ||
+                (room.sourceName && room.sourceName.toLowerCase().includes(searchTermParam))
+            );
+        }
+
+        /**
+         * Filter by roomType
+         */
+        if (roomTypeParam && roomTypeParam !== 'any') {
+            mappedForDisplay = mappedForDisplay.filter(room =>
+                room.roomType?.toLowerCase() === roomTypeParam
+            );
+        }
+
+        setFilteredDisplayRooms(mappedForDisplay);
+        setIsLoading(false);
+
+
+        setFilteredDisplayRooms(mappedRooms);
         setIsLoading(false); // Filtering/data processing complete
 
-    }, [searchParams, allHotels, isLoading, error]); // Re-run when URL params change OR when allHotels data arrives
+    }, [searchParams, allRoomsFromApi, isLoading, error]); // Re-run when URL params change OR when allHotels data arrives
 
 
     const handleSearchFromBar = (criteria: SearchBarCriteria) => {
@@ -159,21 +194,21 @@ function SearchPage() {
 
                 {/* DisplayRoom List Section */}
                 <div className="hotel-list">
-                    {filteredHotels.length > 0 ? (
-                        filteredHotels.map((hotel) => (
+                    {filteredDisplayRooms.length > 0 ? (
+                        filteredDisplayRooms.map((room) => (
                                 <HotelCard
-                                    key={hotel.id}
-                                    id={hotel.id}
-                                    imageUrl={hotel.imageUrl}
-                                    imageAlt={`Image of ${hotel.name}`}
-                                    title={hotel.name}
-                                    description={hotel.description}
+                                    key={room.id}
+                                    id={room.id}
+                                    imageUrl={room.imageUrl}
+                                    imageAlt={`Image of ${room.name}`}
+                                    title={room.name}
+                                    description={room.description}
                                 >
                                     {/* Using buttons as children was an idea given by AI since i could not figure out how to use different buttons depending on the page while they were still connected */}
                                     <button
                                         className="deal-btn"
                                         onClick={() => {
-                                            GoToDealHandler(hotel.id)
+                                            GoToDealHandler(room.id)
                                         }}
                                     >
                                         Go to Deal
