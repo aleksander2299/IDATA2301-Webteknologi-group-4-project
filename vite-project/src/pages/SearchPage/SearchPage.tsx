@@ -9,6 +9,9 @@ import HotelCard from "../../components/HotelCard/HotelCard.tsx";
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 
+import { navigateToRoomDetails, parseURLDate, formatDateForURL, CommonSearchCriteria, navigateToSearch } from '../../utils/navigationUtils';
+
+// Interface for rooms/hotels can be expanded however make sure or null is used if you do since this is supposed to be used for multiple functions
 interface Hotel {
     id: string;
     name: string;
@@ -17,51 +20,56 @@ interface Hotel {
     imageUrl: string;
 }
 
-    // Being reused for now however is the same between pages that need it
-    function formatDateForURL(date: Date | null): string | null {
-        if (!date) return null;
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
-
-    function parseURLDate(dateString: string | null): Date | null {
-        // Copied from internet, just tests if the URL date is an actual date following ISO standards
-        if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return null;
-        const date = new Date(dateString);
-        // getTime returns NaN if the time is invalid
-        if (isNaN(date.getTime())) return null;
-        return date;
-    }
-
 function SearchPage() {
+
+    // Needs to be destructured to be able to be changed
+    const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
 
     // State to hold the dates selected by the picker
     const [checkInDate, setCheckInDate] = useState<Date | null>(null);
     const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
 
-    {/* Fake Temporary data its set up differently since it will display every hotelcard it gets, so its not every hotel */
-    }
-    const [hotels, setHotels] = useState<Hotel[]>([
-        {
-            id: '1', name: 'Hotel 1', location: 'Location 1',
-            description: 'This hotel has a nice view', imageUrl: '/images/hotel-room-1.jpg'
-        },
-        {
-            id: '2', name: 'Hotel 2', location: 'Location 2',
-            description: 'This hotel has a nice  oceanside view', imageUrl: '/images/hotel-room-2.jpg'
-        },
-    ]);
+    // Just to store all hotels however not to be changed only used to filter
+    const [allHotels, setAllHotels] = useState<Hotel[]>([]);
+    const [filteredHotels, setFilteredHotels] = useState<Hotel[]>([]);
 
-    // Needs to be destructured to be able to be changed
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
     // Changed to allow null as well
-    const [hotelName, setHotelName] = useState<string | null>(() => searchParams.get('hotelName'));
-    const [location, setLocation] = useState<string | null>(() => searchParams.get('location'));
+    const [searchTerm, setsearchTerm] = useState<string | null>(() => searchParams.get('searchTerm') || '');
     const [fromDate, setFromDate] = useState<string | null>(() => parseURLDate(searchParams.get('from')));
     const [toDate, setToDate] = useState<string | null>(() => parseURLDate(searchParams.get('to')));
+    const [roomTypeInput, setRoomTypeInput] = useState<string>(() => searchParams.get('roomType') || 'any');
+
+    //Only run once to create the main list
+    useEffect(() => {
+        setIsLoading(true);
+        setError(null);
+        console.log("SearchPage: Fetching all hotels...");
+        //Get all hotels
+        axios.get('"http://localhost:8080/api/rooms');
+
+    }, []);
+
+    //Run to get filtered hotels to display hotelcards
+    useEffect(() => {
+        console.log("SearchPage: URL params changed or allHotels updated. Filtering...");
+
+        // Update initial values for SearchBar based on current URL
+        setInitialSearchTerm(searchParams.get('searchTerm') || '');
+        setInitialStartDate(parseURLDate(searchParams.get('from')));
+        setInitialEndDate(parseURLDate(searchParams.get('to')));
+        setInitialRoomType(searchParams.get('roomType') || 'any');
+
+
+
+    }, [searchParams, allHotels, isLoading, error]); // Re-run when URL params change OR when allHotels data arrives
+
+
+
+
 
 
     // UseEffect to react to changes like user navigating backward
@@ -87,55 +95,20 @@ function SearchPage() {
 
     }, [searchParams]); // Set to only run when searchParams gets changed
 
-        // Used to update DatePicker on this page based on searchParams
-        const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
-            setCheckInDate(selected.startDate);
-            setCheckOutDate(selected.endDate);
 
-            const currentParams = new URLSearchParams(searchParams.toString());
-            const formattedStart = formatDateForURL(selected.startDate);
-            const formattedEnd = formatDateForURL(selected.endDate);
+    const handleSearchFromBar = (criteria: SearchBarCriteria) => {
+        console.log('SearchPage received search from SearchBar:', criteria);
+        navigateToSearch(navigate, {
+            searchTerm: criteria.searchTerm,
+            startDate: criteria.startDate,
+            endDate: criteria.endDate,
+            roomType: criteria.roomType
+        });
+    };
 
-            if (formattedStart) {
-                currentParams.set('from', formattedStart);
-            } else {
-                currentParams.delete('from');
-            }
-            if (formattedEnd) {
-                currentParams.set('to', formattedEnd);
-            } else {
-                currentParams.delete('to');
-            }
-            // Update URL. The useEffect will then react to this change.
-            setSearchParams(currentParams, { replace: true }); // Using replace to avoid too many history entries
-        };
-
-    const navigate = useNavigate();
-    {/* Using string | null since the user does not need to set a date */
-    }
-
-    function GoToDeal(id: string, fromDate: string | null, toDate: string | null): void {
-        {/* Since fromDate and toDate, can now be null the need to be formatted and tested */
-        }
-        const formattedFrom = fromDate || '';
-        const formattedTo = toDate || '';
-        let url = `/room/${id}`;
-
-        const queryParams: string[] = [];
-        {/* Using encodeURIComponent() since it can encode & which allows multiple parameters in a query */
-        }
-        if (formattedFrom) {
-            queryParams.push(`from=${encodeURIComponent(formattedFrom)}`)
-        }
-        if (formattedTo) {
-            queryParams.push(`to=${encodeURIComponent(formattedTo)}`)
-        }
-
-        if (queryParams.length > 0) {
-            url += `?${queryParams.join('&')}`;
-        }
-        navigate(url);
-    }
+    const GoToDealHandler = (hotelId: string) => {
+        navigateToRoomDetails(navigate, hotelId, initialStartDate, initialEndDate);
+    };
 
     return (
         <div>
@@ -203,9 +176,7 @@ function SearchPage() {
                                     <button
                                         className="deal-btn"
                                         onClick={() => {
-                                            const fromDateString = formatDateForURL(checkInDate);
-                                            const toDateString = formatDateForURL(checkOutDate);
-                                            GoToDeal(hotel.id, fromDateString, toDateString)
+                                            GoToDealHandler(hotel.id)
                                         }}
                                     >
                                         Go to Deal
