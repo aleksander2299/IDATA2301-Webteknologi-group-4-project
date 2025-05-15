@@ -77,6 +77,26 @@ function HomePage() {
         navigate(url);
     }
 
+<<<<<<< Updated upstream
+=======
+    if (criteria.roomType && criteria.roomType !== 'any') {
+        queryParams.push(`roomType=${encodeURIComponent(criteria.roomType)}`);
+    }
+
+    if (formattedFrom) {
+        queryParams.push(`from=${encodeURIComponent(formattedFrom)}`)
+    }
+
+    if (formattedTo) {
+        queryParams.push(`to=${encodeURIComponent(formattedTo)}`)
+    }
+
+    if (queryParams.length > 0) {
+        url += `?${queryParams.join('&')}`;
+    }
+    navigate(url);
+
+>>>>>>> Stashed changes
 
         // TEMPORARY TO SEE IF YOU ARE LOGGED IN.
         const username = localStorage.getItem('username');
