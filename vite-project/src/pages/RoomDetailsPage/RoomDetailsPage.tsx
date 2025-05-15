@@ -9,6 +9,8 @@ import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker
 import Footer from '../../components/layout/Footer.jsx';
 import Header from '../../components/layout/Header.tsx';
 
+import { parseURLDate} from "../../utils/navigationUtils.ts";
+
 import roomImg from '../../Images/room image placeholder.jpg';
 import { stringify } from 'querystring';
 

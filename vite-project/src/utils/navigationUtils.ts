@@ -7,7 +7,17 @@ export function formatDateForURL(date: Date | null): string | null {
     const day = date.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
 }
-
+export function parseURLDate(dateString: string | null): Date | null {
+    // Checks if the string is correct
+    if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+        return null;
+    }
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+        return null;
+    }
+    return date;
+}
 // Interface for search criteria can be expanded however make sure or null is used if you do since this is supposed to be used for multiple function
 export interface CommonSearchCriteria {
     searchTerm?: string | null;

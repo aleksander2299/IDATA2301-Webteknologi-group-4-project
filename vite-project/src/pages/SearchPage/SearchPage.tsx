@@ -2,22 +2,29 @@ import {useEffect, useState} from 'react';
 import {useNavigate, useSearchParams} from 'react-router-dom';
 
 import '../../styles/main.css';
-import './SearchPage.css';
+import SearchPageStyle from './SearchPage.module.css';
 
-import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
+//import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
 import HotelCard from "../../components/HotelCard/HotelCard.tsx";
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 
 import { navigateToRoomDetails, parseURLDate, formatDateForURL, CommonSearchCriteria, navigateToSearch } from '../../utils/navigationUtils';
+import SearchBar from "../../components/SearchBar/SearchBar.tsx";
+import axios from "axios";
 
 // Interface for rooms/hotels can be expanded however make sure or null is used if you do since this is supposed to be used for multiple functions
-interface Hotel {
+interface DisplayRoom {
     id: string;
     name: string;
     location: string;
     description: string;
     imageUrl: string;
+}
+
+// Might need to be used to simplify filtering
+interface ApiRoomProvider {
+
 }
 
 function SearchPage() {
@@ -26,22 +33,18 @@ function SearchPage() {
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
 
-    // State to hold the dates selected by the picker
-    const [checkInDate, setCheckInDate] = useState<Date | null>(null);
-    const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
-
     // Just to store all hotels however not to be changed only used to filter
-    const [allHotels, setAllHotels] = useState<Hotel[]>([]);
-    const [filteredHotels, setFilteredHotels] = useState<Hotel[]>([]);
+    const [allHotels, setAllHotels] = useState<DisplayRoom[]>([]);
+    const [filteredHotels, setFilteredHotels] = useState<DisplayRoom[]>([]);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
     // Changed to allow null as well
-    const [searchTerm, setsearchTerm] = useState<string | null>(() => searchParams.get('searchTerm') || '');
-    const [fromDate, setFromDate] = useState<string | null>(() => parseURLDate(searchParams.get('from')));
-    const [toDate, setToDate] = useState<string | null>(() => parseURLDate(searchParams.get('to')));
-    const [roomTypeInput, setRoomTypeInput] = useState<string>(() => searchParams.get('roomType') || 'any');
+    const [searchTerm, setSearchTerm] = useState<string | null>(() => searchParams.get('searchTerm') || '');
+    const [checkInDate, setCheckInDate] = useState<string | null>(() => parseURLDate(searchParams.get('from')));
+    const [checkOutDate, setCheckOutDate] = useState<string | null>(() => parseURLDate(searchParams.get('to')));
+    const [roomType, setRoomType] = useState<string>(() => searchParams.get('roomType') || 'any');
 
     //Only run once to create the main list
     useEffect(() => {
@@ -49,7 +52,18 @@ function SearchPage() {
         setError(null);
         console.log("SearchPage: Fetching all hotels...");
         //Get all hotels
-        axios.get('"http://localhost:8080/api/rooms');
+        axios.get('http://localhost:8080/api/roomProvider/')
+            .then(response => {
+                console.log("Fetching all roomProviders", response.data);
+
+            })
+            .catch(err => {
+                console.log("Failed to Fetch all roomProviders", err);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+
 
     }, []);
 
@@ -58,42 +72,26 @@ function SearchPage() {
         console.log("SearchPage: URL params changed or allHotels updated. Filtering...");
 
         // Update initial values for SearchBar based on current URL
-        setInitialSearchTerm(searchParams.get('searchTerm') || '');
-        setInitialStartDate(parseURLDate(searchParams.get('from')));
-        setInitialEndDate(parseURLDate(searchParams.get('to')));
-        setInitialRoomType(searchParams.get('roomType') || 'any');
+        setSearchTerm(searchParams.get('searchTerm') || '');
+        setCheckInDate(parseURLDate(searchParams.get('from')));
+        setCheckOutDate(parseURLDate(searchParams.get('to')));
+        setRoomType(searchParams.get('roomType') || 'any');
 
-
-
-    }, [searchParams, allHotels, isLoading, error]); // Re-run when URL params change OR when allHotels data arrives
-
-
-
-
-
-
-    // UseEffect to react to changes like user navigating backward
-    useEffect(() => {
-        // Load values after change to website
-        const hotelNameParam = searchParams.get('hotelName');
-        const locationParam = searchParams.get('location');
-        const fromParam = parseURLDate(searchParams.get('from'));
-        const toParam = parseURLDate(searchParams.get('to'));
-
-        // Set initial values to datepicker
-        setCheckInDate(fromParam);
-        setCheckOutDate(toParam);
-
-        // Save the new variables
-        setHotelName(hotelNameParam);
-        setLocation(locationParam);
-        setFromDate(fromParam);
-        setToDate(toParam);
-
-        {/* Here we will filter based on the data */
+        if (allHotels.length === 0 && !error && isLoading) {
+            return; // Still waiting for the initial fetch to complete or error out
+        }
+        if (error) { // If there was an error fetching, show no results and stop loading
+            setFilteredHotels([]);
+            setIsLoading(false);
+            return;
         }
 
-    }, [searchParams]); // Set to only run when searchParams gets changed
+        let currentFilteredHotels = Array.from(allHotels);
+        console.log(currentFilteredHotels)
+        setFilteredHotels(currentFilteredHotels);
+        setIsLoading(false); // Filtering/data processing complete
+
+    }, [searchParams, allHotels, isLoading, error]); // Re-run when URL params change OR when allHotels data arrives
 
 
     const handleSearchFromBar = (criteria: SearchBarCriteria) => {
@@ -107,7 +105,7 @@ function SearchPage() {
     };
 
     const GoToDealHandler = (hotelId: string) => {
-        navigateToRoomDetails(navigate, hotelId, initialStartDate, initialEndDate);
+        navigateToRoomDetails(navigate, hotelId, checkInDate, checkOutDate);
     };
 
     return (
@@ -115,55 +113,33 @@ function SearchPage() {
             <Header/>
             <main>
                 {/* Search Bar Section temporary until function is made */}
-                <section className="container search-section" style={{marginTop: '20px'}}>
-                    <div className="searchbarbox">
-                        <form className="search-field">
-                            <label htmlFor="SearchLocation">Search for hotel/location</label>
-                            <input type="search" name="SearchLocation" id="SearchLocation"/>
-                        </form>
-
-                        {/* Select dropdown for Room Type */}
-                        <div className="select-wrapper">
-                            <label htmlFor="roomType">Room Type</label>
-                            <select id="roomType"
-                                    className="search-select"> {/* Use a different class than search-btn */}
-                                <option value="single">Single</option>
-                                <option value="double">Double</option>
-                                <option value="family">Family</option>
-                            </select>
-                        </div>
-
-                        {/* Input for Number of Rooms */}
-                        <form className="numberOfRooms">
-                            <label htmlFor="number">Number of rooms</label>
-                            <input type="number" name="number" id="number" min="1"/>
-                        </form>
-                        {/* Place the date picker component here */}
-                        <div style={{ display: 'flex', alignItems: 'center' }}> {/* Optional wrapper for layout */}
-                             <CustomDatePicker
-                                 onDatesSelected={handleDatesUpdate} // Pass the handler function
-                                 initialStartDate={checkInDate}      // Pass the current state
-                                 initialEndDate={checkOutDate}        // Pass the current state
-                            />
-                        </div>
-                        {/* Search Button */}
-                        <button className="search-btn active">Search</button>
-                    </div>
+                <section className={SearchPageStyle.container} style={{ marginTop: '20px' }}>
+                    <SearchBar
+                        onSearch={handleSearchFromBar}
+                        initialSearchTerm={searchTerm}
+                        initialStartDate={checkInDate}
+                        initialEndDate={checkOutDate}
+                        initialRoomType={roomType}
+                        // className={homePageStyle.customSearchBarOnHomepage} // Optional for homepage specific tweaks
+                    >
+                        {/* TODO: add filters as children */}
+                    </SearchBar>
                 </section>
 
-                {/* Filters Section */}
+                {/* Filters Section
                 <div className="filters">
                     <button className="filter-btn">Sort by (rating, low to high...)</button>
                     <button className="filter-btn">Price</button>
                     <button className="filter-btn">Filter by rooms</button>
                     <button className="filter-btn">Rating</button>
-                    <button className="filter-btn">Hotel or house</button>
+                    <button className="filter-btn">DisplayRoom or house</button>
                 </div>
+                */}
 
-                {/* Hotel List Section */}
+                {/* DisplayRoom List Section */}
                 <div className="hotel-list">
-                    {hotels.length > 0 ? (
-                        hotels.map((hotel) => (
+                    {filteredHotels.length > 0 ? (
+                        filteredHotels.map((hotel) => (
                                 <HotelCard
                                     key={hotel.id}
                                     id={hotel.id}
