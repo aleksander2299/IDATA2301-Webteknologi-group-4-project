@@ -160,11 +160,6 @@ function RoomDetailsPage () {
             console.error(err);
           });
 
-
-          axios.get(`http://localhost:8080/api/rooms`)
-        
-
-
           axios.get(`http://localhost:8080/api/rooms/${numericId}/source`)
           .then((response) => {
             setSource(response.data)
@@ -260,6 +255,20 @@ function RoomDetailsPage () {
     }
 
 
+    useEffect(() => {
+        if(roomDetails === null){
+            return
+        }
+        axios.get(`http://localhost:8080/api/rooms/2/dates`)
+        .then((response) => {
+            setBookingDates(response.data)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+      
+    },[roomDetails])
+
     useEffect (() =>{
 
         if(Source === null){
@@ -268,25 +277,35 @@ function RoomDetailsPage () {
 
         axios.get(`http://localhost:8080/api/source_extra_features/extra_features/sourceFeatures/${Source?.sourceId}`)
         .then((response) => {
-          console.log(JSON.stringify(response.data) + " here is source extra features");
+         {/* console.log(JSON.stringify(response.data) + " here is source extra features");
           console.log(Source?.sourceId + "SOURCEID")
           console.log("SOURCEID SHOULD BEHERERER")
-          console.log(JSON.stringify(response.data) + " stringify ")
+          console.log(JSON.stringify(response.data) + " stringify ") */}
           setExtraFeatures(response.data);
-          console.log(ExtraFeatures)
         })
         .catch((error) => {
           if (error.response) {
-            console.error("Status:", error.response.status); 
+            {/*console.error("Status:", error.response.status); 
             console.error("Data:", error.response.data); 
-            console.log(JSON.stringify(Source) +" SOURCE ID ?????????")
+            console.log(JSON.stringify(Source) +" SOURCE ID ?????????")*/}
           } else {
-            console.error("General Error:", error.message);
+            {/*console.error("General Error:", error.message);*/}
           }
         });
 
 
     },[Source]);
+
+
+    useEffect(() => {
+        if(BookingDates.length === 0 )
+        {
+            return
+        }
+        /* TODO ADD THAT BOOKINGDATES ARRAY IS ADDED TO LIST OF DISABLED DATES */
+
+
+    },[BookingDates])
     
 
 
@@ -352,16 +371,14 @@ function RoomDetailsPage () {
                     </div>
                     <div className="site-specification">
                         <h2 className="bigwhitetext">Room Specifications</h2>
-                        <p className="smallwhitetext">
+                        <div className="smallwhitetext">
                             Room type: {roomDetails.roomType}<br />
                             <p>Amenities :</p> 
-                                <ul>
+                            <ul>
                                  {ExtraFeatures.map((feature) => (
                                 < li>{feature.feature}</li>))}
                                </ul>
-
-     
-                        </p>
+                        </div>
                     </div>
                 </div>
             </section>
