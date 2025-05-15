@@ -2,210 +2,210 @@ import {useEffect, useState} from 'react';
 import {useNavigate, useSearchParams} from 'react-router-dom';
 
 import '../../styles/main.css';
-import './SearchPage.css';
+import SearchPageStyle from './SearchPage.module.css';
 
-import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
+//import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
 import HotelCard from "../../components/HotelCard/HotelCard.tsx";
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 
-interface Hotel {
+import { navigateToRoomDetails, parseURLDate, formatDateForURL, CommonSearchCriteria, navigateToSearch } from '../../utils/navigationUtils';
+import SearchBar from "../../components/SearchBar/SearchBar.tsx";
+import axios from "axios";
+
+// Interface for rooms/hotels can be expanded however make sure or null is used if you do since this is supposed to be used for multiple functions
+interface DisplayRoom {
     id: string;
     name: string;
     location: string;
     description: string;
     imageUrl: string;
+    roomType?: string;
+    sourceName?: string;
 }
 
-    // Being reused for now however is the same between pages that need it
-    function formatDateForURL(date: Date | null): string | null {
-        if (!date) return null;
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
-
-    function parseURLDate(dateString: string | null): Date | null {
-        // Copied from internet, just tests if the URL date is an actual date following ISO standards
-        if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return null;
-        const date = new Date(dateString);
-        // getTime returns NaN if the time is invalid
-        if (isNaN(date.getTime())) return null;
-        return date;
-    }
+// Might need to be used to simplify filtering
+// Did use AI to help generate this interface because of its complexity
+interface ApiRoom {
+    roomId: number;
+    roomName: string;
+    description: string;
+    roomType: string;
+    imageUrl: string;
+    source: {
+        sourceId: number;
+        sourceName: string;
+        locationType: string;
+        city: string;
+        country: string;
+    };
+    visible: boolean;
+}
 
 function SearchPage() {
 
-    // State to hold the dates selected by the picker
-    const [checkInDate, setCheckInDate] = useState<Date | null>(null);
-    const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
-
-    {/* Fake Temporary data its set up differently since it will display every hotelcard it gets, so its not every hotel */
-    }
-    const [hotels, setHotels] = useState<Hotel[]>([
-        {
-            id: '1', name: 'Hotel 1', location: 'Location 1',
-            description: 'This hotel has a nice view', imageUrl: '/images/hotel-room-1.jpg'
-        },
-        {
-            id: '2', name: 'Hotel 2', location: 'Location 2',
-            description: 'This hotel has a nice  oceanside view', imageUrl: '/images/hotel-room-2.jpg'
-        },
-    ]);
-
     // Needs to be destructured to be able to be changed
     const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
+
+    // Just to store all hotels however not to be changed only used to filter
+    const [allRoomsFromApi, setAllRoomsFromApi] = useState<DisplayRoom[]>([]);
+    const [filteredDisplayRooms, setFilteredDisplayRooms] = useState<DisplayRoom[]>([]);
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
     // Changed to allow null as well
-    const [hotelName, setHotelName] = useState<string | null>(() => searchParams.get('hotelName'));
-    const [location, setLocation] = useState<string | null>(() => searchParams.get('location'));
-    const [fromDate, setFromDate] = useState<string | null>(() => parseURLDate(searchParams.get('from')));
-    const [toDate, setToDate] = useState<string | null>(() => parseURLDate(searchParams.get('to')));
+    const [searchTerm, setSearchTerm] = useState<string | null>(() => searchParams.get('searchTerm') || '');
+    const [checkInDate, setCheckInDate] = useState<string | null>(() => parseURLDate(searchParams.get('from')));
+    const [checkOutDate, setCheckOutDate] = useState<string | null>(() => parseURLDate(searchParams.get('to')));
+    const [roomType, setRoomType] = useState<string>(() => searchParams.get('roomType') || 'any');
 
-
-    // UseEffect to react to changes like user navigating backward
+    //Only run once to create the main list
     useEffect(() => {
-        // Load values after change to website
-        const hotelNameParam = searchParams.get('hotelName');
-        const locationParam = searchParams.get('location');
-        const fromParam = parseURLDate(searchParams.get('from'));
-        const toParam = parseURLDate(searchParams.get('to'));
+        setIsLoading(true);
+        setError(null);
+        console.log("SearchPage: Fetching all rooms...");
+        //Get all hotels
+        axios.get(`http://localhost:8080/api/rooms`)
+            .then(response => {
+                console.log("Fetched all rooms", response.data);
+                setAllRoomsFromApi(response.data.filter((room => room.visible) || []))
+            })
+            .catch(err => {
+                console.log("Failed to Fetch all rooms", err);
+                setError("Failed to fetch all rooms.");
+                setAllRoomsFromApi([]);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, []);
 
-        // Set initial values to datepicker
-        setCheckInDate(fromParam);
-        setCheckOutDate(toParam);
+    //Run to get filtered hotels to display hotelcards
+    useEffect(() => {
+        console.log("SearchPage: URL params changed or allHotels updated. Filtering...");
 
-        // Save the new variables
-        setHotelName(hotelNameParam);
-        setLocation(locationParam);
-        setFromDate(fromParam);
-        setToDate(toParam);
+        // Update initial values for SearchBar based on current URL
+        setSearchTerm(searchParams.get('searchTerm') || '');
+        setCheckInDate(parseURLDate(searchParams.get('from')));
+        setCheckOutDate(parseURLDate(searchParams.get('to')));
+        setRoomType(searchParams.get('roomType') || 'any');
 
-        {/* Here we will filter based on the data */
+        if (allRoomsFromApi.length === 0 && !error && isLoading) {
+            return; // Still waiting for the initial fetch to complete or error out
+        }
+        if (error) { // If there was an error fetching, show no results and stop loading
+            setFilteredDisplayRooms([]);
+            setIsLoading(false);
+            return;
         }
 
-    }, [searchParams]); // Set to only run when searchParams gets changed
+        setIsLoading(true);
 
-        // Used to update DatePicker on this page based on searchParams
-        const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
-            setCheckInDate(selected.startDate);
-            setCheckOutDate(selected.endDate);
+        const searchTermParam = (searchParams.get('searchTerm') || '').toLowerCase();
+        //const fromDateParam = parseURLDate(searchParams.get('from'));
+        //const toDateParam = parseURLDate(searchParams.get('to'));
+        const roomTypeParam = (searchParams.get('roomType') || 'any').toLowerCase();
 
-            const currentParams = new URLSearchParams(searchParams.toString());
-            const formattedStart = formatDateForURL(selected.startDate);
-            const formattedEnd = formatDateForURL(selected.endDate);
+        // Got help from AI to finish this filter logic
+        // Map ApiRoom to DisplayRoom
+        let mappedForDisplay: DisplayRoom[] = allRoomsFromApi.map(apiRoom => ({
+            id: String(apiRoom.roomId),
+            name: apiRoom.roomName,
+            location: apiRoom.source.city,
+            description: apiRoom.description,
+            imageUrl: apiRoom.imageUrl  || '/images/default-room.jpg',
+            roomType: apiRoom.roomType,
+            sourceName: apiRoom.source.sourceName,
+        }));
 
-            if (formattedStart) {
-                currentParams.set('from', formattedStart);
-            } else {
-                currentParams.delete('from');
-            }
-            if (formattedEnd) {
-                currentParams.set('to', formattedEnd);
-            } else {
-                currentParams.delete('to');
-            }
-            // Update URL. The useEffect will then react to this change.
-            setSearchParams(currentParams, { replace: true }); // Using replace to avoid too many history entries
-        };
-
-    const navigate = useNavigate();
-    {/* Using string | null since the user does not need to set a date */
-    }
-
-    function GoToDeal(id: string, fromDate: string | null, toDate: string | null): void {
-        {/* Since fromDate and toDate, can now be null the need to be formatted and tested */
-        }
-        const formattedFrom = fromDate || '';
-        const formattedTo = toDate || '';
-        let url = `/room/${id}`;
-
-        const queryParams: string[] = [];
-        {/* Using encodeURIComponent() since it can encode & which allows multiple parameters in a query */
-        }
-        if (formattedFrom) {
-            queryParams.push(`from=${encodeURIComponent(formattedFrom)}`)
-        }
-        if (formattedTo) {
-            queryParams.push(`to=${encodeURIComponent(formattedTo)}`)
+        /**
+         * Filter by search term
+         */
+        if (searchTermParam) {
+            mappedForDisplay = mappedForDisplay.filter(room =>
+                room.name.toLowerCase().includes(searchTermParam) ||
+                room.location.toLowerCase().includes(searchTermParam) ||
+                (room.sourceName && room.sourceName.toLowerCase().includes(searchTermParam))
+            );
         }
 
-        if (queryParams.length > 0) {
-            url += `?${queryParams.join('&')}`;
+        /**
+         * Filter by roomType
+         */
+        if (roomTypeParam && roomTypeParam !== 'any') {
+            mappedForDisplay = mappedForDisplay.filter(room =>
+                room.roomType?.toLowerCase() === roomTypeParam
+            );
         }
-        navigate(url);
-    }
+
+        setFilteredDisplayRooms(mappedForDisplay);
+        setIsLoading(false);
+
+
+    }, [searchParams, allRoomsFromApi, isLoading, error]); // Re-run when URL params change OR when allHotels data arrives
+
+
+    const handleSearchFromBar = (criteria: SearchBarCriteria) => {
+        console.log('SearchPage received search from SearchBar:', criteria);
+        navigateToSearch(navigate, {
+            searchTerm: criteria.searchTerm,
+            startDate: criteria.startDate,
+            endDate: criteria.endDate,
+            roomType: criteria.roomType
+        });
+    };
+
+    const GoToDealHandler = (hotelId: string) => {
+        navigateToRoomDetails(navigate, hotelId, checkInDate, checkOutDate);
+    };
 
     return (
         <div>
             <Header/>
             <main>
                 {/* Search Bar Section temporary until function is made */}
-                <section className="container search-section" style={{marginTop: '20px'}}>
-                    <div className="searchbarbox">
-                        <form className="search-field">
-                            <label htmlFor="SearchLocation">Search for hotel/location</label>
-                            <input type="search" name="SearchLocation" id="SearchLocation"/>
-                        </form>
-
-                        {/* Select dropdown for Room Type */}
-                        <div className="select-wrapper">
-                            <label htmlFor="roomType">Room Type</label>
-                            <select id="roomType"
-                                    className="search-select"> {/* Use a different class than search-btn */}
-                                <option value="single">Single</option>
-                                <option value="double">Double</option>
-                                <option value="family">Family</option>
-                            </select>
-                        </div>
-
-                        {/* Input for Number of Rooms */}
-                        <form className="numberOfRooms">
-                            <label htmlFor="number">Number of rooms</label>
-                            <input type="number" name="number" id="number" min="1"/>
-                        </form>
-                        {/* Place the date picker component here */}
-                        <div style={{ display: 'flex', alignItems: 'center' }}> {/* Optional wrapper for layout */}
-                             <CustomDatePicker
-                                 onDatesSelected={handleDatesUpdate} // Pass the handler function
-                                 initialStartDate={checkInDate}      // Pass the current state
-                                 initialEndDate={checkOutDate}        // Pass the current state
-                            />
-                        </div>
-                        {/* Search Button */}
-                        <button className="search-btn active">Search</button>
-                    </div>
+                <section className={SearchPageStyle.container} style={{ marginTop: '20px' }}>
+                    <SearchBar
+                        onSearch={handleSearchFromBar}
+                        initialSearchTerm={searchTerm}
+                        initialStartDate={checkInDate}
+                        initialEndDate={checkOutDate}
+                        initialRoomType={roomType}
+                        // className={homePageStyle.customSearchBarOnHomepage} // Optional for homepage specific tweaks
+                    >
+                        {/* TODO: add filters as children */}
+                    </SearchBar>
                 </section>
 
-                {/* Filters Section */}
+                {/* Filters Section
                 <div className="filters">
                     <button className="filter-btn">Sort by (rating, low to high...)</button>
                     <button className="filter-btn">Price</button>
                     <button className="filter-btn">Filter by rooms</button>
                     <button className="filter-btn">Rating</button>
-                    <button className="filter-btn">Hotel or house</button>
+                    <button className="filter-btn">DisplayRoom or house</button>
                 </div>
+                */}
 
-                {/* Hotel List Section */}
+                {/* DisplayRoom List Section */}
                 <div className="hotel-list">
-                    {hotels.length > 0 ? (
-                        hotels.map((hotel) => (
+                    {filteredDisplayRooms.length > 0 ? (
+                        filteredDisplayRooms.map((room) => (
                                 <HotelCard
-                                    key={hotel.id}
-                                    id={hotel.id}
-                                    imageUrl={hotel.imageUrl}
-                                    imageAlt={`Image of ${hotel.name}`}
-                                    title={hotel.name}
-                                    description={hotel.description}
+                                    key={room.id}
+                                    id={room.id}
+                                    imageUrl={room.imageUrl}
+                                    imageAlt={`Image of ${room.name}`}
+                                    title={room.name}
+                                    description={room.description}
                                 >
                                     {/* Using buttons as children was an idea given by AI since i could not figure out how to use different buttons depending on the page while they were still connected */}
                                     <button
                                         className="deal-btn"
                                         onClick={() => {
-                                            const fromDateString = formatDateForURL(checkInDate);
-                                            const toDateString = formatDateForURL(checkOutDate);
-                                            GoToDeal(hotel.id, fromDateString, toDateString)
+                                            GoToDealHandler(room.id)
                                         }}
                                     >
                                         Go to Deal

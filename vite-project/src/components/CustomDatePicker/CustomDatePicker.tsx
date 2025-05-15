@@ -151,8 +151,8 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
           />
       }
 
-      popperPlacement="bottom-start"
-      monthsShown={1}
+      popperPlacement="bottom"
+      monthsShown={2}
       //isClearable={true}
       shouldCloseOnSelect={false}
       showDisabledMonthNavigation  // Allows navigating through months even if some are disabled.
