@@ -1,21 +1,18 @@
-import favRoomCardStyle from './FavouriteRoomCard.module.css'
+import userBookingCardStyle from './UserBookingCard.module.css'
 import '../../styles/main.css';
+import {Room} from '../../types/Room.ts'
 
 import roomImg from '../../Images/room image placeholder.jpg';
 
-type FavouriteRoomCardProps = {
-    room: {
-        roomId: number;
-        name: string;
-        imageUrl: string;
-        description?: string;
-    };
+type UserBookingCardProps = {
+    bookingId: number;
+    room: Room;
 };
 
-function FavouriteRoomCard ({ room }: FavouriteRoomCardProps) {
+function UserBookingCard ({ bookingId, room }: UserBookingCardProps) {
     return (
-        <div className={favRoomCardStyle.favourite_card}>
-            <img src={room.imageUrl} alt={room.name} />
+        <div className={userBookingCardStyle.favourite_card}>
+            <img src={room.imageUrl} alt={room.roomName} />
             <button className="removeFavorite">Remove</button>
         </div>
     );
@@ -23,4 +20,4 @@ function FavouriteRoomCard ({ room }: FavouriteRoomCardProps) {
 }
 
 
-export default FavouriteRoomCard;
+export default UserBookingCard;

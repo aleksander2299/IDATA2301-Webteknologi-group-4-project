@@ -5,10 +5,14 @@ import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 import {useEffect, useState} from "react";
 import {axiosInstance} from "../../AxiosInstance.tsx";
+import UserBookingCard from "../../components/userBookingCard/UserBookingCard.tsx";
+import {Booking} from "../../types/Booking.ts";
+import favPageStyles from "../FavouritesPage/FavouritesPage.module.css";
+import FavouriteRoomCard from "../../components/favouriteRoomCard/FavouriteRoomCard.tsx";
 
 function UserBookingsPage () {
 
-    const [rooms, setRooms] = useState([]);
+    const [bookings, setBookings] = useState<Booking[]>([]);
     const [loading, setLoading] = useState(true);
 
     const username = localStorage.getItem('username');
@@ -22,7 +26,7 @@ function UserBookingsPage () {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                setRooms(response.data);
+                setBookings(response.data);
             } catch (err) {
                 console.log(err);
                 console.log("username here: " + username);
@@ -37,7 +41,17 @@ function UserBookingsPage () {
         <div>
             <Header />
             <main>
-
+                <h1>Favorite rooms</h1>
+                <section id={favPageStyles.favourites_container}>
+                    {loading && <p>Loading...</p>}
+                    {!loading && bookings.length === 0 && <p>No favourite rooms found.</p>}
+                    {bookings.map((booking) => (
+                        <UserBookingCard
+                            key={booking.bookingId}
+                            room={booking.roomProvider.room}
+                        />
+                    ))}
+                </section>
             </main>
             <Footer />
         </div>

@@ -9,6 +9,7 @@ import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 import FavouriteRoomCard from "../../components/favouriteRoomCard/FavouriteRoomCard"
 import { Room } from '../../types/Room';
+import { User } from '../../types/User';
 
 function FavouritesPage () {
 
@@ -21,7 +22,7 @@ function FavouritesPage () {
     type Favourite = {
         favouriteId: number;
         room: Room;
-        user: any; // or you can make this more specific if needed later
+        user: User; // or you can make this more specific if needed later
     };
 
     useEffect(() => {

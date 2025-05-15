@@ -1,4 +1,5 @@
 import {useState} from "react";
+import { Link } from 'react-router-dom';
 
 import favRoomCardStyle from './FavouriteRoomCard.module.css'
 
@@ -43,10 +44,16 @@ function FavouriteRoomCard ({ room, favouriteId }: FavouriteRoomCardProps) {
 
     return (
         <div className={favRoomCardStyle.favourite_card}>
+            <Link to={`/room/${room.roomId}`}>
             <img src={room.imageUrl} alt={room.roomName} />
-            <button className="removeFavourite" onClick={handleUnfavourite} disabled={disabled}>
+            </Link>
+                <button className="removeFavourite" onClick={handleUnfavourite} disabled={disabled}>
                 {buttonText}
-            </button>
+                </button>
+
+            <p>
+                {room.roomName}
+            </p>
         </div>
     );
 
