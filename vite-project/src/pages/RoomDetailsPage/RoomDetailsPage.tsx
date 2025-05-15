@@ -12,41 +12,6 @@ import Header from '../../components/layout/Header.tsx';
 import roomImg from '../../Images/room image placeholder.jpg';
 import { stringify } from 'querystring';
 
-    // Being reused for now however is the same between pages that need it
-    function formatDateForURL(date: Date | null): string | null {
-        if (!date) return null;
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
-
-    function parseURLDate(dateString: string | null): Date | null {
-        // Copied from internet, just tests if the URL date is an actual date following ISO standards
-        if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return null;
-        const date = new Date(dateString);
-        // getTime returns NaN if the time is invalid
-        if (isNaN(date.getTime())) return null;
-        return date;
-    }
-
-{/* Interface with all datatypes to be taken from database */}
-interface RoomDetailsDummy {
-  id: string;
-  name: string;
-  location: string;
-  description: string;
-  imageUrl: string;
-  roomType: string;
-  bedType: string;
-  roomCapacity: string;
-  checkIn: string;
-  checkOut: string;
-  internet: string;
-  parking: string;
-  gym: string;
-  pets: string;
-}
 
 
 interface RoomDetails{
@@ -70,21 +35,6 @@ interface RoomProvider {
     checkInDate: string; 
     checkOutDate: string; 
   }
-
-
-{/* Fake temporary data */}
-const ALL_HOTEL_DETAILS: Record<string, RoomDetailsDummy> = {
-    '1': { id: '1', name: 'Hotel 1 - Grand View', location: 'Location 1', description: 'This Room has a nice view and premium amenities.',
-        imageUrl: '/images/hotel-room-1.jpg', roomType: 'Suite', bedType: 'King', roomCapacity: '2',
-        checkIn: '3:00 PM', checkOut: '11:00 AM', internet: 'Included', parking: 'Available', gym: 'Available', pets: 'No' },
-    '2': { id: '2', name: 'Hotel 2 - Ocean Breeze', location: 'Location 2', description: 'This Room has a nice oceanside view and relaxing atmosphere.',
-        imageUrl: '/images/hotel-room-2.jpg', roomType: 'Double', bedType: 'Queen', roomCapacity:'3', checkIn: '2:00 PM', checkOut: '12:00 PM',
-        internet: 'Included', parking: 'Available', gym: 'Not Available', pets: 'Yes' },
-};
-
-
-
-
 
 function RoomDetailsPage () {
     
@@ -281,16 +231,6 @@ function RoomDetailsPage () {
                         <h2 className="bigwhitetext">Room Specifications</h2>
                         <p className="smallwhitetext">
                             Room type: {roomDetails.roomType}<br />
-                          
-                           {/* 
-                            Check-in: {roomDetails.checkIn}<br />
-                            Check-out: {roomDetails.checkOut}<br />
-                            Bed type: {roomDetails.bedType}<br />
-                            Room capacity: {roomDetails.roomCapacity}<br />
-                            Internet: {roomDetails.internet}<br />
-                            Parking: {roomDetails.parking}<br />
-                            Gym: {roomDetails.gym}<br />
-                            Pet Friendly: {roomDetails.pets}<br />*/}
                         </p>
                     </div>
                 </div>

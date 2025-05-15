@@ -10,6 +10,8 @@ import SearchBar, { SearchCriteria } from '../../components/SearchBar/SearchBar.
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 
+import { navigateToSearch, CommonSearchCriteria } from "../../utils/navigationUtils.ts"
+
 // @ts-ignore
 import amsterdamImg from '../../Images/Amsterdam placeholder.jpg';
 // @ts-ignore
@@ -25,57 +27,23 @@ import aalesundImg from '../../Images/Ålesund placeholder.jpg';
 function HomePage() {
 
     const navigate = useNavigate();
-
     // State to hold the dates selected by the picker
     const [checkInDate, setCheckInDate] = useState<Date | null>(null);
     const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
     const [initialSearchTerm, setInitialSearchTerm] = useState(''); // Example
     const [initialRoomType, setInitialRoomType] = useState('any'); // Example
 
-    function formatDateForURL(date: Date | null): string | null {
-        if (!date) return null;
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
+    const handleSearchFromBar = (criteria: CommonSearchCriteria) => {
+        console.log('HomePage received search criteria from SearchBar:', criteria);
 
-
-    // This function is called BY SearchBar when its search button is clicked
-    const handleSearch = (criteria: SearchCriteria) => {
-        /* Since fromDate and toDate, can now be null the need to be formatted and tested */
-
-        console.log('HomePage received search criteria:', criteria);
-
-        const formattedFrom = formatDateForURL(criteria.startDate);
-        const formattedTo = formatDateForURL(criteria.endDate);
-
-        let url = `/search`;
-        const queryParams: string[] = [];
-
-        {/* Using encodeURIComponent() since it can encode & which allows multiple parameters in a query */
-        }
-        if (criteria.searchTerm) {
-            queryParams.push(`location=${encodeURIComponent(criteria.searchTerm)}`);
-        }
-        if (criteria.roomType && criteria.roomType !== 'any') {
-            queryParams.push(`roomType=${encodeURIComponent(criteria.roomType)}`);
-        }
-
-        if (formattedFrom) {
-            queryParams.push(`from=${encodeURIComponent(formattedFrom)}`)
-        }
-
-        if (formattedTo) {
-            queryParams.push(`to=${encodeURIComponent(formattedTo)}`)
-        }
-
-        if (queryParams.length > 0) {
-            url += `?${queryParams.join('&')}`;
-        }
-        navigate(url);
-
-    }
+        const searchCriteriaForNavigation: CommonSearchCriteria = {
+            searchTerm: criteria.searchTerm,
+            startDate: criteria.startDate,
+            endDate: criteria.endDate,
+            roomType: criteria.roomType,
+        };
+        navigateToSearch(navigate, searchCriteriaForNavigation);
+    };
 
 
 
@@ -97,7 +65,7 @@ function HomePage() {
   
           <section className={homePageStyle.container} style={{ marginTop: '20px' }}>
               <SearchBar
-                  onSearch={handleSearch}
+                  onSearch={handleSearchFromBar}
                   initialSearchTerm={initialSearchTerm}
                   initialStartDate={checkInDate}
                   initialEndDate={checkOutDate}
@@ -114,7 +82,7 @@ function HomePage() {
 
 
             <div className={homePageStyle["recommend-container"]}>
-              <button onClick={() => handleSearch({
+              <button onClick={() => handleSearchFromBar({
                   searchTerm: "Ålesund",
                   startDate: checkInDate,
                   endDate: checkOutDate,
@@ -123,7 +91,7 @@ function HomePage() {
                 <img src={aalesundImg} alt="Ålesund" />
                 <div className={homePageStyle.placebox}>Ålesund</div>
               </button>
-              <button onClick={() => handleSearch({
+              <button onClick={() => handleSearchFromBar({
                   searchTerm: "Oslo",
                   startDate: checkInDate,
                   endDate: checkOutDate,
@@ -132,7 +100,7 @@ function HomePage() {
                 <img src={osloImg} alt="Oslo" />
                 <div className={homePageStyle.placebox}>Oslo</div>
               </button>
-              <button onClick={() => handleSearch({
+              <button onClick={() => handleSearchFromBar({
                   searchTerm: "Bergen",
                   startDate: checkInDate,
                   endDate: checkOutDate,
@@ -141,7 +109,7 @@ function HomePage() {
                 <img src={bergenImg} alt="Bergen" />
                 <div className={homePageStyle.placebox}>Bergen</div>
               </button>
-              <button onClick={() => handleSearch({
+              <button onClick={() => handleSearchFromBar({
                   searchTerm: "Amsterdam",
                   startDate: checkInDate,
                   endDate: checkOutDate,

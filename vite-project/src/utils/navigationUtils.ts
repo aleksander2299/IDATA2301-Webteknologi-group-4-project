@@ -10,12 +10,10 @@ export function formatDateForURL(date: Date | null): string | null {
 
 // Interface for search criteria can be expanded however make sure or null is used if you do since this is supposed to be used for multiple function
 export interface CommonSearchCriteria {
-    searchTerm?: string | null;    // Can be hotel name or location
-    hotelOrLocation?: string | null;
+    searchTerm?: string | null;
     startDate?: Date | null;
     endDate?: Date | null;
     roomType?: string | null;
-
 }
 
 /**
@@ -30,9 +28,6 @@ export function navigateToSearch(navigate: NavigateFunction, criteria: CommonSea
 
     if (criteria.searchTerm) {
         queryParams.push(`searchTerm=${encodeURIComponent(criteria.searchTerm)}`);
-    }
-    if (criteria.hotelOrLocation) {
-        queryParams.push(`hotelOrLocation=${encodeURIComponent(criteria.location)}`);
     }
     if (criteria.roomType && criteria.roomType.toLowerCase() !== 'any') {
         queryParams.push(`roomType=${encodeURIComponent(criteria.roomType)}`);
