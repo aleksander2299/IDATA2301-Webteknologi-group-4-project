@@ -63,6 +63,8 @@ function ProviderPage() {
                                                         description={hotel.description}
                                                     >
                                                         {/* Different buttons depending on page */}
+                                                        <button className={providerPageStyle.cardButtons}>Edit listing</button>
+                                                        <button className={providerPageStyle.cardButtons}>Delete listing</button>
                                                     </HotelCard>
                                                 )
                                             )
