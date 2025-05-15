@@ -23,8 +23,26 @@ interface DisplayRoom {
 }
 
 // Might need to be used to simplify filtering
+// Did use AI to help generate this interface because of its complexity
 interface ApiRoomProvider {
-
+    roomProviderId: number;
+    roomPrice: number;
+    provider: {
+        providerId: number;
+        providerName: string;
+    };
+    room: {
+        roomId: number;
+        name: string;
+        description: string;
+        roomType: string;
+        imageUrl: string;
+        hotel: { // This part is crucial
+            hotelId: number;
+            name: string; // Hotel name
+            location: string;
+        };
+    };
 }
 
 function SearchPage() {
@@ -52,7 +70,7 @@ function SearchPage() {
         setError(null);
         console.log("SearchPage: Fetching all hotels...");
         //Get all hotels
-        axios.get('http://localhost:8080/api/roomProvider/')
+        axios.get<ApiRoomProvider[]>('http://localhost:8080/api/roomProvider')
             .then(response => {
                 console.log("Fetching all roomProviders", response.data);
 
@@ -63,7 +81,10 @@ function SearchPage() {
             .finally(() => {
                 setIsLoading(false);
             });
-
+        axios.get(`http://localhost:8080/api/rooms`)
+            .then(response => {
+                console.log("Fetching all rooms", response.data);
+            })
 
     }, []);
 
