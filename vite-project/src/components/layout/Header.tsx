@@ -59,12 +59,6 @@ function Header() {
             <b>Favourites</b>
           </button>
           </Link>
-          { /* settings page */ }
-          <Link to="/settings">
-          <button className="home-buttons right-button">
-            <b>Settings</b>
-          </button>
-          </Link>
           </>
         )
         }
@@ -113,6 +107,12 @@ function Header() {
 
         {role && (
           <>
+          { /* settings page */ }
+          <Link to="/settings">
+          <button className="home-buttons right-button">
+            <b>Settings</b>
+          </button>
+          </Link>
           {/* Log out button */}
             <button className="home-buttons right-button" onClick={handleLogout}>
               <b>Log Out</b>
@@ -144,10 +144,6 @@ function Header() {
           { /* favourites page */}
           <Link to="/favourites" className="dropdown-link">
             Favourites
-          </Link>
-          { /* settings page */ }
-          <Link to="/settings" className="dropdown-link">
-            Settings
           </Link>
           </>
         )
@@ -188,6 +184,10 @@ function Header() {
 
         {role && (
           <>
+          { /* settings page */ }
+          <Link to="/settings" className="dropdown-link">
+            Settings
+          </Link>
           {/* Log out button */}
             <option className="dropdown-link" onClick={handleLogout}>
               <b>Log Out</b>
