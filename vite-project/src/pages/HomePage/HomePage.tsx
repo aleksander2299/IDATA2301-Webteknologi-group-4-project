@@ -7,8 +7,8 @@ import homePageStyle from './HomePage.module.css';
 
 import SearchBar, { SearchCriteria } from '../../components/SearchBar/SearchBar.tsx';
 //import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
-//import Footer from '../../components/layout/Footer.tsx';
-//import Header from '../../components/layout/Header.tsx';
+import Footer from '../../components/layout/Footer.tsx';
+import Header from '../../components/layout/Header.tsx';
 
 // @ts-ignore
 import amsterdamImg from '../../Images/Amsterdam placeholder.jpg';
@@ -56,9 +56,8 @@ function HomePage() {
         {/* Using encodeURIComponent() since it can encode & which allows multiple parameters in a query */
         }
         if (criteria.searchTerm) {
-            queryParams.push(`hotelName=${encodeURIComponent(criteria.searchTerm)}`)
+            queryParams.push(criteria.searchTerm);
         }
-
         if (criteria.roomType && criteria.roomType !== 'any') {
             queryParams.push(`roomType=${encodeURIComponent(criteria.roomType)}`);
         }
@@ -75,33 +74,16 @@ function HomePage() {
             url += `?${queryParams.join('&')}`;
         }
         navigate(url);
+
     }
 
-<<<<<<< Updated upstream
-=======
-    if (criteria.roomType && criteria.roomType !== 'any') {
-        queryParams.push(`roomType=${encodeURIComponent(criteria.roomType)}`);
-    }
 
-    if (formattedFrom) {
-        queryParams.push(`from=${encodeURIComponent(formattedFrom)}`)
-    }
 
-    if (formattedTo) {
-        queryParams.push(`to=${encodeURIComponent(formattedTo)}`)
-    }
-
-    if (queryParams.length > 0) {
-        url += `?${queryParams.join('&')}`;
-    }
-    navigate(url);
-
->>>>>>> Stashed changes
 
         // TEMPORARY TO SEE IF YOU ARE LOGGED IN.
         const username = localStorage.getItem('username');
         console.log('Logged in as:', username);
-})
+
     return (
       <div>
         <Header />
