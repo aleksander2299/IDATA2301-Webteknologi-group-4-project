@@ -144,9 +144,6 @@ function SearchPage() {
         setIsLoading(false);
 
 
-        setFilteredDisplayRooms(mappedRooms);
-        setIsLoading(false); // Filtering/data processing complete
-
     }, [searchParams, allRoomsFromApi, isLoading, error]); // Re-run when URL params change OR when allHotels data arrives
 
 
