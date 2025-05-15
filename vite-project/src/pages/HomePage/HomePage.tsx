@@ -7,8 +7,8 @@ import homePageStyle from './HomePage.module.css';
 
 import SearchBar, { SearchCriteria } from '../../components/SearchBar/SearchBar.tsx';
 //import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
-import Footer from '../../components/layout/Footer.tsx';
-import Header from '../../components/layout/Header.tsx';
+//import Footer from '../../components/layout/Footer.tsx';
+//import Header from '../../components/layout/Header.tsx';
 
 // @ts-ignore
 import amsterdamImg from '../../Images/Amsterdam placeholder.jpg';
@@ -101,7 +101,7 @@ function HomePage() {
         // TEMPORARY TO SEE IF YOU ARE LOGGED IN.
         const username = localStorage.getItem('username');
         console.log('Logged in as:', username);
-
+})
     return (
       <div>
         <Header />
