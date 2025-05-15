@@ -74,8 +74,9 @@ function ProviderPage() {
                                     </div>
                 </section>
                 <section>
-                    {/* Searchbar for adding a room */}
-                    {/* List of all rooms searched for */}
+                    <button className={providerPageStyle.deletebtn}>
+                        Delete all listings
+                    </button>
                 </section>
             </div>
 

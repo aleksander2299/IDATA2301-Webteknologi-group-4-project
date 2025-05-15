@@ -34,3 +34,21 @@
     gap: 1rem; /* space between HotelCards */
     justify-content: center; /* optional: aligns items to the left */
 }
+
+.deletebtn{
+    padding: 1rem;
+    font-size: 2rem;
+    margin: 1rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    background-color: rgba(60, 58, 58, 0.588);
+    border-radius: 10px;
+    border: solid 2px rgba(255, 255, 255, 0.9);
+
+    }
+
+.deletebtn:hover{
+    background-color: rgba(49, 49, 49, 0.85);
+    border-color: #fb4386;
+    color: rgb(251, 67, 134);
+}
