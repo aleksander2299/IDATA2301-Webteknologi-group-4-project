@@ -1,7 +1,8 @@
 .favourite_card {
-    margin: 4rem;
+    margin: 1rem;
     padding: 0;
     overflow: hidden;
+    border: dashed 1px lightgrey;
     border-radius: 1rem;
     width: 20rem;
     height: 20rem;
@@ -9,8 +10,9 @@
 }
 
 .favourite_card > img {
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
 }
 
 .favourite_card > button {
