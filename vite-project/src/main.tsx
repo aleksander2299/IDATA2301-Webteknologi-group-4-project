@@ -3,14 +3,15 @@ import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import AdminPage from './pages/AdminPage/AdminPage.tsx';
+import FavouritesPage from './pages/FavouritesPage/FavouritesPage.tsx';
 import HomePage from './pages/HomePage/HomePage.tsx';
 import LoginPage from './pages/LoginPage/LoginPage.tsx';
+import ProviderPage from './pages/ProviderPage/ProviderPage.tsx';
 import RegisterPage from './pages/RegisterPage/RegisterPage.tsx';
 import RoomDetailsPage from './pages/RoomDetailsPage/RoomDetailsPage.tsx';
 import SearchPage from './pages/SearchPage/SearchPage.tsx';
-import UserBookingsPage from './pages/UserBookingsPage/UserBookingsPage.tsx';
-import FavouritesPage from './pages/FavouritesPage/FavouritesPage.tsx';
 import SettingsPage from './pages/SettingsPage/SettingsPage.tsx';
+import UserBookingsPage from './pages/UserBookingsPage/UserBookingsPage.tsx';
 
 const router = createBrowserRouter ([
   { path: '/', element: <HomePage /> },
@@ -21,7 +22,8 @@ const router = createBrowserRouter ([
   { path: '/admin', element: <AdminPage />},
   { path: '/booking', element: <UserBookingsPage /> },
   { path: '/favourites', element: <FavouritesPage /> },
-  { path : '/settings', element: <SettingsPage/>}, 
+  { path: '/settings', element: <SettingsPage />},
+  { path: '/provider', element: <ProviderPage />}
 
 
 ]);

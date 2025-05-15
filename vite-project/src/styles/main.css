@@ -167,14 +167,14 @@ footer {
 }
 
 
-@media (min-width: 769px) {
+@media (min-width: 960px) {
   .dropdown {
     display: none;
   }
 }
 
 
-@media (max-width: 769px) {
+@media (max-width: 960px) {
   .right-button {
     display: none;
   }
