@@ -7,6 +7,104 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.mainSearchInputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 180px;
+}
+
+.inputLabel {
+    font-size: 0.8rem;
+    color: #ccc;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.textInput,
+.selectInput {
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #444;
+    color: #fff;
+    font-size: 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Datepicker is its own component so it is controlled trough its own css mostly */
+.datePickerInput {
+    width: 100%;
+}
+
+
+
+.searchButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    height: fit-content;
+    align-self: flex-end;
+    white-space: nowrap;
+}
+
+.searchButton:hover {
+    background-color: #0056b3;
+}
+
+.additionalFilters {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #444;
+}
+
+/* Set up so the search bar will be horizontal on desktops and such and for phones it will be stacked */
+@media (min-width: 768px) {
+    .mainSearchInputs {
+        flex-wrap: nowrap;
+    }
+
+    .inputGroup {
+        /* Default growth and basis */
+        flex-grow: 1;
+        flex-basis: 0; /* Allows items to shrink and grow from a zero basis if needed */
+    }
+
+    /* Give Hotel/Location more space */
+    .inputGroup:nth-child(1) {
+        flex-grow: 2;
+    }
+
+    /* Date picker group */
+    .inputGroup:nth-child(2) {
+        flex-grow: 1.5;
+        min-width: 270px;
+    }
+
+    /* Room type group */
+    .inputGroup:nth-child(3) {
+        flex-grow: 1;
+        min-width: 150px;
+    }
+
+    .searchButton {
+        flex-grow: 0;
+        margin-left: 15px;
+    }
+}
+
 
 
 @media (max-width: 767px) {
