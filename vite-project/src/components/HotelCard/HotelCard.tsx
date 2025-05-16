@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 //import PropTypes from 'prop-types';
 
 // Import the specific CSS for this component
-import './HotelCard.css';
+import HotelCardStyles from './HotelCard.module.css';
 
 const DEFAULT_IMAGE_URL = '/images/placeholder-hotel.png';
 
@@ -43,8 +43,8 @@ function HotelCard({
         }
 
     return (
-        <div className="hotel-card" hotel-id={id}>
-              <div className="hotel-card-image-container">
+        <div className={HotelCardStyles["hotel-card"]} hotel-id={id}>
+              <div className={HotelCardStyles["hotel-card-image-container"]}>
                 <img
                     src={currentImageUrl}
                     alt={imageAlt}
@@ -53,7 +53,7 @@ function HotelCard({
                 />
               </div>
 
-              <div className="hotel-card-info">
+              <div className={HotelCardStyles["hotel-card-info"]}>
                 {/* Conditionally render title if provided */}
                 {title && <h3 className="hotel-card-title">{title}</h3>}
                 {/* Conditionally render description if provided */}
@@ -61,7 +61,7 @@ function HotelCard({
               </div>
 
               {/* Render action buttons passed as children */}
-              {children && <div className="hotel-card-actions">{children}</div>}
+              {children && <div className={HotelCardStyles["hotel-card-actions"]}>{children}</div>}
             </div>
       )
     }
