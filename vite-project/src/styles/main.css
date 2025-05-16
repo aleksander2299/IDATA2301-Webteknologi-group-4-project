@@ -14,19 +14,33 @@ body {
     font-family: "Poppins", sans-serif;
     font-weight: 100;
     width: 100%;
+    min-height: 100vh;
     /* background: linear-gradient(0deg, #d56723, rgb(210, 0, 140), rgb(251, 67, 135), #d56723); */
-    background: linear-gradient(0deg, #fd8941d9, rgba(231, 123, 0, 0.845), rgba(251, 67, 134, 0.873), #ff873cd3);
     background-size: 300% 300%;
     animation: color 10s ease-in-out infinite;
+    background: linear-gradient(0deg, #fd8941d9, rgba(231, 123, 0, 0.845), rgba(251, 67, 134, 0.873), #ff873cd3) fixed;
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh; /* #root should also span full viewport height */
+    display: flex;
+    flex-direction: column;
+    background-color: transparent !important;
 }
 
 #root > div {
     display: flex;
     flex-flow: column nowrap;
     min-height: 100vh;
+    flex-grow: 1;
+    background-color: transparent !important;
+    width: 100%;
 }
 #root > div > main {
     flex-grow: 1;
+    background-color: transparent !important;
+    width: 100%;
 }
 
 @keyframes color{

@@ -220,6 +220,7 @@ function SearchPage() {
                     )
                     }
                 </div>
+
             </main>
             <Footer/>
         </div>
