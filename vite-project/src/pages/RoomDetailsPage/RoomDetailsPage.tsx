@@ -343,8 +343,8 @@ function RoomDetailsPage () {
                             Room type: {roomDetails.roomType}<br />
                             <p>Amenities :</p> 
                             <ul>
+                                {ExtraFeatures.map((feature) => (
                                 < li>{feature.feature}</li>))}
-                                 {ExtraFeatures.map((feature) => (
                                </ul>
                         </div>
                     </div>
