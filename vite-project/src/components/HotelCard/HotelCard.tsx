@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 // Import the specific CSS for this component
 import HotelCardStyles from './HotelCard.module.css';
+import {devNull} from "node:os";
 
 const DEFAULT_IMAGE_URL = '/images/placeholder-hotel.png';
 
@@ -12,6 +13,7 @@ interface HotelCardProps {
     imageAlt?: string;
     title?: string;
     description?: string;
+    price?: number;
     children?: React.ReactNode,
 }
 
@@ -21,6 +23,7 @@ function HotelCard({
   imageAlt,
   title,
   description,
+  price,
   children,
 }: HotelCardProps) {
 
@@ -58,6 +61,8 @@ function HotelCard({
                 {title && <h3 className="hotel-card-title">{title}</h3>}
                 {/* Conditionally render description if provided */}
                 {description && <p className="hotel-card-description">{description}</p>}
+                {/* Conditionally render price if provided */}
+                {price && <p className="hotel-card-price">{price}</p>}
               </div>
 
               {/* Render action buttons passed as children */}
@@ -72,6 +77,7 @@ HotelCard.defaultProps = {
   imageAlt: 'Hotel room or property',
   title: '',
   description: '',
+  price: undefined,
   children: null,
 };
 
