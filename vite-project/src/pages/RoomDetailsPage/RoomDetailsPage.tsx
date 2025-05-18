@@ -12,42 +12,11 @@ import Header from '../../components/layout/Header.tsx';
 import { features } from 'process';
 import { Console } from 'console';
 
+import { parseURLDate} from "../../utils/navigationUtils.ts";
+import roomImg from '../../Images/room image placeholder.jpg';
+import { stringify } from 'querystring';
 
-    // Being reused for now however is the same between pages that need it
-    function formatDateForURL(date: Date | null): string | null {
-        if (!date) return null;
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
 
-    function parseURLDate(dateString: string | null): Date | null {
-        // Copied from internet, just tests if the URL date is an actual date following ISO standards
-        if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return null;
-        const date = new Date(dateString);
-        // getTime returns NaN if the time is invalid
-        if (isNaN(date.getTime())) return null;
-        return date;
-    }
-
-{/* Interface with all datatypes to be taken from database */}
-interface RoomDetailsDummy {
-  id: string;
-  name: string;
-  location: string;
-  description: string;
-  imageUrl: string;
-  roomType: string;
-  bedType: string;
-  roomCapacity: string;
-  checkIn: string;
-  checkOut: string;
-  internet: string;
-  parking: string;
-  gym: string;
-  pets: string;
-}
 
 
 interface RoomDetails{
@@ -83,7 +52,6 @@ interface RoomProvider {
     checkInDate: string; 
     checkOutDate: string; 
   }
-
 
 
 {/* Fake temporary data */}
@@ -375,7 +343,7 @@ function RoomDetailsPage () {
                             Room type: {roomDetails.roomType}<br />
                             <p>Amenities :</p> 
                             <ul>
-                                 {ExtraFeatures.map((feature) => (
+                                {ExtraFeatures.map((feature) => (
                                 < li>{feature.feature}</li>))}
                                </ul>
                         </div>

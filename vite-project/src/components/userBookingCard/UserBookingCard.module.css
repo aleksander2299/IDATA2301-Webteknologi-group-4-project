@@ -1,0 +1,39 @@
+.favourite_card {
+    margin: 1rem;
+    padding: 0;
+    overflow: hidden;
+    border: dashed 1px lightgrey;
+    border-radius: 1rem;
+    width: 20rem;
+    height: 20rem;
+    position: relative;
+}
+
+.favourite_card > a {
+    width: 100%;
+    height: 100%;
+}
+
+.favourite_card img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.favourite_card > button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4rem;
+    border-style: none;
+    font-size: 1.8rem;
+    color: white;
+    font-variant: small-caps;
+    background: linear-gradient(180deg, rgba(120, 20, 20, 0.6), rgb(120, 20, 20));
+    transition: background 0.5s ease-in-out;
+}
+
+.favourite_card > button:hover {
+    background: linear-gradient(180deg, rgb(170, 70, 70), rgb(120, 20, 20));
+}
