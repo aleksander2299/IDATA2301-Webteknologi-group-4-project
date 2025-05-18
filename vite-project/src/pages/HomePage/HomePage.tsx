@@ -56,6 +56,7 @@ function HomePage() {
       <div>
         <Header />
         
+        
         <main className={homePageStyle["content-wrapper"]}style={{ marginTop: '20px' }}>
           <section className={homePageStyle.container}>
             <div className={homePageStyle.introductionbox}>

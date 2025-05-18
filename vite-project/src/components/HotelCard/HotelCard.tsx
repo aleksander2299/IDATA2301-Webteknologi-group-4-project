@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 //import PropTypes from 'prop-types';
 
 // Import the specific CSS for this component
 import HotelCardStyles from './HotelCard.module.css';
-import {devNull} from "node:os";
+
+import FavoriteButton from '../../components/FavoriteButton/FavoriteButton.tsx';
 
 const DEFAULT_IMAGE_URL = '/images/placeholder-hotel.png';
 
@@ -55,6 +56,7 @@ function HotelCard({
                     onError={handleImageError}
                 />
               </div>
+              <FavoriteButton roomId={parseInt(id,10)}/>
 
               <div className={HotelCardStyles["hotel-card-info"]}>
                 {/* Conditionally render title if provided */}
