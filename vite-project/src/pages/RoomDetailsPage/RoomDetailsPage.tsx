@@ -16,6 +16,8 @@ import { parseURLDate} from "../../utils/navigationUtils.ts";
 import roomImg from '../../Images/room image placeholder.jpg';
 import { stringify } from 'querystring';
 
+import { axiosInstance } from '../../AxiosInstance.js';
+
 
 
 
@@ -119,7 +121,7 @@ function RoomDetailsPage () {
             return;
         }
         
-        axios.get(`http://localhost:8080/api/rooms/${numericId}`)
+        axiosInstance.get(`/rooms/${numericId}`)
           .then((response) => {
             setRoomDetails(response.data);
             {/*console.log(response.data)*/}
@@ -128,7 +130,7 @@ function RoomDetailsPage () {
             console.error(err);
           });
 
-          axios.get(`http://localhost:8080/api/rooms/${numericId}/source`)
+          axiosInstance.get(`/rooms/${numericId}/source`)
           .then((response) => {
             setSource(response.data)
           })
@@ -143,7 +145,7 @@ function RoomDetailsPage () {
 
     
 
-        axios.get(`http://localhost:8080/api/rooms/${numericId}/roomProviders`)
+        axiosInstance.get(`/rooms/${numericId}/roomProviders`)
         .then((Response) => 
         {
            {/*log(JSON.stringify(Response.data, null, 2) + "here is roomproviders"); */} 
@@ -195,7 +197,7 @@ function RoomDetailsPage () {
     
 
 
-        axios.post(`http://localhost:8080/api/booking/withIds/${selectedProvider}/${localStorage.getItem('username')}`,booking,
+        axiosInstance.post(`/booking/withIds/${selectedProvider}/${localStorage.getItem('username')}`,booking,
         {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -227,9 +229,10 @@ function RoomDetailsPage () {
         if(roomDetails === null){
             return
         }
-        axios.get(`http://localhost:8080/api/rooms/2/dates`)
+        axiosInstance.get(`/rooms/2/dates`)
         .then((response) => {
             setBookingDates(response.data)
+            console.log(JSON.stringify(BookingDates))
         })
         .catch((err) => {
           console.error(err)
@@ -243,7 +246,7 @@ function RoomDetailsPage () {
             return 
         }
 
-        axios.get(`http://localhost:8080/api/source_extra_features/extra_features/sourceFeatures/${Source?.sourceId}`)
+        axiosInstance.get(`/source_extra_features/extra_features/sourceFeatures/${Source?.sourceId}`)
         .then((response) => {
          {/* console.log(JSON.stringify(response.data) + " here is source extra features");
           console.log(Source?.sourceId + "SOURCEID")
