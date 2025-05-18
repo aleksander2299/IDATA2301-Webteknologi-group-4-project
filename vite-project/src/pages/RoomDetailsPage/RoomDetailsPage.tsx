@@ -16,6 +16,8 @@ import { parseURLDate, formatDateForURL} from "../../utils/navigationUtils.ts";
 import roomImg from '../../Images/room image placeholder.jpg';
 import { stringify } from 'querystring';
 
+import { axiosInstance } from '../../AxiosInstance.js';
+
 
 
 
@@ -112,7 +114,28 @@ function RoomDetailsPage () {
             {/* Exit Early */}
             return;
         }
+        
+        axios.get(`http://localhost:8080/api/rooms/${numericId}`)
+          .then((response) => {
+            setRoomDetails(response.data);
+            {/*console.log(response.data)*/}
+          })
+          .catch((err) => {
+            console.error(err);
+          });
 
+          axios.get(`http://localhost:8080/api/rooms/${numericId}/source`)
+          .then((response) => {
+            setSource(response.data)
+          })
+          .catch((error) => {
+            if (error.response) {
+              console.error("Status:", error.response.status); 
+              console.error("Data:", error.response.data); 
+            } else {
+              console.error("General Error:", error.message);
+            }
+          });
 
 
         Promise.all([
@@ -120,15 +143,15 @@ function RoomDetailsPage () {
             axios.get(`http://localhost:8080/api/rooms/${numericId}/source`),
             axios.get(`http://localhost:8080/api/rooms/${numericId}/roomProviders`),
             axios.get<[string, string][]>(`http://localhost:8080/api/rooms/${numericId}/dates`)
-        ]).then(([roomDetailsRes, sourceRes, providersRes, occupiedDatesRes]) => {
             setRoomDetails(roomDetailsRes.data);
+        ]).then(([roomDetailsRes, sourceRes, providersRes, occupiedDatesRes]) => {
             setSource(sourceRes.data);
-            setProviders(providersRes.data);
             setRawBookingDates(occupiedDatesRes.data);
+            setProviders(providersRes.data);
             console.log("Fetched occupied dates:", occupiedDatesRes.data);
         }).catch((err) => {
-            console.error("Error fetching room data:", err);
             setError(err.response?.data?.message || err.message || "Failed to fetch room data.");
+            console.error("Error fetching room data:", err);
         }).finally(() => {
             setIsLoading(false);
         });
@@ -196,7 +219,7 @@ function RoomDetailsPage () {
     
 
 
-        axios.post(`http://localhost:8080/api/booking/withIds/${selectedProvider}/${localStorage.getItem('username')}`,booking,
+        axiosInstance.post(`/booking/withIds/${selectedProvider}/${localStorage.getItem('username')}`,booking,
         {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -228,9 +251,10 @@ function RoomDetailsPage () {
         if(roomDetails === null){
             return
         }
-        axios.get(`http://localhost:8080/api/rooms/2/dates`)
+        axiosInstance.get(`/rooms/2/dates`)
         .then((response) => {
             setBookingDates(response.data)
+            console.log(JSON.stringify(BookingDates))
         })
         .catch((err) => {
           console.error(err)
@@ -244,7 +268,7 @@ function RoomDetailsPage () {
             return 
         }
 
-        axios.get(`http://localhost:8080/api/source_extra_features/extra_features/sourceFeatures/${Source?.sourceId}`)
+        axiosInstance.get(`/source_extra_features/extra_features/sourceFeatures/${Source?.sourceId}`)
         .then((response) => {
          {/* console.log(JSON.stringify(response.data) + " here is source extra features");
           console.log(Source?.sourceId + "SOURCEID")
