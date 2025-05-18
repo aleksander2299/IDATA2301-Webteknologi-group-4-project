@@ -93,6 +93,7 @@ interface CustomDatePickerProps {
   initialStartDate?: Date | null;
   initialEndDate?: Date | null;
   className?: string;
+  excludeDateIntervals?: Array<{ start: Date; end: Date }>;
 }
 
 
@@ -106,6 +107,7 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
   initialStartDate,
   initialEndDate,
   className,
+  excludeDateIntervals,
 }) => {
   const [startDate, setStartDate] = useState<Date | null>(initialStartDate);
   const [endDate, setEndDate] = useState<Date | null>(initialEndDate);
@@ -117,7 +119,7 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
     if (initialEndDate !== endDate) {
         setEndDate(initialEndDate || null);
     }
-  }, [initialStartDate, initialEndDate, startDate, endDate]);
+  }, [initialStartDate, initialEndDate]);
 
   const handleDateChange = (dates: [Date | null, Date | null] | Date | null) => {
     let newStart: Date | null = null;
@@ -142,6 +144,7 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = ({
       onChange={handleDateChange}
       // Prevent dates before current date
       minDate={new Date()}
+      excludeDateIntervals={excludeDateIntervals}
 
       // Using Only an Icon as the Trigger
       customInput={<CustomButton

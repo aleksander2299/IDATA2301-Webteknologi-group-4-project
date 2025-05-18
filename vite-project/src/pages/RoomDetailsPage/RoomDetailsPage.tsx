@@ -12,7 +12,7 @@ import Header from '../../components/layout/Header.tsx';
 import { features } from 'process';
 import { Console } from 'console';
 
-import { parseURLDate} from "../../utils/navigationUtils.ts";
+import { parseURLDate, formatDateForURL} from "../../utils/navigationUtils.ts";
 import roomImg from '../../Images/room image placeholder.jpg';
 import { stringify } from 'querystring';
 
@@ -53,20 +53,10 @@ interface RoomProvider {
     checkOutDate: string; 
   }
 
-
-{/* Fake temporary data */}
-const ALL_HOTEL_DETAILS: Record<string, RoomDetailsDummy> = {
-    '1': { id: '1', name: 'Hotel 1 - Grand View', location: 'Location 1', description: 'This Room has a nice view and premium amenities.',
-        imageUrl: '/images/hotel-room-1.jpg', roomType: 'Suite', bedType: 'King', roomCapacity: '2',
-        checkIn: '3:00 PM', checkOut: '11:00 AM', internet: 'Included', parking: 'Available', gym: 'Available', pets: 'No' },
-    '2': { id: '2', name: 'Hotel 2 - Ocean Breeze', location: 'Location 2', description: 'This Room has a nice oceanside view and relaxing atmosphere.',
-        imageUrl: '/images/hotel-room-2.jpg', roomType: 'Double', bedType: 'Queen', roomCapacity:'3', checkIn: '2:00 PM', checkOut: '12:00 PM',
-        internet: 'Included', parking: 'Available', gym: 'Not Available', pets: 'Yes' },
-};
-
-
-
-
+  interface ExcludedDateInterval {
+    start: Date;
+    end: Date;
+  }
 
 function RoomDetailsPage () {
     
@@ -97,6 +87,10 @@ function RoomDetailsPage () {
     const [error, setError] = useState<string | null>(null);
     const [roomDetails, setRoomDetails] = useState<RoomDetails | null>(null);
 
+    // Need to use rawBookingDates since its coming straight from backend
+    const [rawBookingDates, setRawBookingDates] = useState<[string, string][]>([]);
+    const [disabledDateIntervals, setDisabledDateIntervals] = useState<ExcludedDateInterval[]>([]);
+
     {/* Never have any early returns before useEffect */}
     useEffect(() => {
 
@@ -118,44 +112,51 @@ function RoomDetailsPage () {
             {/* Exit Early */}
             return;
         }
-        
-        axios.get(`http://localhost:8080/api/rooms/${numericId}`)
-          .then((response) => {
-            setRoomDetails(response.data);
-            {/*console.log(response.data)*/}
-          })
-          .catch((err) => {
-            console.error(err);
-          });
 
-          axios.get(`http://localhost:8080/api/rooms/${numericId}/source`)
-          .then((response) => {
-            setSource(response.data)
-          })
-          .catch((error) => {
-            if (error.response) {
-              console.error("Status:", error.response.status); 
-              console.error("Data:", error.response.data); 
-            } else {
-              console.error("General Error:", error.message);
-            }
-          });
 
-    
 
-        axios.get(`http://localhost:8080/api/rooms/${numericId}/roomProviders`)
-        .then((Response) => 
-        {
-           {/*log(JSON.stringify(Response.data, null, 2) + "here is roomproviders"); */} 
-            setProviders(Response.data)
-        
-        }
-        ).catch((error) => 
-        {
-            console.error(error.data + " HERE IS THE ERROR FOR NUMERICID")
+        Promise.all([
+            axios.get(`http://localhost:8080/api/rooms/${numericId}`),
+            axios.get(`http://localhost:8080/api/rooms/${numericId}/source`),
+            axios.get(`http://localhost:8080/api/rooms/${numericId}/roomProviders`),
+            axios.get<[string, string][]>(`http://localhost:8080/api/rooms/${numericId}/dates`)
+        ]).then(([roomDetailsRes, sourceRes, providersRes, occupiedDatesRes]) => {
+            setRoomDetails(roomDetailsRes.data);
+            setSource(sourceRes.data);
+            setProviders(providersRes.data);
+            setRawBookingDates(occupiedDatesRes.data);
+            console.log("Fetched occupied dates:", occupiedDatesRes.data);
+        }).catch((err) => {
+            console.error("Error fetching room data:", err);
+            setError(err.response?.data?.message || err.message || "Failed to fetch room data.");
+        }).finally(() => {
+            setIsLoading(false);
         });
 
-    }, [ searchParams ]);
+    }, [ id, numericId, searchParams ]);
+
+    useEffect(() => {
+        const newDisabledIntervals: ExcludedDateInterval[] = [];
+
+        if (rawBookingDates && rawBookingDates.length > 0) {
+            for (const range of rawBookingDates) {
+                const startDateString = range[0];
+                const endDateString = range[1];
+
+                const startDate = parseURLDate(startDateString);
+                const endDate = parseURLDate(endDateString);
+
+                if (startDate && endDate) {
+                    newDisabledIntervals.push({ start: startDate, end: endDate });
+                } else {
+                    console.warn("Invalid start date:", startDate);
+                }
+            }
+            setDisabledDateIntervals(newDisabledIntervals);
+        } else {
+            setDisabledDateIntervals([]); // Clear if no booking dates
+        }
+    }, [rawBookingDates]);
 
 // Used to update DatePicker on this page based on searchParams
     const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
@@ -306,6 +307,7 @@ function RoomDetailsPage () {
                                    onDatesSelected={handleDatesUpdate} // Pass the handler function
                                    initialStartDate={checkInDate}      // Pass the current state
                                    initialEndDate={checkOutDate}        // Pass the current state
+                                   excludeDateIntervals={disabledDateIntervals}
                                />
                          </div>
                     <select value={selectedProvider ?? ""} onChange={changeProvider}>
