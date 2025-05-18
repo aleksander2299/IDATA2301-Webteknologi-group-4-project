@@ -22,6 +22,7 @@ interface DisplayRoom {
     imageUrl: string;
     roomType?: string;
     sourceName?: string;
+    lowestPrice?: number;
 }
 
 // Might need to be used to simplify filtering
@@ -42,6 +43,8 @@ interface ApiRoom {
     visible: boolean;
 }
 
+type SortOption = 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc' | 'default';
+
 function SearchPage() {
 
     // Needs to be destructured to be able to be changed
@@ -49,7 +52,7 @@ function SearchPage() {
     const navigate = useNavigate();
 
     // Just to store all hotels however not to be changed only used to filter
-    const [allRoomsFromApi, setAllRoomsFromApi] = useState<DisplayRoom[]>([]);
+    const [allRoomsFromApi, setAllRoomsFromApi] = useState<ApiRoom[]>([]);
     const [filteredDisplayRooms, setFilteredDisplayRooms] = useState<DisplayRoom[]>([]);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -179,15 +182,15 @@ function SearchPage() {
                     </SearchBar>
                 </section>
 
-                {/* Filters Section
-                <div className="filters">
-                    <button className="filter-btn">Sort by (rating, low to high...)</button>
-                    <button className="filter-btn">Price</button>
-                    <button className="filter-btn">Filter by rooms</button>
-                    <button className="filter-btn">Rating</button>
-                    <button className="filter-btn">DisplayRoom or house</button>
+
+                <div className="extra-filters">
+                        <div>
+                            <label htmlFor="lowToHigh">Min Price: </label>
+                            <input
+
+                            />
+                        </div>
                 </div>
-                */}
 
                 {/* DisplayRoom List Section */}
                 <div className="hotel-list">

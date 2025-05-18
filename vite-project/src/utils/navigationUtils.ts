@@ -24,6 +24,9 @@ export interface CommonSearchCriteria {
     startDate?: Date | null;
     endDate?: Date | null;
     roomType?: string | null;
+    minPrice?: number;
+    maxPrice?: number;
+    amenities?: string[];
 }
 
 /**
