@@ -107,6 +107,7 @@ function SearchPage() {
 
         console.log("SearchPage: Processing rooms to fetch providers and prices...");
         setIsLoading(true); // Loading while fetching providers for all rooms
+        setError(null); // Clear old errors
 
         const fetchProvidersForAllRooms = async () => {
             const roomsProcessed: DisplayRoom[] = [];
@@ -144,6 +145,7 @@ function SearchPage() {
             .catch(overallError => {
                 console.error("Error during provider fetching process:", overallError);
                 setError("Could not load all room price information.");
+                setRoomsWithPrices([]);;
             })
             .finally(() => {
                 setIsLoading(false);
@@ -229,7 +231,7 @@ function SearchPage() {
 
 
 
-    }, [searchParams, allRoomsFromApi, isLoading, error]); // Re-run when URL params change OR when allHotels data arrives
+    }, [searchParams, roomsWithPrices, sortOption, error]); // Re-run when URL params change OR when allHotels data arrives
 
 
     const handleSearchFromBar = (criteria: SearchBarCriteria) => {
@@ -245,6 +247,21 @@ function SearchPage() {
     const GoToDealHandler = (hotelId: string) => {
         navigateToRoomDetails(navigate, hotelId, checkInDate, checkOutDate);
     };
+
+    const handleExtraFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newSortOption = event.target.value as SortOption;
+        const currentParams = new URLSearchParams(searchParams);
+        currentParams.set('sort', newSortOption);
+        setSearchParams(currentParams);
+    }
+
+    if (isLoading && filteredDisplayRooms.length === 0) { // Or just isLoading if you clear results during load
+        return <p className={SearchPageStyle.loadingMessage}>Loading hotels...</p>;
+    }
+
+    if (error) {
+        return <p className={SearchPageStyle.errorMessage}>Error: {error}</p>;
+    }
 
     return (
         <div>
@@ -265,7 +282,7 @@ function SearchPage() {
                         <select
                             id="sortOptions"
                             value={sortOption}
-                            //onChange={() => handleExtraFilterChange()}
+                            onChange={handleExtraFilterChange}
                         >
                             <option value="default">Relevance</option>
                             <option value="price_asc">Price: Low to High</option>
