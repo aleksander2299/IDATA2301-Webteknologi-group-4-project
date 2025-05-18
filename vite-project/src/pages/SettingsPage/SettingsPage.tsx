@@ -5,9 +5,13 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { axiosInstance } from '../../AxiosInstance.js';
 
 function SettingsPage(){
     
+
+const [newPassword, setNewPassword] = useState('');
+const [confirmPassword, setConfirmPassword] = useState('');    
 const navigate = useNavigate();
 
 const handleLogout = () => {
@@ -21,6 +25,38 @@ interface user{
     username: string;
     password: string;
     role: string;
+}
+
+
+function changePassword(){
+    const token = localStorage.getItem("token")
+
+    if(newPassword.match(confirmPassword) != null)
+    {
+        const user = {
+            username : localStorage.getItem("username") || "",
+            password : newPassword,
+            role : (localStorage.getItem("role") || "").replace(/^ROLE_/, ""),
+        }
+
+            axiosInstance.put(`/user/${user.username}`, user, {
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                alert("Password changed successfully.");
+                localStorage.setItem("password", newPassword);
+            })
+            .catch((err) => {
+                alert("password not changed")
+                console.error(err)
+            })
+
+}
+else{
+    console.log("no password match")
+}
 }
 
 
@@ -40,7 +76,7 @@ function deleteAccount(){
     console.log('Deleting user: ', user);  
     console.log(token + " TOKEN ")
 
-    axios.delete(`http://localhost:8080/api/user`, {
+    axiosInstance.delete(`/user`, {
     headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -91,10 +127,10 @@ function deleteAccount(){
             <section id="changePassword" >
                 <h2 className="h2">change password ?</h2>
                 <label className="label">Change Password:</label>
-                <input className="input" type="password" defaultValue="password" />
+                <input className="input" type="password" defaultValue="password" onChange={(ev) => setNewPassword(ev.target.value)} />
                 <label className="label">Confirm Password:</label>
-                <input className="input" type="password" value="password" id="confirmpass" />
-                <button>Change Password</button>
+                <input className="input" type="password" defaultValue="password" id="confirmpass" onChange={(e) => setConfirmPassword(e.target.value)} />
+                <button onClick={changePassword}>Change Password</button>
             </section>
 
         </div>
@@ -107,4 +143,6 @@ function deleteAccount(){
 }
 
 export default SettingsPage;
+
+
 
