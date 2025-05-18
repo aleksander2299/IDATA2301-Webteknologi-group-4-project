@@ -60,6 +60,35 @@ interface RoomProvider {
     end: Date;
   }
 
+    function intervalsOverlap(s1: Date | null, e1: Date | null, s2: Date, e2: Date): boolean {
+        if (!s1 || !e1) { // If user selection is incomplete, no overlap for this specific check
+            return false;
+        }
+
+        const start1Time = s1.getTime();
+        const end1Time = e1.getTime();
+        const start2Time = s2.getTime();
+        const end2Time = e2.getTime();
+
+        // Used Ai to help with this return to check if overlap exists
+        return Math.max(start1Time, start2Time) <= Math.min(end1Time, end2Time);
+    }
+
+    function isDateWithinAnyDisabledInterval(date: Date | null, disabledIntervals: ExcludedDateInterval[]): boolean {
+        if (!date || disabledIntervals.length === 0) {
+            return false;
+        }
+        const dateTime = date.getTime();
+        for (const interval of disabledIntervals) {
+                const startIntervalTime = interval.start.getTime();
+                const endIntervalTime = interval.end.getTime();
+                if (dateTime >= startIntervalTime && dateTime <= endIntervalTime) {
+                    return true;
+                }
+            }
+        return false;
+    }
+
 function RoomDetailsPage () {
     
     // State to hold the dates selected by the picker
@@ -143,12 +172,11 @@ function RoomDetailsPage () {
             axios.get(`http://localhost:8080/api/rooms/${numericId}/source`),
             axios.get(`http://localhost:8080/api/rooms/${numericId}/roomProviders`),
             axios.get<[string, string][]>(`http://localhost:8080/api/rooms/${numericId}/dates`)
-            setRoomDetails(roomDetailsRes.data);
         ]).then(([roomDetailsRes, sourceRes, providersRes, occupiedDatesRes]) => {
+            setRoomDetails(roomDetailsRes.data);
             setSource(sourceRes.data);
             setRawBookingDates(occupiedDatesRes.data);
             setProviders(providersRes.data);
-            console.log("Fetched occupied dates:", occupiedDatesRes.data);
         }).catch((err) => {
             setError(err.response?.data?.message || err.message || "Failed to fetch room data.");
             console.error("Error fetching room data:", err);
@@ -290,15 +318,48 @@ function RoomDetailsPage () {
     },[Source]);
 
 
+    /**
+     * Checks if there is a disabled date between the interval transfered by the search and then checks if the checkindate was invalid
+     * Would have done checkout as well however the ReactDatePicker can only start with a date how we have it set up.
+     * Fixing the Checkintest took a lot of help from AI.
+     */
     useEffect(() => {
-        if(BookingDates.length === 0 )
-        {
-            return
+
+        if (checkInDate && disabledDateIntervals.length > 0 && !isLoading) {
+
+            let isInvalidSelection = false;
+
+            const effectiveCheckOutDate = checkOutDate || checkInDate;
+
+            for (const disabledRange of disabledDateIntervals) {
+                if (intervalsOverlap(checkInDate, effectiveCheckOutDate, disabledRange.start, disabledRange.end)) {
+                    isInvalidSelection = true;
+                    break;
+                }
+            }
+
+            if (isInvalidSelection) {
+                if (isDateWithinAnyDisabledInterval(checkInDate, disabledDateIntervals)) {
+                    console.warn("Initial dates from URL conflict with booked dates. Clearing selection.");
+                    setError("The dates from your previous search are unavailable. Please choose new dates.");
+                    setCheckInDate(null);
+                    setCheckOutDate(null);
+
+                    const currentParams = new URLSearchParams(searchParams.toString());
+                    currentParams.delete('from');
+                    currentParams.delete('to');
+                    setSearchParams(currentParams, {replace: true});
+                } else {
+                    console.warn("Initial date range from URL is invalid, but check-in date is valid. Clearing check-out date.");
+                    setError("The selected date range is unavailable, but the check-in date is okay. Please choose a new check-out date.");
+                    setCheckOutDate(null);
+                    const currentParams = new URLSearchParams(searchParams.toString());
+                    currentParams.delete('to');
+                    setSearchParams(currentParams, { replace: true });
+                }
+            }
         }
-        /* TODO ADD THAT BOOKINGDATES ARRAY IS ADDED TO LIST OF DISABLED DATES */
-
-
-    },[BookingDates])
+    }, [checkInDate, checkOutDate, disabledDateIntervals, isLoading, searchParams, setSearchParams, setError]);
     
 
 
