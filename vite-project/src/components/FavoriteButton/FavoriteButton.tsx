@@ -6,13 +6,13 @@ import favoriteButtonStyle from './FavoriteButton.module.css';
 import EmptyHeartIcon from '../../assets/emptyHeart.svg?react';
 import FilledHeartIcon from '../../assets/filledHeart.svg?react';
 
-import { Favourite } from "../../types/Favourite.js";
+import { Room } from "../../types/Room.js";
 
 interface FavoriteButtonProps {
-    roomId: number;
+    room: Room;
 }
 
-function FavoriteButton({ roomId }: FavoriteButtonProps) {
+function FavoriteButton({ room }: FavoriteButtonProps) {
 
     const [isFavorited, setIsFavorited] = useState(false);
 
@@ -20,19 +20,28 @@ function FavoriteButton({ roomId }: FavoriteButtonProps) {
     const token = localStorage.getItem("token");
 
     async function fetchUserFavorites(username: string, token: string) {
-    const response = await axiosInstance.get(`/favourite/user/${username}`, {
-        headers: { Authorization: `Bearer ${token}` },
-        });
-    return response.data;
+        try{
+            const response = await axiosInstance.get(`/favourite/user/${username}`, {
+                                                    headers: { Authorization: `Bearer ${token}` },
+            });
+            return response.data;
+        } catch(error: any) {
+            if(error.response?.status == 404) {
+                return[];
+            }
+            console.error("Could not fetch favorites", error);
+            return [];
+
+        }
+    
     }
 
-    async function addFavorite(favorite:Favourite, token: string) {
-        await axiosInstance.post('/favourite', {favorite}, {headers: {Authorization: `Bearer ${token}` }});
+    async function addFavorite(roomId: number, username: string, token: string) {
+        await axiosInstance.post('/favourite/withIds', {favouriteId:null, roomId, username}, {headers: {Authorization: `Bearer ${token}` }});
     }
 
-    async function removeFavorite(username: string, roomId: number, token: string) {
-        await axiosInstance.delete(`/favourite/user/${username}/room/${roomId}`, {
-                                    headers: { Authorization: `Bearer ${token}` },});
+    async function removeFavorite(roomId: number, username: string, token: string) {
+        await axiosInstance.delete('/favourite/withIds', {headers: { Authorization: `Bearer ${token}` },  data: { favouriteId: null, roomId, username }});
     }
 
     useEffect(() => {
@@ -41,7 +50,7 @@ function FavoriteButton({ roomId }: FavoriteButtonProps) {
         async function checkIfFavorited() {
             try{
                 const favorites = await fetchUserFavorites(username, token);
-                const roomIsFavorited = favorites.some((fav: { room: { roomId: number } }) => fav.room.roomId === roomId);
+                const roomIsFavorited = favorites.some((fav: { room: { roomId: number } }) => fav.room.roomId === room.roomId);
                 setIsFavorited(roomIsFavorited);
 
             } catch(error) {
@@ -54,17 +63,17 @@ function FavoriteButton({ roomId }: FavoriteButtonProps) {
 
         
 
-    }, [roomId, username, token]);
+    }, [room.roomId, username, token]);
     
     const toggleFavorite = async () => {
         if(!username || !token) return;
 
         try {
             if(isFavorited) {
-                await removeFavorite(username, roomId, token);
+                await removeFavorite(room.roomId, username, token);;
                 setIsFavorited(false);
             } else {
-                await addFavorite(roomId, token);
+                await addFavorite(room.roomId, username, token);
                 setIsFavorited(true);
             }
 

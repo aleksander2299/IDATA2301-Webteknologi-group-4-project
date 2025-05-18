@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
+import { axiosInstance } from "../../AxiosInstance.js";
 //import PropTypes from 'prop-types';
 
 // Import the specific CSS for this component
 import HotelCardStyles from './HotelCard.module.css';
 
 import FavoriteButton from '../../components/FavoriteButton/FavoriteButton.tsx';
+import { Room } from '../../types/Room.ts';
 
 const DEFAULT_IMAGE_URL = '/images/placeholder-hotel.png';
 
 interface HotelCardProps {
-    id: string; // Only part of the prop that is not optional
+    id: number; // Only part of the prop that is not optional
     imageUrl?: string;
     imageAlt?: string;
     title?: string;
@@ -27,6 +29,24 @@ function HotelCard({
   price,
   children,
 }: HotelCardProps) {
+
+    const [room, setRoom] = useState<Room >();
+
+    useEffect(() => {
+      const token = localStorage.getItem("token");
+      if(!token) return;
+
+      async function fetchRoom(roomID: number, token: string) {
+        const response = await axiosInstance.get(`/rooms/${roomID}`, {
+            headers: { Authorization: `Bearer ${token}` },
+            });
+        setRoom(response.data);
+        }
+
+        fetchRoom(id, token);
+
+    }, [id])
+    
 
     // Error Handling
     const [currentImageUrl, setCurrentImageUrl] = useState(imageUrl);
@@ -56,7 +76,7 @@ function HotelCard({
                     onError={handleImageError}
                 />
               </div>
-              <FavoriteButton roomId={parseInt(id,10)}/>
+              {room && <FavoriteButton room={room} />}
 
               <div className={HotelCardStyles["hotel-card-info"]}>
                 {/* Conditionally render title if provided */}
