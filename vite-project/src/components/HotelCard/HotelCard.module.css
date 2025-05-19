@@ -21,7 +21,7 @@
     align-items: center;
     text-align: center;
     overflow: hidden;
-    
+    position: relative;
 }
 
 .hotel-card-image-container {
@@ -30,9 +30,7 @@
     overflow: hidden;
     background: #ccc;
     border-radius: 0.5rem;/*Rounded corner*/
-
 }
-
 
 .hotel-card-image-container img {
     width: 100%;
@@ -40,9 +38,17 @@
     object-fit: cover;
 }
 
+.favbuttonoverlay {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    z-index: 2;
+
+}
+
 .hotel-card-info {
-    padding-bottom: 1rem;
-    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
     flex-grow: 1;
     width: 100%;
 }
@@ -54,6 +60,5 @@
 }
 
 .hotel-card-actions {
-    padding-top: 1rem; /* Space above the buttons */
     width: 100%; /* Make actions container take full width */
 }
