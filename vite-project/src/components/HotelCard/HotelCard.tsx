@@ -13,11 +13,12 @@ const DEFAULT_IMAGE_URL = '/images/placeholder-hotel.png';
 interface HotelCardProps {
     id: number; // Only part of the prop that is not optional
     imageUrl?: string;
-    imageAlt?: DEFAULT_IMAGE_URL
+    imageAlt?: string;
     title?: string;
     description?: string;
     price?: number;
     children?: React.ReactNode,
+    onClick?: () => void;
 }
 
 function HotelCard({
@@ -28,6 +29,7 @@ function HotelCard({
   description,
   price,
   children,
+  onClick,
 }: HotelCardProps) {
 
     const [room, setRoom] = useState<Room >();
@@ -67,7 +69,7 @@ function HotelCard({
         }
 
     return (
-        <div className={HotelCardStyles["hotel-card"]} hotel-id={id}>
+        <div className={HotelCardStyles["hotel-card"]} hotel-id={id}    onClick={onClick}>
               <div className={HotelCardStyles["hotel-card-image-container"]}>
                 <img
                     src={currentImageUrl}
