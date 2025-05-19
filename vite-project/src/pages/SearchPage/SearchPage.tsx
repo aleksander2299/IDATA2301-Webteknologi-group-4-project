@@ -12,6 +12,7 @@ import Header from '../../components/layout/Header.tsx';
 import { navigateToRoomDetails, parseURLDate, formatDateForURL, CommonSearchCriteria, navigateToSearch } from '../../utils/navigationUtils';
 import SearchBar from "../../components/SearchBar/SearchBar.tsx";
 import axios from "axios";
+import {axiosInstance} from "../../AxiosInstance.tsx";
 
 // Interface for rooms/hotels can be expanded however make sure or null is used if you do since this is supposed to be used for multiple functions
 interface DisplayRoom {
@@ -83,7 +84,7 @@ function SearchPage() {
         setError(null);
         console.log("SearchPage: Fetching all rooms...");
         //Get all hotels
-        axios.get(`http://localhost:8080/api/rooms`)
+        axiosInstance.get("/rooms")
             .then(response => {
                 console.log("Fetched all rooms", response.data);
                 setAllRoomsFromApi(response.data.filter((room => room.visible) || []))
