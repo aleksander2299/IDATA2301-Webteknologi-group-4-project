@@ -12,6 +12,7 @@ import RoomDetailsPage from './pages/RoomDetailsPage/RoomDetailsPage.tsx';
 import SearchPage from './pages/SearchPage/SearchPage.tsx';
 import SettingsPage from './pages/SettingsPage/SettingsPage.tsx';
 import UserBookingsPage from './pages/UserBookingsPage/UserBookingsPage.tsx';
+import ImageTestPage from "./pages/test/ImageTestPage.tsx";
 
 const router = createBrowserRouter ([
   { path: '/', element: <HomePage /> },
@@ -23,7 +24,8 @@ const router = createBrowserRouter ([
   { path: '/booking', element: <UserBookingsPage /> },
   { path: '/favourites', element: <FavouritesPage /> },
   { path: '/settings', element: <SettingsPage />},
-  { path: '/provider', element: <ProviderPage />}
+  { path: '/provider', element: <ProviderPage />},
+  { path: '/test', element: <ImageTestPage />}
 
 
 ]);
