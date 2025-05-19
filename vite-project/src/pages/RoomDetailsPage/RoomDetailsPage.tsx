@@ -12,7 +12,7 @@ import Header from '../../components/layout/Header.tsx';
 import { features } from 'process';
 import { Console } from 'console';
 
-import { parseURLDate} from "../../utils/navigationUtils.ts";
+import { parseURLDate, formatDateForURL} from "../../utils/navigationUtils.ts";
 import roomImg from '../../Images/room image placeholder.jpg';
 import { stringify } from 'querystring';
 
@@ -23,20 +23,39 @@ import * as interfaces from "../../types/Interfaces.ts";
 
 
 
+  interface ExcludedDateInterval {
+    start: Date;
+    end: Date;
+  }
 
-{/* Fake temporary data */}
-const ALL_HOTEL_DETAILS: Record<string, RoomDetailsDummy> = {
-    '1': { id: '1', name: 'Hotel 1 - Grand View', location: 'Location 1', description: 'This Room has a nice view and premium amenities.',
-        imageUrl: '/images/hotel-room-1.jpg', roomType: 'Suite', bedType: 'King', roomCapacity: '2',
-        checkIn: '3:00 PM', checkOut: '11:00 AM', internet: 'Included', parking: 'Available', gym: 'Available', pets: 'No' },
-    '2': { id: '2', name: 'Hotel 2 - Ocean Breeze', location: 'Location 2', description: 'This Room has a nice oceanside view and relaxing atmosphere.',
-        imageUrl: '/images/hotel-room-2.jpg', roomType: 'Double', bedType: 'Queen', roomCapacity:'3', checkIn: '2:00 PM', checkOut: '12:00 PM',
-        internet: 'Included', parking: 'Available', gym: 'Not Available', pets: 'Yes' },
-};
+    function intervalsOverlap(s1: Date | null, e1: Date | null, s2: Date, e2: Date): boolean {
+        if (!s1 || !e1) { // If user selection is incomplete, no overlap for this specific check
+            return false;
+        }
 
+        const start1Time = s1.getTime();
+        const end1Time = e1.getTime();
+        const start2Time = s2.getTime();
+        const end2Time = e2.getTime();
 
+        // Used Ai to help with this return to check if overlap exists
+        return Math.max(start1Time, start2Time) <= Math.min(end1Time, end2Time);
+    }
 
-
+    function isDateWithinAnyDisabledInterval(date: Date | null, disabledIntervals: ExcludedDateInterval[]): boolean {
+        if (!date || disabledIntervals.length === 0) {
+            return false;
+        }
+        const dateTime = date.getTime();
+        for (const interval of disabledIntervals) {
+                const startIntervalTime = interval.start.getTime();
+                const endIntervalTime = interval.end.getTime();
+                if (dateTime >= startIntervalTime && dateTime <= endIntervalTime) {
+                    return true;
+                }
+            }
+        return false;
+    }
 
 function RoomDetailsPage () {
     
@@ -67,6 +86,10 @@ function RoomDetailsPage () {
     const [error, setError] = useState<string | null>(null);
     const [roomDetails, setRoomDetails] = useState<interfaces.RoomDetails | null>(null);
 
+    // Need to use rawBookingDates since its coming straight from backend
+    const [rawBookingDates, setRawBookingDates] = useState<[string, string][]>([]);
+    const [disabledDateIntervals, setDisabledDateIntervals] = useState<ExcludedDateInterval[]>([]);
+
     {/* Never have any early returns before useEffect */}
     useEffect(() => {
 
@@ -89,7 +112,7 @@ function RoomDetailsPage () {
             return;
         }
         
-        axiosInstance.get(`/rooms/${numericId}`)
+        axios.get(`http://localhost:8080/api/rooms/${numericId}`)
           .then((response) => {
             setRoomDetails(response.data);
             {/*console.log(response.data)*/}
@@ -98,7 +121,7 @@ function RoomDetailsPage () {
             console.error(err);
           });
 
-          axiosInstance.get(`/rooms/${numericId}/source`)
+          axios.get(`http://localhost:8080/api/rooms/${numericId}/source`)
           .then((response) => {
             setSource(response.data)
           })
@@ -111,21 +134,48 @@ function RoomDetailsPage () {
             }
           });
 
-    
 
-        axiosInstance.get(`/rooms/${numericId}/roomProviders`)
-        .then((Response) => 
-        {
-           {/*log(JSON.stringify(Response.data, null, 2) + "here is roomproviders"); */} 
-            setProviders(Response.data)
-        
-        }
-        ).catch((error) => 
-        {
-            console.error(error.data + " HERE IS THE ERROR FOR NUMERICID")
+        Promise.all([
+            axios.get(`http://localhost:8080/api/rooms/${numericId}`),
+            axios.get(`http://localhost:8080/api/rooms/${numericId}/source`),
+            axios.get(`http://localhost:8080/api/rooms/${numericId}/roomProviders`),
+            axios.get<[string, string][]>(`http://localhost:8080/api/rooms/${numericId}/dates`)
+        ]).then(([roomDetailsRes, sourceRes, providersRes, occupiedDatesRes]) => {
+            setRoomDetails(roomDetailsRes.data);
+            setSource(sourceRes.data);
+            setRawBookingDates(occupiedDatesRes.data);
+            setProviders(providersRes.data);
+        }).catch((err) => {
+            setError(err.response?.data?.message || err.message || "Failed to fetch room data.");
+            console.error("Error fetching room data:", err);
+        }).finally(() => {
+            setIsLoading(false);
         });
 
-    }, [ searchParams ]);
+    }, [ id, numericId, searchParams ]);
+
+    useEffect(() => {
+        const newDisabledIntervals: ExcludedDateInterval[] = [];
+
+        if (rawBookingDates && rawBookingDates.length > 0) {
+            for (const range of rawBookingDates) {
+                const startDateString = range[0];
+                const endDateString = range[1];
+
+                const startDate = parseURLDate(startDateString);
+                const endDate = parseURLDate(endDateString);
+
+                if (startDate && endDate) {
+                    newDisabledIntervals.push({ start: startDate, end: endDate });
+                } else {
+                    console.warn("Invalid start date:", startDate);
+                }
+            }
+            setDisabledDateIntervals(newDisabledIntervals);
+        } else {
+            setDisabledDateIntervals([]); // Clear if no booking dates
+        }
+    }, [rawBookingDates]);
 
 // Used to update DatePicker on this page based on searchParams
     const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
@@ -236,15 +286,48 @@ function RoomDetailsPage () {
     },[Source]);
 
 
+    /**
+     * Checks if there is a disabled date between the interval transfered by the search and then checks if the checkindate was invalid
+     * Would have done checkout as well however the ReactDatePicker can only start with a date how we have it set up.
+     * Fixing the Checkintest took a lot of help from AI.
+     */
     useEffect(() => {
-        if(BookingDates.length === 0 )
-        {
-            return
+
+        if (checkInDate && disabledDateIntervals.length > 0 && !isLoading) {
+
+            let isInvalidSelection = false;
+
+            const effectiveCheckOutDate = checkOutDate || checkInDate;
+
+            for (const disabledRange of disabledDateIntervals) {
+                if (intervalsOverlap(checkInDate, effectiveCheckOutDate, disabledRange.start, disabledRange.end)) {
+                    isInvalidSelection = true;
+                    break;
+                }
+            }
+
+            if (isInvalidSelection) {
+                if (isDateWithinAnyDisabledInterval(checkInDate, disabledDateIntervals)) {
+                    console.warn("Initial dates from URL conflict with booked dates. Clearing selection.");
+                    setError("The dates from your previous search are unavailable. Please choose new dates.");
+                    setCheckInDate(null);
+                    setCheckOutDate(null);
+
+                    const currentParams = new URLSearchParams(searchParams.toString());
+                    currentParams.delete('from');
+                    currentParams.delete('to');
+                    setSearchParams(currentParams, {replace: true});
+                } else {
+                    console.warn("Initial date range from URL is invalid, but check-in date is valid. Clearing check-out date.");
+                    setError("The selected date range is unavailable, but the check-in date is okay. Please choose a new check-out date.");
+                    setCheckOutDate(null);
+                    const currentParams = new URLSearchParams(searchParams.toString());
+                    currentParams.delete('to');
+                    setSearchParams(currentParams, { replace: true });
+                }
+            }
         }
-        /* TODO ADD THAT BOOKINGDATES ARRAY IS ADDED TO LIST OF DISABLED DATES */
-
-
-    },[BookingDates])
+    }, [checkInDate, checkOutDate, disabledDateIntervals, isLoading, searchParams, setSearchParams, setError]);
     
 
 
@@ -277,6 +360,7 @@ function RoomDetailsPage () {
                                    onDatesSelected={handleDatesUpdate} // Pass the handler function
                                    initialStartDate={checkInDate}      // Pass the current state
                                    initialEndDate={checkOutDate}        // Pass the current state
+                                   excludeDateIntervals={disabledDateIntervals}
                                />
                          </div>
                     <select value={selectedProvider ?? ""} onChange={changeProvider}>
