@@ -69,6 +69,9 @@
     margin-top: 22px;
     padding-top: 22px;
     border-top: 1px solid #444;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
 }
 
 /* Set up so the search bar will be horizontal on desktops and such and for phones it will be stacked */

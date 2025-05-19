@@ -48,14 +48,25 @@ CSS Made with help from AI gonna be used temporarily
     justify-content: center;
     gap: 10px;
     margin: 20px;
+    color: #fff;
+    font-size: 1.35rem;
 }
-
-.filter-btn {
-    background-color: #ddd;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
+.filters option {
+    padding: 2rem;
+}
+.filterselection {
+    padding: 15px 18px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    background-color: #444;
+    color: #fff;
+    font-size: 1.35rem;
+    width: 25%;
+    box-sizing: border-box;
+    line-height: 1.5;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .filter-btn:hover {
@@ -64,7 +75,7 @@ CSS Made with help from AI gonna be used temporarily
 
 /* Hotel list */
 .hotel-list {
-    display: grid;
+    display: flex;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
     padding: 20px;
