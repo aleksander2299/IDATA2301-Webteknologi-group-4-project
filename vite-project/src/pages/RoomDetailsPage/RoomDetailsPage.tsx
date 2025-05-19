@@ -321,6 +321,32 @@ function RoomDetailsPage () {
 
 
     /**
+     * Uses updated parseUrlDate to make sure the dates are at local midnight so all dates are properly disabled
+     */
+    useEffect(() => {
+        const newDisabledIntervals: ExcludedDateInterval[] = [];
+
+        if (rawBookingDates && rawBookingDates.length > 0) {
+            for (const range of rawBookingDates) {
+                const startDateString = range[0];
+                const endDateString = range[1];
+
+                const startDate = parseURLDate(startDateString);
+                const endDate = parseURLDate(endDateString);
+
+                if (startDate && endDate) {
+                    newDisabledIntervals.push({ start: startDate, end: endDate });
+                } else {
+                    console.warn("Invalid date string in rawBookingDates, not adding to disabled intervals:", range);
+                }
+            }
+            setDisabledDateIntervals(newDisabledIntervals);
+        } else {
+            setDisabledDateIntervals([]); // Clear if no booking dates
+        }
+    }, [rawBookingDates]);
+
+    /**
      * Checks if there is a disabled date between the interval transfered by the search and then checks if the checkindate was invalid
      * Would have done checkout as well however the ReactDatePicker can only start with a date how we have it set up.
      * Fixing the Checkintest took a lot of help from AI.
