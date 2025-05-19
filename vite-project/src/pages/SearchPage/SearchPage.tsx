@@ -19,6 +19,7 @@ interface DisplayRoom {
     name: string;
     location: string;
     description: string;
+    country: string;
     imageUrl: string;
     roomType?: string;
     sourceName?: string;
@@ -123,6 +124,7 @@ function SearchPage() {
                                 id: String(apiRoom.roomId),
                                 name: apiRoom.roomName,
                                 location: apiRoom.source.city || apiRoom.source.sourceName,
+                                country: apiRoom.source.country || 'Unknown',
                                 description: apiRoom.description,
                                 imageUrl: apiRoom.imageUrl || '/images/default-room.jpg',
                                 roomType: apiRoom.roomType,
@@ -194,6 +196,7 @@ function SearchPage() {
             filteredRooms = filteredRooms.filter(room =>
                 room.name.toLowerCase().includes(searchTermParam) ||
                 room.location.toLowerCase().includes(searchTermParam) ||
+                room.country.toLowerCase().includes(searchTermParam) ||
                 (room.sourceName && room.sourceName.toLowerCase().includes(searchTermParam))
             );
         }

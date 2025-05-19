@@ -20,12 +20,29 @@ interface SearchBarProps {
     className?: string; // For Styling
 }
 
+const BASIC_ROOM_TYPES: string[] = [
+    'Single',
+    'Superior',
+    'Standard',
+    'Plus',
+    'Premium',
+    'Deluxe',
+    'Executive Suite',
+    'Classic',
+    'Junior Suite',
+    'Suite',
+    'Business Class',
+    'Moderate',
+    'Artist',
+    'Club Room'
+].sort((a, b) => a.localeCompare(b));
+
 const SearchBar: React.FC<SearchBarProps> = ({
                                                                      onSearch,
                                                                      initialSearchTerm = '',
                                                                      initialStartDate = null,
                                                                      initialEndDate = null,
-                                                                     initialRoomType = 'any', // Default to 'any' or an appropriate value
+                                                                     initialRoomType = 'any',
                                                                      children,
                                                                      className,
                                                                  }) => {
@@ -49,6 +66,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
     useEffect(() => {
         setRoomType(initialRoomType);
     }, [initialRoomType]);
+
+
 
 
     const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
@@ -97,11 +116,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
                         value={roomType}
                         onChange={(e) => setRoomType(e.target.value)}
                     >
-                        <option value="any">Any</option>
-                        <option value="single">Single</option>
-                        <option value="double">Double</option>
-                        <option value="suite">Suite</option>
-                        <option value="family">Family</option>
+                        <option value="any">Any Type</option>
+                        {BASIC_ROOM_TYPES.map((type) => (
+                            <option key={type} value={type.toLowerCase()}>
+                                {type}
+                            </option>
+                        ))}
                     </select>
                 </div>
 
