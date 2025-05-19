@@ -19,41 +19,9 @@ import { stringify } from 'querystring';
 import { axiosInstance } from '../../AxiosInstance.js';
 
 
+import * as interfaces from "../../types/Interfaces.ts";
 
 
-interface RoomDetails{
-    roomId: number;
-    roomName: string;
-    description: string;
-    roomType: string;
-    imageUrl: string;
-}
-
-interface Source{
-   sourceId: number;
-   sourceName:  string;
-   locationType: string;
-   city:  string;
-   country: string;
-}
-
-interface RoomProvider {
-    roomProviderId: number;
-    roomPrice: number;
-    provider: {
-      providerId: number;
-      providerName: string;
-    };
-  }
-
-  interface ExtraFeatures{
-    feature: string;
-  }
-
-  interface Booking {
-    checkInDate: string; 
-    checkOutDate: string; 
-  }
 
 
 {/* Fake temporary data */}
@@ -85,19 +53,19 @@ function RoomDetailsPage () {
     // Needs to be decoupled
     const [searchParams , setSearchParams] = useSearchParams();
     const token = localStorage.getItem('token');
-    const [Source, setSource] = useState<Source | null>(null);
-    const [ExtraFeatures,setExtraFeatures] = useState<ExtraFeatures[]>([]);
+    const [Source, setSource] = useState<interfaces.Source | null>(null);
+    const [ExtraFeatures,setExtraFeatures] = useState<interfaces.ExtraFeatures[]>([]);
     const [BookingDates, setBookingDates] = useState<[string, string ][]>([]);
 
     const [fromDate, setFromDate] = useState<string | null>(() => parseURLDate(searchParams.get('from')));
     const [toDate, setToDate] = useState<string | null>(() => parseURLDate(searchParams.get('to')));
-    const [roomProviders,setProviders] = useState<RoomProvider[]>([]);
+    const [roomProviders,setProviders] = useState<interfaces.RoomProvider[]>([]);
     const [selectedProvider, setSelectedProvider] = useState<number | null>(null);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     {/* roomDetails and error can both be an object or null since they start out as null and then can get objects */}
     const [error, setError] = useState<string | null>(null);
-    const [roomDetails, setRoomDetails] = useState<RoomDetails | null>(null);
+    const [roomDetails, setRoomDetails] = useState<interfaces.RoomDetails | null>(null);
 
     {/* Never have any early returns before useEffect */}
     useEffect(() => {
@@ -189,7 +157,7 @@ function RoomDetailsPage () {
 
     function bookRoom(){
 
-        const booking: Booking = {
+        const booking: interfaces.Booking = {
             checkInDate: checkInDate ? checkInDate.toISOString() : "",  
             checkOutDate: checkOutDate ? checkOutDate.toISOString() : "",
         };

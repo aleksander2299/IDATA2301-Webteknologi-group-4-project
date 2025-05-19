@@ -10,7 +10,7 @@ const DEFAULT_IMAGE_URL = '/images/placeholder-hotel.png';
 interface HotelCardProps {
     id: string; // Only part of the prop that is not optional
     imageUrl?: string;
-    imageAlt?: string;
+    imageAlt?: DEFAULT_IMAGE_URL
     title?: string;
     description?: string;
     price?: number;

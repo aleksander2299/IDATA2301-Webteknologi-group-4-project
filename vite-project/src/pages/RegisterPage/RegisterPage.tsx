@@ -37,6 +37,25 @@ function RegisterPage() {
             localStorage.setItem('role', role);
           }
 
+          if(role == "ROLE_PROVIDER"){
+            const provider = {
+              providerName : localStorage.getItem("username") || ""
+            }
+            axiosInstance.post(`/providers`,provider,{
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then((response) => {
+              console.log("Provider posted successfully:", response.data);
+              alert("successfull providder registration")
+            })
+            .catch((error) => {
+              console.error("Error posting provider:", error);
+              alert("failure to post provider")
+            });
+          }
+
           // Navigates to home
           navigate('/');
           console.log(role + " here should be role non null")
