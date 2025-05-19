@@ -7,7 +7,9 @@ function AdminPage() {
   return (
     <>
       <Header />
-      <div className={adminStyle.adminpagebody}>
+      <div className={adminStyle.adminPageBody}>
+        {/* Top textbox */}
+        <div className={adminStyle.manageBox}>Choose what to add, manage or delete: </div>
         {/* Search bar component */}
         <section>
 
@@ -15,7 +17,7 @@ function AdminPage() {
 
         {/* Hotelcard component */}
         <section>
-          
+
         </section>
       </div>
 

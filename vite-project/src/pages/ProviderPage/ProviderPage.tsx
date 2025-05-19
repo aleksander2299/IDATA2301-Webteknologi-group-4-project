@@ -4,17 +4,16 @@ import '../../styles/main.css';
 import providerPageStyle from './ProviderPage.module.css';
 
 
+import { axiosInstance } from '../../AxiosInstance';
 import HotelCard from '../../components/HotelCard/HotelCard';
 import Footer from '../../components/layout/Footer';
 import Header from '../../components/layout/Header';
-import { axiosInstance } from '../../AxiosInstance';
-import roomImg from "../../Images"
 
 
 const token = localStorage.getItem("token");
 
 interface Room {
-    id: string;
+    id: number;
     name: string;
     location: string;
     description: string;
@@ -66,7 +65,7 @@ function ProviderPage() {
         <>
             <Header />
             <div className={providerPageStyle.contentWrapper}>
-                <div className={providerPageStyle.manageBox}>Choose room to manage: </div>
+                <div className={providerPageStyle.manageBox}>Choose room or listing to manage: </div>
                 <section>
                     <div className={providerPageStyle.listings}>
                                         {rooms.length > 0 ? (
