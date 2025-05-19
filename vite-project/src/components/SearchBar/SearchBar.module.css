@@ -5,6 +5,7 @@
     border-radius: 8px;
     margin-bottom: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: solid 2px rgba(255, 255, 255, 0.9);
 }
 
 .mainSearchInputs {

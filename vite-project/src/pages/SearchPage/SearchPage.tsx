@@ -14,7 +14,7 @@ import axios from "axios";
 import SearchBar from "../../components/SearchBar/SearchBar.tsx";
 import { navigateToRoomDetails, navigateToSearch, parseURLDate } from '../../utils/navigationUtils';
 
-import {axiosInstance} from "../../AxiosInstance.tsx";
+import { axiosInstance } from "../../AxiosInstance.tsx";
 
 
 // Interface for rooms/hotels can be expanded however make sure or null is used if you do since this is supposed to be used for multiple functions
@@ -302,7 +302,7 @@ function SearchPage() {
                 </section>
 
                 {/* DisplayRoom List Section */}
-                <div className="hotel-list">
+                <div className={SearchPageStyle.hotellist}>
                     {filteredDisplayRooms.length > 0 ? (
                         filteredDisplayRooms.map((room) => (
                                 <HotelCard
@@ -316,7 +316,7 @@ function SearchPage() {
                                 >
                                     {/* Using buttons as children was an idea given by AI since i could not figure out how to use different buttons depending on the page while they were still connected */}
                                     <button
-                                        className="deal-btn"
+                                        className={SearchPageStyle.dealbutton}
                                         onClick={() => {
                                             GoToDealHandler(room.id)
                                         }}

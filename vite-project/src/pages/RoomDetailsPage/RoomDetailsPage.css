@@ -7,10 +7,23 @@
     color:white;
 }
 
+.image {
+    position: relative;
+    display: inline-block;
+}
+
 .image img{
     box-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
     width: 40rem;
     height: 25rem;
+}
+
+.favbuttonoverlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+
 }
 
 .content-container {
