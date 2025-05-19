@@ -9,15 +9,16 @@ import Footer from '../../components/layout/Footer';
 import Header from '../../components/layout/Header';
 import { axiosInstance } from '../../AxiosInstance';
 import roomImg from "../../Images"
+import { useNavigate } from 'react-router-dom';
 
 
-const token = localStorage.getItem("token");
 
 interface Room {
-    id: string;
-    name: string;
-    location: string;
+    roomId: number;
+    roomName: string;
     description: string;
+    roomType: string;
+    visible: boolean;
     imageUrl: string;
 }
 
@@ -30,6 +31,7 @@ interface provider{
 interface RoomProvider {
     roomProviderId: number;
     roomPrice: number;
+    room: Room;  
     provider: {
       providerId: number;
       providerName: string;
@@ -38,12 +40,28 @@ interface RoomProvider {
   
 
 function ProviderPage() {
+    const token = localStorage.getItem("token");
+
 
     {/* Fake Temporary data its set up differently since it will display every hotelcard it gets, so its not every hotel */}
-        const [rooms, setRooms] = useState<Room[]>([]);
+        const [rooms, setRooms] = useState<RoomProvider[]>([]);
         const currentProvider = useState()
+        const navigate = useNavigate();
 
 
+
+    function deleteListing(){
+        
+    }
+
+
+    function editListing(){
+
+    }
+
+    function deleteAllListings(){
+
+    }
 
 
     useEffect(() => {
@@ -59,7 +77,7 @@ function ProviderPage() {
         .catch((error) => {
             console.error(error);
         });
-    }, [rooms.length]);
+    },[]);
 
 
     return (
@@ -70,18 +88,21 @@ function ProviderPage() {
                 <section>
                     <div className={providerPageStyle.listings}>
                                         {rooms.length > 0 ? (
-                                            rooms.map((Room) => (
+                                            rooms.map((Rp) => (
                                                     <HotelCard
-                                                        key={Room.id}
-                                                        id={Room.id}
+                                                        key={Rp.room.roomId}
+                                                        id={Rp.room.roomId}
                                                         imageUrl={"https://picsum.photos/id/1/200/300"}
                                                         imageAlt={"https://picsum.photos/id/1/200/300"}
-                                                        title={Room.name}
-                                                        description={Room.description}
-                                                    >
+                                                        title={Rp.room.roomName}
+                                                        description={Rp.room.description}
+                                                        onClick={() => {
+                                                            if(window.confirm("do you want to go to the room's details ?")) {
+                                                            navigate(`/room/${Rp.room.roomId}`)}}}>
                                                         {/* Different buttons depending on page */}
-                                                        <button className={providerPageStyle.cardButtons}>Edit listing</button>
-                                                        <button className={providerPageStyle.cardButtons}>Delete listing</button>
+                                                        <button className={providerPageStyle.cardButtons} 
+                                                        onClick={(e) => {e.stopPropagation()}}>Edit listing</button>
+                                                        <button className={providerPageStyle.cardButtons} onClick={(e) => {e.stopPropagation()}}>Delete listing</button>
                                                     </HotelCard>
                                                 )
                                             )
