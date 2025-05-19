@@ -8,8 +8,7 @@ import '../../styles/main.css';
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 import FavouriteRoomCard from "../../components/favouriteRoomCard/FavouriteRoomCard"
-import { Room } from '../../types/Room';
-import { User } from '../../types/User';
+import { Favourite} from "../../types/Favourite.ts";
 
 function FavouritesPage () {
 
@@ -18,12 +17,6 @@ function FavouritesPage () {
 
     const username = localStorage.getItem('username');
     const token = localStorage.getItem('token');
-
-    type Favourite = {
-        favouriteId: number;
-        room: Room;
-        user: User; // or you can make this more specific if needed later
-    };
 
     useEffect(() => {
         async function fetchFavourites() {

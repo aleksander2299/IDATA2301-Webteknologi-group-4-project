@@ -1,16 +1,16 @@
-import { useState} from 'react'
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import '../../styles/main.css';
 // @ts-ignore
 import homePageStyle from './HomePage.module.css';
 
-import SearchBar, { SearchCriteria } from '../../components/SearchBar/SearchBar.tsx';
+import SearchBar from '../../components/SearchBar/SearchBar.tsx';
 //import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 
-import { navigateToSearch, CommonSearchCriteria } from "../../utils/navigationUtils.ts"
+import { CommonSearchCriteria, navigateToSearch } from "../../utils/navigationUtils.ts";
 
 // @ts-ignore
 import amsterdamImg from '../../Images/Amsterdam placeholder.jpg';
@@ -53,8 +53,9 @@ function HomePage() {
         console.log('Logged in as:', username);
 
     return (
-      <div>
+      <>
         <Header />
+        
         
         <main className={homePageStyle["content-wrapper"]}style={{ marginTop: '20px' }}>
           <section className={homePageStyle.container}>
@@ -64,15 +65,18 @@ function HomePage() {
           </section>
   
           <section className={homePageStyle.container} style={{ marginTop: '20px' }}>
-              <SearchBar
-                  onSearch={handleSearchFromBar}
-                  initialSearchTerm={initialSearchTerm}
-                  initialStartDate={checkInDate}
-                  initialEndDate={checkOutDate}
-                  initialRoomType={initialRoomType}
-                  // className={homePageStyle.customSearchBarOnHomepage} // Optional for homepage specific tweaks
-              >
-              </SearchBar>
+            <div className={homePageStyle.backgroundbox}>
+              <img src={mainRoomImg} alt="Room placeholder" />
+                <SearchBar
+                    onSearch={handleSearchFromBar}
+                    initialSearchTerm={initialSearchTerm}
+                    initialStartDate={checkInDate}
+                    initialEndDate={checkOutDate}
+                    initialRoomType={initialRoomType}
+                    className={homePageStyle.searchbarcontainer}
+                >
+                </SearchBar>
+              </div>
           </section>
   
           <section className={homePageStyle["popular-section"]} style={{ marginTop: '20px' }}>
@@ -123,7 +127,7 @@ function HomePage() {
           </section>
         </main>
         <Footer />
-      </div>
+      </>
     );
   }
 

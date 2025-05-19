@@ -190,7 +190,7 @@ function Header() {
           </Link>
           {/* Log out button */}
             <option className="dropdown-link" onClick={handleLogout}>
-              <b>Log Out</b>
+              Log Out
             </option>
           </>
         )
