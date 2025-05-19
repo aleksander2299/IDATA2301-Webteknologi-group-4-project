@@ -166,19 +166,20 @@ function RoomDetailsPage () {
             }
           });
 
+          axios.get<RoomProvider[]>(`http://localhost:8080/api/rooms/${numericId}/roomProviders`)
+            .then((response) => {
+            setProviders(response.data);
+            })
+             .catch((error) => {
+        console.error("Failed to fetch room providers:", error);
+                });
+
 
         Promise.all([
-            axios.get(`http://localhost:8080/api/rooms/${numericId}`),
-            axios.get(`http://localhost:8080/api/rooms/${numericId}/source`),
-            axios.get(`http://localhost:8080/api/rooms/${numericId}/roomProviders`),
-            axios.get<[string, string][]>(`http://localhost:8080/api/rooms/${numericId}/dates`)
-        ]).then(([roomDetailsRes, sourceRes, providersRes, occupiedDatesRes]) => {
-            setRoomDetails(roomDetailsRes.data);
-            setSource(sourceRes.data);
-            setRawBookingDates(occupiedDatesRes.data);
-            setProviders(providersRes.data);
-            console.log(JSON.stringify(providersRes.data) + " DATA HERE")
-        }).catch((err) => {
+          axios.get<[string, string][]>(`http://localhost:8080/api/rooms/${numericId}/dates`)
+        ]).then(([occupiedDatesRes]) => {
+         setRawBookingDates(occupiedDatesRes.data);
+         }).catch((err) => {
             setError(err.response?.data?.message || err.message || "Failed to fetch room data.");
             console.error("Error fetching room data:", err);
         }).finally(() => {
