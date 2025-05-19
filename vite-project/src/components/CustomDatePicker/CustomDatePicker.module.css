@@ -5,17 +5,18 @@
 .dateRangeDisplayInput {
   display: flex;
   align-items: center;
-  padding: 8px 12px; /* Adjust padding */
+  padding: 13px 18px; /* Adjust padding */
   border: 1px solid #555; /* Adjust border color/style */
   border-radius: 4px;
   background-color: #2a2a2a;
   color: #ccc;
   cursor: pointer;
-  min-width: 250px;
-  font-size: 0.92em;
+  min-width: 320px;
+  font-size: 0.95em;
   transition: border-color 0.2s ease;
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
   flex-wrap: nowrap;
+  line-height: 1.5;
 }
 
 .dateRangeDisplayInput:hover {
@@ -29,10 +30,11 @@
 
 
 .calendarIcon {
-  margin-left: 15px; /* Space between icon and text */
+  margin-left: 10px; /* Space between icon and text */
   flex-shrink: 0; /* Prevent icon from shrinking */
   color: #fff; /* Example icon color */
-  size: 3em;
+  width: 2em;
+  height: 2em;
 }
 
 /* Style each date section (Check in / Check out) */
@@ -45,13 +47,14 @@
 
 /* Style the labels */
 .dateLabel {
-  font-size: 0.85em; /* Smaller label text */
+  font-size: 0.9em; /* Smaller label text */
   color: #aaa; /* Lighter label color */
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 /* Style the date value/placeholder */
 .dateValue {
+  font-size: 1.3em;
   font-weight: bold;
   color: #eee;
   min-width: 75px; /* Ensure some minimum space for date DD/MM/YY */
