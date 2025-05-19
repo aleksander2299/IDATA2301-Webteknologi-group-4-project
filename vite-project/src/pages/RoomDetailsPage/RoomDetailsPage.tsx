@@ -437,7 +437,13 @@ function RoomDetailsPage () {
                     
                     {role == "ROLE_PROVIDER" && (
                         <>
-                        
+                        <div className="bookingboxtext">Do you want to list this room?</div>
+                        <div className="bookingoptionswrapper">
+                            <h1 className="smallwhitetext">Set Price:</h1>
+                            <input placeholder="Enter price in NOK"></input>
+                            <button className="bookingsubmit">List Room</button>
+                        </div>
+
                         </>
                     )}
                 </section>

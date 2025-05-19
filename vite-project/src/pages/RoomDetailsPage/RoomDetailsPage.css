@@ -30,47 +30,45 @@
     box-sizing: border-box;
 }
 
+.bookingoptionswrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.bookingbox input {
+    margin-top: 5px;
+    padding: 0.8rem;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    border-color: #fb4386;
+    border-width: 4px;
+    display: flex;
+}
+
+.bookingsubmit {
+    padding: 1.2rem;
+    font-size: 1.5rem;
+    margin: 1.5rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    background-color: rgba(60, 58, 58, 0.6);
+    border-radius: 10px;
+    border: 3px solid white;
+}
+
+.bookingsubmit:hover {
+    background-color: rgba(49, 49, 49, 0.85);
+    border-color: #fb4386;
+    color: rgb(251, 67, 134);
+}
+
 .bookingboxtext {
     font-size: 2rem;
-    color: rgb(251, 67, 134);
+    color: white;
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
     text-align: center;
-}
-
-.button1 {
-    height: 7rem;
-    width: 12rem;
-    margin-top: 1rem;
-    margin-right: 20px;
-    border-radius: 5%;
-    background-color: rgba(101, 101, 101, 0.5);
-    font-size: 2rem;
-    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
-    color:white;
-}
-
-.button2 {
-    height: 7rem;
-    width: 12rem;
-    margin-top: 1rem;
-    border-radius: 5%;
-    background-color: rgba(101, 101, 101, 0.5);
-    font-size: 2rem;
-    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
-    color:white;
-
-}
-
-.button3 {
-    height: 7rem;
-    width: 26rem;
-    margin-top: 1rem;
-    border-radius: 5%;
-    background-color: rgba(101, 101, 101, 0.5);
-    font-size: 3rem;
-    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
-    color:white;
 }
 
 .bigwhitetext {
