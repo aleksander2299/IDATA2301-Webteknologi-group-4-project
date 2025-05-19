@@ -18,6 +18,7 @@ function FavoriteButton({ room }: FavoriteButtonProps) {
 
     const username = localStorage.getItem("username");
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
 
     async function fetchUserFavorites(username: string, token: string) {
         try{
@@ -81,6 +82,11 @@ function FavoriteButton({ room }: FavoriteButtonProps) {
             console.error('Could not toggle favorite', error);
         }
     };
+
+    if(role != "ROLE_USER") {
+        return null;
+    }
+
 
     return (
         <>
