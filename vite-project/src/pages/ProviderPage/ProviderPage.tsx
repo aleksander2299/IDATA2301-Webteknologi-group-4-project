@@ -13,7 +13,7 @@ import Header from '../../components/layout/Header';
 const token = localStorage.getItem("token");
 
 interface Room {
-    id: number;
+    id: string;
     name: string;
     location: string;
     description: string;
