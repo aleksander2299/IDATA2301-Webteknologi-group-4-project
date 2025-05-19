@@ -18,7 +18,7 @@ function FavoriteButton({ room }: FavoriteButtonProps) {
 
     const username = localStorage.getItem("username");
     const token = localStorage.getItem("token");
-    const role = localStorage.getItem('role');
+    const role = localStorage.getItem("role");
 
     async function fetchUserFavorites(username: string, token: string) {
         try{
@@ -86,6 +86,7 @@ function FavoriteButton({ room }: FavoriteButtonProps) {
     if(role != "ROLE_USER") {
         return null;
     }
+
 
     return (
         <>

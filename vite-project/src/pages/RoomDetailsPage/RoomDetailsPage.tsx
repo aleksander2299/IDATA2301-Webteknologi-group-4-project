@@ -9,12 +9,8 @@ import ConfirmationBox from '../../components/ConfirmationBox/ConfirmationBox.ts
 import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
 import Footer from '../../components/layout/Footer.jsx';
 import Header from '../../components/layout/Header.tsx';
-import { features } from 'process';
-import { Console } from 'console';
 
-import { parseURLDate, formatDateForURL} from "../../utils/navigationUtils.ts";
-import roomImg from '../../Images/room image placeholder.jpg';
-import { stringify } from 'querystring';
+import { formatDateForURL, parseURLDate } from "../../utils/navigationUtils.ts";
 
 import { axiosInstance } from '../../AxiosInstance.js';
 
@@ -27,70 +23,70 @@ interface RoomDetails{
     imageUrl: string;
 }
 
-  interface Source{
-   sourceId: number;
-   sourceName:  string;
-   locationType: string;
-   city:  string;
-   country: string;
+interface Source{
+    sourceId: number;
+    sourceName:  string;
+    locationType: string;
+    city:  string;
+    country: string;
 }
 
     interface RoomProvider {
     roomProviderId: number;
     roomPrice: number;
     provider: {
-      providerId: number;
-      providerName: string;
+        providerId: number;
+        providerName: string;
     };
-  }
+}
 
-  interface ExtraFeatures{
+interface ExtraFeatures{
     feature: string;
-  }
+}
 
-  interface Booking {
-    checkInDate: string; 
-    checkOutDate: string; 
-  }
+interface Booking {
+    checkInDate: string;
+    checkOutDate: string;
+}
 
 
 
-  interface ExcludedDateInterval {
+interface ExcludedDateInterval {
     start: Date;
     end: Date;
-  }
+}
 
-    function intervalsOverlap(s1: Date | null, e1: Date | null, s2: Date, e2: Date): boolean {
-        if (!s1 || !e1) { // If user selection is incomplete, no overlap for this specific check
-            return false;
-        }
-
-        const start1Time = s1.getTime();
-        const end1Time = e1.getTime();
-        const start2Time = s2.getTime();
-        const end2Time = e2.getTime();
-
-        // Used Ai to help with this return to check if overlap exists
-        return Math.max(start1Time, start2Time) <= Math.min(end1Time, end2Time);
-    }
-
-    function isDateWithinAnyDisabledInterval(date: Date | null, disabledIntervals: ExcludedDateInterval[]): boolean {
-        if (!date || disabledIntervals.length === 0) {
-            return false;
-        }
-        const dateTime = date.getTime();
-        for (const interval of disabledIntervals) {
-                const startIntervalTime = interval.start.getTime();
-                const endIntervalTime = interval.end.getTime();
-                if (dateTime >= startIntervalTime && dateTime <= endIntervalTime) {
-                    return true;
-                }
-            }
+function intervalsOverlap(s1: Date | null, e1: Date | null, s2: Date, e2: Date): boolean {
+    if (!s1 || !e1) { // If user selection is incomplete, no overlap for this specific check
         return false;
     }
 
+    const start1Time = s1.getTime();
+    const end1Time = e1.getTime();
+    const start2Time = s2.getTime();
+    const end2Time = e2.getTime();
+
+    // Used Ai to help with this return to check if overlap exists
+    return Math.max(start1Time, start2Time) <= Math.min(end1Time, end2Time);
+}
+
+function isDateWithinAnyDisabledInterval(date: Date | null, disabledIntervals: ExcludedDateInterval[]): boolean {
+    if (!date || disabledIntervals.length === 0) {
+        return false;
+    }
+    const dateTime = date.getTime();
+    for (const interval of disabledIntervals) {
+        const startIntervalTime = interval.start.getTime();
+        const endIntervalTime = interval.end.getTime();
+        if (dateTime >= startIntervalTime && dateTime <= endIntervalTime) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function RoomDetailsPage () {
-    
+
     // State to hold the dates selected by the picker
     const [checkInDate, setCheckInDate] = useState<Date | null>(null);
     const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
@@ -122,6 +118,9 @@ function RoomDetailsPage () {
     const [rawBookingDates, setRawBookingDates] = useState<[string, string][]>([]);
     const [disabledDateIntervals, setDisabledDateIntervals] = useState<ExcludedDateInterval[]>([]);
 
+    // Gets the role of the account logged in
+    const role = localStorage.getItem("role");
+
     {/* Never have any early returns before useEffect */}
     useEffect(() => {
 
@@ -143,41 +142,34 @@ function RoomDetailsPage () {
             {/* Exit Early */}
             return;
         }
-        
+            
         axios.get(`http://localhost:8080/api/rooms/${numericId}`)
-          .then((response) => {
+        .then((response) => {
             setRoomDetails(response.data);
             {/*console.log(response.data)*/}
-          })
-          .catch((err) => {
+        }) .catch((err) => {
             console.error(err);
-          });
+        });
 
-          axios.get(`http://localhost:8080/api/rooms/${numericId}/source`)
-          .then((response) => {
+        axios.get(`http://localhost:8080/api/rooms/${numericId}/source`)
+        .then((response) => {
             setSource(response.data)
-          })
-          .catch((error) => {
+        }) .catch((error) => {
             if (error.response) {
-              console.error("Status:", error.response.status); 
-              console.error("Data:", error.response.data); 
-            } else {
-              console.error("General Error:", error.message);
-            }
-          });
+                console.error("Status:", error.response.status); 
+                console.error("Data:", error.response.data); 
+            } else { console.error("General Error:", error.message); }
+            });
+
+        axios.get<RoomProvider[]>(`http://localhost:8080/api/rooms/${numericId}/roomProviders`)
+            .then((response) => { setProviders(response.data);
+            }) .catch((error) => { console.error("Failed to fetch room providers:", error); });
 
 
         Promise.all([
-            axios.get(`http://localhost:8080/api/rooms/${numericId}`),
-            axios.get(`http://localhost:8080/api/rooms/${numericId}/source`),
-            axios.get(`http://localhost:8080/api/rooms/${numericId}/roomProviders`),
-            axios.get<[string, string][]>(`http://localhost:8080/api/rooms/${numericId}/dates`)
-        ]).then(([roomDetailsRes, sourceRes, providersRes, occupiedDatesRes]) => {
-            setRoomDetails(roomDetailsRes.data);
-            setSource(sourceRes.data);
+        axios.get<[string, string][]>(`http://localhost:8080/api/rooms/${numericId}/dates`)
+        ]).then(([occupiedDatesRes]) => {
             setRawBookingDates(occupiedDatesRes.data);
-            setProviders(providersRes.data);
-            console.log(JSON.stringify(providersRes.data) + " DATA HERE")
         }).catch((err) => {
             setError(err.response?.data?.message || err.message || "Failed to fetch room data.");
             console.error("Error fetching room data:", err);
@@ -210,28 +202,28 @@ function RoomDetailsPage () {
         }
     }, [rawBookingDates]);
 
-// Used to update DatePicker on this page based on searchParams
+    // Used to update DatePicker on this page based on searchParams
     const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
-            setCheckInDate(selected.startDate);
-            setCheckOutDate(selected.endDate);
+        setCheckInDate(selected.startDate);
+        setCheckOutDate(selected.endDate);
 
-            const currentParams = new URLSearchParams(searchParams.toString());
-            const formattedStart = formatDateForURL(selected.startDate);
-            const formattedEnd = formatDateForURL(selected.endDate);
+        const currentParams = new URLSearchParams(searchParams.toString());
+        const formattedStart = formatDateForURL(selected.startDate);
+        const formattedEnd = formatDateForURL(selected.endDate);
 
-            if (formattedStart) {
-                currentParams.set('from', formattedStart);
-            } else {
-                currentParams.delete('from');
-            }
-            if (formattedEnd) {
-                currentParams.set('to', formattedEnd);
-            } else {
-                currentParams.delete('to');
-            }
-            // Update URL. The useEffect will then react to this change.
-            setSearchParams(currentParams, { replace: true }); // Using replace to avoid too many history entries
-        };
+        if (formattedStart) {
+            currentParams.set('from', formattedStart);
+        } else {
+            currentParams.delete('from');
+        }
+        if (formattedEnd) {
+            currentParams.set('to', formattedEnd);
+        } else {
+            currentParams.delete('to');
+        }
+        // Update URL. The useEffect will then react to this change.
+        setSearchParams(currentParams, { replace: true }); // Using replace to avoid too many history entries
+    };
 
     function changeProvider(e : React.ChangeEvent<HTMLSelectElement>){
         setSelectedProvider(parseInt(e.target.value))
@@ -241,18 +233,15 @@ function RoomDetailsPage () {
     function bookRoom(){
 
         const booking: Booking = {
-            checkInDate: checkInDate ? checkInDate.toISOString() : "",  
+            checkInDate: checkInDate ? checkInDate.toISOString() : "",
             checkOutDate: checkOutDate ? checkOutDate.toISOString() : "",
         };
-
-    
-
 
         axiosInstance.post(`/booking/withIds/${selectedProvider}/${localStorage.getItem('username')}`,booking,
         {
             headers: {
                 Authorization: `Bearer ${token}`,
-              },
+            },
         })
         .then((Response) => 
             {
@@ -261,12 +250,12 @@ function RoomDetailsPage () {
         }
     ).catch((error) => {
         if (error.response) {
-          console.error("Status:", error.response.status); 
-          console.error("Data:", error.response.data); 
+            console.error("Status:", error.response.status); 
+            console.error("Data:", error.response.data); 
         } else {
-          console.error("General Error:", error.message);
+            console.error("General Error:", error.message);
         }
-      });
+    });
             
     }
 
@@ -286,38 +275,64 @@ function RoomDetailsPage () {
             console.log(JSON.stringify(BookingDates))
         })
         .catch((err) => {
-          console.error(err)
+            console.error(err)
         })
-      
+    
     },[roomDetails])
 
     useEffect (() =>{
 
         if(Source === null){
-            return 
+            return
         }
 
         axiosInstance.get(`/source_extra_features/extra_features/sourceFeatures/${Source?.sourceId}`)
         .then((response) => {
-         {/* console.log(JSON.stringify(response.data) + " here is source extra features");
-          console.log(Source?.sourceId + "SOURCEID")
-          console.log("SOURCEID SHOULD BEHERERER")
+        {/* console.log(JSON.stringify(response.data) + " here is source extra features");
+        console.log(Source?.sourceId + "SOURCEID")
+        console.log("SOURCEID SHOULD BEHERERER")
           console.log(JSON.stringify(response.data) + " stringify ") */}
-          setExtraFeatures(response.data);
+        setExtraFeatures(response.data);
         })
         .catch((error) => {
-          if (error.response) {
+            if (error.response) {
             {/*console.error("Status:", error.response.status); 
             console.error("Data:", error.response.data); 
             console.log(JSON.stringify(Source) +" SOURCE ID ?????????")*/}
-          } else {
+            } else {
             {/*console.error("General Error:", error.message);*/}
-          }
+            }
         });
 
 
     },[Source]);
 
+
+    /**
+     * Uses updated parseUrlDate to make sure the dates are at local midnight so all dates are properly disabled
+     */
+    useEffect(() => {
+        const newDisabledIntervals: ExcludedDateInterval[] = [];
+
+        if (rawBookingDates && rawBookingDates.length > 0) {
+            for (const range of rawBookingDates) {
+                const startDateString = range[0];
+                const endDateString = range[1];
+
+                const startDate = parseURLDate(startDateString);
+                const endDate = parseURLDate(endDateString);
+
+                if (startDate && endDate) {
+                    newDisabledIntervals.push({ start: startDate, end: endDate });
+                } else {
+                    console.warn("Invalid date string in rawBookingDates, not adding to disabled intervals:", range);
+                }
+            }
+            setDisabledDateIntervals(newDisabledIntervals);
+        } else {
+            setDisabledDateIntervals([]); // Clear if no booking dates
+        }
+    }, [rawBookingDates]);
 
     /**
      * Checks if there is a disabled date between the interval transfered by the search and then checks if the checkindate was invalid
@@ -386,35 +401,51 @@ function RoomDetailsPage () {
                     <img src={roomDetails.imageUrl} alt="RoomDetailsPlaceholderImg"/>
                 </div>
                 <section className="bookingbox">
-                    <div className="bookingboxtext">How long will you stay?</div>
-                    {/* Place the date picker component here */}
-                         <div style={{ display: 'flex', alignItems: 'center' }}> {/* Optional wrapper for layout */}
-                               <CustomDatePicker
-                                   onDatesSelected={handleDatesUpdate} // Pass the handler function
+                    {role == "ROLE_USER" && (
+                        <>
+                            <div className="bookingboxtext">How long will you stay?</div>
+                            {/* Place the date picker component here */}
+                            <div style={{ display: 'flex', alignItems: 'center' }}> {/* Optional wrapper for layout */}
+                                <CustomDatePicker
+                                    onDatesSelected={handleDatesUpdate} // Pass the handler function
                                    initialStartDate={checkInDate}      // Pass the current state
                                    initialEndDate={checkOutDate}        // Pass the current state
-                                   excludeDateIntervals={disabledDateIntervals}
-                               />
-                         </div>
-                    <select value={selectedProvider ?? ""} onChange={changeProvider}>
+                                    excludeDateIntervals={disabledDateIntervals}
+                                />
+                            </div>
+                            <select value={selectedProvider ?? ""} onChange={changeProvider}>
+                    
+                                <option value="" disabled>
+                                    Choose your provider
+                                </option>
+                                {roomProviders.length > 0 ?
+                                    roomProviders.map((rp) => (
+                                        <option key={rp.roomProviderId} value={rp.roomProviderId}>
+                                            {rp.provider.providerName} - ${rp.roomPrice}
+                                        </option>
+                                    )) :
+                                    (
+                                        <option value="">no room providers</option>
+                                    )
+                                }
+                            </select>
                 
-                    <option value="" disabled>
-                        Choose your provider here
-                    </option>
-                    {roomProviders.length > 0 ?
-                    roomProviders.map((rp) => (
-                    <option key={rp.roomProviderId} value={rp.roomProviderId}>
-                    {rp.provider.providerName} - ${rp.roomPrice}
-                     </option>
-                    )) :
-                    (
-                        <option value="">no room providers</option>
-                    )    
-                }
-                </select>
-                
-                <button onClick={() => setShowConfirmation(true)}>Book room</button>
-                {/* <button onClick={bookRoom}>Book room</button> */} 
+                            <button onClick={() => setShowConfirmation(true)}>Book room</button>
+                            {/* <button onClick={bookRoom}>Book room</button> */}
+                        </>
+                    )}
+                    
+                    {role == "ROLE_PROVIDER" && (
+                        <>
+                        <div className="bookingboxtext">Do you want to list this room?</div>
+                        <div className="bookingoptionswrapper">
+                            <h1 className="smallwhitetext">Set Price:</h1>
+                            <input placeholder="Enter price in NOK"></input>
+                            <button className="bookingsubmit">List Room</button>
+                        </div>
+
+                        </>
+                    )}
                 </section>
             </section>
             <section className="content-container">
@@ -429,11 +460,11 @@ function RoomDetailsPage () {
                         <h2 className="bigwhitetext">Room Specifications</h2>
                         <div className="smallwhitetext">
                             Room type: {roomDetails.roomType}<br />
-                            <p>Amenities :</p> 
+                            <p>Amenities :</p>
                             <ul>
                                 {ExtraFeatures.map((feature) => (
                                 < li>{feature.feature}</li>))}
-                               </ul>
+                            </ul>
                         </div>
                     </div>
                 </div>
