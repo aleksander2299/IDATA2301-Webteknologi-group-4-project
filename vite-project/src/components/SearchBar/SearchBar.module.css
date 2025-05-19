@@ -1,16 +1,16 @@
 
 .searchBarWrapper {
     background-color: #333;
-    padding: 15px;
+    padding: 22px;
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .mainSearchInputs {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 22px;
     align-items: flex-end;
 }
 
@@ -18,26 +18,27 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    min-width: 180px;
+    min-width: 200px;
 }
 
 .inputLabel {
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     color: #ccc;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     display: block;
 }
 
 .textInput,
 .selectInput {
-    padding: 10px;
+    padding: 15px 18px;
     border: 1px solid #555;
-    border-radius: 4px;
+    border-radius: 6px;
     background-color: #444;
     color: #fff;
-    font-size: 0.9rem;
+    font-size: 1.35rem;
     width: 100%;
     box-sizing: border-box;
+    line-height: 1.5;
 }
 
 /* Datepicker is its own component so it is controlled trough its own css mostly */
@@ -48,13 +49,13 @@
 
 
 .searchButton {
-    padding: 10px 20px;
+    padding: 15px 30px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 1.35rem;
     height: fit-content;
     align-self: flex-end;
     white-space: nowrap;
@@ -65,8 +66,8 @@
 }
 
 .additionalFilters {
-    margin-top: 15px;
-    padding-top: 15px;
+    margin-top: 22px;
+    padding-top: 22px;
     border-top: 1px solid #444;
 }
 
@@ -90,7 +91,7 @@
     /* Date picker group */
     .inputGroup:nth-child(2) {
         flex-grow: 1.5;
-        min-width: 270px;
+        min-width: 320px;
     }
 
     /* Room type group */

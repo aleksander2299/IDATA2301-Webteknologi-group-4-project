@@ -53,7 +53,7 @@ function HomePage() {
         console.log('Logged in as:', username);
 
     return (
-      <div>
+      <>
         <Header />
         
         
@@ -127,7 +127,7 @@ function HomePage() {
           </section>
         </main>
         <Footer />
-      </div>
+      </>
     );
   }
 
