@@ -8,27 +8,8 @@ import HotelCard from '../../components/HotelCard/HotelCard';
 import Footer from '../../components/layout/Footer';
 import Header from '../../components/layout/Header';
 import { axiosInstance } from '../../AxiosInstance';
-import roomImg from "../../Images"
+import { Room } from "../../types/Room.ts";
 import { useNavigate } from 'react-router-dom';
-
-interface Source {
-    sourceId: number;
-    sourceName?: string;
-    locationType?: string;
-    city?: string;
-    country?: string;
-}
-
-interface Room {
-    roomId: number;
-    roomName: string;
-    description: string;
-    roomType: string;
-    visible: boolean;
-    imageUrl: string;
-    source: Source;
-}
-
 
 
 function AdminPage() {
@@ -72,12 +53,12 @@ function AdminPage() {
 
 
     const handleToggleVisibility = async (roomToUpdate: Room) => {
-        const newVisibility = !roomToUpdate.visible;
+        const newVisibility = !roomToUpdate.visibility;
 
         console.log(roomToUpdate)
         const payload: Room = {
             ...roomToUpdate,
-            visible: newVisibility,
+            visibility: newVisibility,
         };
         console.log(payload)
         try {
@@ -146,8 +127,8 @@ function AdminPage() {
                                     <HotelCard
                                         key={room.roomId}
                                         id={room.roomId}
-                                        imageUrl={"https://picsum.photos/id/1/200/300"}
-                                        imageAlt={"https://picsum.photos/id/1/200/300"}
+                                        imageUrl={room.imageUrl}
+                                        imageAlt={room.imageUrl}
                                         title={room.roomName}
                                         description={room.description}
                                         onClick={() => {
@@ -157,7 +138,7 @@ function AdminPage() {
                                         <button className={adminPageStyle.cardButtons}
                                                 onClick={(e) => {e.stopPropagation(); handleEditRoom(room.roomId)}}>Edit Room</button>
                                         <button className={adminPageStyle.cardButtons}
-                                                onClick={(e) => {e.stopPropagation(); handleToggleVisibility(room)}}>{room.visible ? 'Hide Room' : 'Show Room'}</button>
+                                                onClick={(e) => {e.stopPropagation(); handleToggleVisibility(room)}}>{room.visibility ? 'Hide Room' : 'Show Room'}</button>
                                         <button className={adminPageStyle.cardButtons}
                                                 onClick={(e) => {e.stopPropagation(); handleDeleteRoom(room.roomId)}}>Delete Room</button>
                                     </HotelCard>

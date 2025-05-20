@@ -71,7 +71,7 @@ export function navigateToSearch(navigate: NavigateFunction, criteria: CommonSea
  */
 export function navigateToRoomDetails(
     navigate: NavigateFunction,
-    roomId: string,
+    roomId: number,
     startDate?: Date | null,
     endDate?: Date | null
 ): void {

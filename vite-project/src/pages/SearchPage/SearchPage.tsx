@@ -19,7 +19,7 @@ import { axiosInstance } from "../../AxiosInstance.tsx";
 
 // Interface for rooms/hotels can be expanded however make sure or null is used if you do since this is supposed to be used for multiple functions
 interface DisplayRoom {
-    id: string;
+    id: number;
     name: string;
     location: string;
     description: string;
@@ -45,7 +45,7 @@ interface ApiRoom {
         city: string;
         country: string;
     };
-    visible: boolean;
+    visibility: boolean;
 }
 
 interface ApiRoomProviderForRoom { // Data from /api/rooms/{id}/roomProviders
@@ -90,7 +90,7 @@ function SearchPage() {
         axiosInstance.get("/rooms")
             .then(response => {
                 console.log("Fetched all rooms", response.data);
-                setAllRoomsFromApi(response.data.filter((room => room.visible) || []))
+                setAllRoomsFromApi(response.data.filter((room => room.visibility) || []))
             })
             .catch(err => {
                 console.log("Failed to Fetch all rooms", err);
@@ -251,7 +251,7 @@ function SearchPage() {
         });
     };
 
-    const GoToDealHandler = (hotelId: string) => {
+    const GoToDealHandler = (hotelId: number) => {
         navigateToRoomDetails(navigate, hotelId, checkInDate, checkOutDate);
     };
 

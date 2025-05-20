@@ -1,6 +1,8 @@
+import {Source} from "./Source.ts";
+
 export type Room = {
     roomId: number;
-    source: any;
+    source: Source;
     roomName: string;
     description?: string;
     visibility: boolean;
