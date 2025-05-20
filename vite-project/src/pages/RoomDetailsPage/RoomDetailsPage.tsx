@@ -454,9 +454,10 @@ function RoomDetailsPage () {
                 </div>
                 <section className="bookingbox">
                     {role == "ROLE_USER" && (
-                        <>
-                            <div className="bookingboxtext">How long will you stay?</div>
+                        <section className="bookingoptionswrapper">
+                            <h1 className="bookingboxtext">How long will you stay?</h1>
                             {/* Place the date picker component here */}
+                            <section></section>
                             <div style={{ display: 'flex', alignItems: 'center' }}> {/* Optional wrapper for layout */}
                                 <CustomDatePicker
                                     onDatesSelected={handleDatesUpdate} // Pass the handler function
@@ -482,19 +483,19 @@ function RoomDetailsPage () {
                                 }
                             </select>
                 
-                            <button onClick={() => setShowConfirmation(true)}>Book room</button>
+                            <button className="bookingsubmit" onClick={() => setShowConfirmation(true)}>Book room</button>
                             {/* <button onClick={bookRoom}>Book room</button> */}
-                        </>
+                        </section>
                     )}
                     
                     {role == "ROLE_PROVIDER" && (
                         <>
-                        <div className="bookingboxtext">Do you want to list this room?</div>
-                        <div className="bookingoptionswrapper">
+                        <h1 className="bookingboxtext">Do you want to list this room?</h1>
+                        <section className="bookingoptionswrapper">
                             <h1 className="smallwhitetext">Set Price:</h1>
                             <input placeholder="Enter price in NOK" onChange={(e) => setRoomPrice(Number(e.target.value))}></input>
                             <button className="bookingsubmit" onClick={() => { if (roomPrice !== undefined) { listRoomAsProvider(roomPrice); } else {alert("Please enter a price.");}}}>List Room</button>
-                        </div>
+                        </section>
 
                         </>
                     )}
