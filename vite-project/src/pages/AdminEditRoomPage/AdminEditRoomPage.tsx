@@ -174,7 +174,7 @@ function AdminEditRoomPage() {
     return (
         <>
         <Header />
-        <main className={editPageStyle.main}></main>
+        <main className={editPageStyle.main}>
         <form onSubmit={handleSubmit} className={editPageStyle.editForm}>
             {/* AI was used to help generate the form fields.
                 Since its just the same field with different info*/}
@@ -248,6 +248,6 @@ function AdminEditRoomPage() {
     </>
 
     );
-};
+});
 
 export default AdminEditRoomPage;
