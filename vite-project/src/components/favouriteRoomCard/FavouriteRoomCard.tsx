@@ -1,11 +1,10 @@
-import {useState} from "react";
+import { useState } from "react";
 import { Link } from 'react-router-dom';
 
-import favRoomCardStyle from './FavouriteRoomCard.module.css'
+import favRoomCardStyle from './FavouriteRoomCard.module.css';
 
-import roomImg from '../../Images/room image placeholder.jpg';
 import { Room } from '../../types/Room';
-import {axiosInstance} from "../../AxiosInstance.tsx";
+import FavoriteButton from "../FavoriteButton/FavoriteButton.tsx";
 
 const token = localStorage.getItem('token');
 
@@ -18,42 +17,23 @@ function FavouriteRoomCard ({ room, favouriteId }: FavouriteRoomCardProps) {
     const [disabled, setDisabled] = useState(false);
     const [buttonText, setButtonText] = useState("Remove");
 
-    const handleUnfavourite = async () => {
-        try {
-            const response = await axiosInstance.delete(`/favourite/${favouriteId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-
-            if (response.status === 200 || response.status === 204) {
-                setDisabled(true);
-                setButtonText("Removed");
-            } else {
-                // Optional: handle unexpected response
-                setButtonText("Error");
-            }
-        } catch (err) {
-            console.error("Failed to delete favourite:", err);
-            setButtonText("Error");
-        }
-
-
-
-    }
-
     return (
         <div className={favRoomCardStyle.favourite_card}>
-            <Link to={`/room/${room.roomId}`}>
+            <div className={favRoomCardStyle.favcardwrapper}>
+                <Link to={`/room/${room.roomId}`}>
             <img src={room.imageUrl} alt={room.roomName} />
             </Link>
-                <button className="removeFavourite" onClick={handleUnfavourite} disabled={disabled}>
-                {buttonText}
-                </button>
+            <div className={favRoomCardStyle.favbuttonoverlay}>
+                <FavoriteButton room={room} />
+            </div>
+            <section className={favRoomCardStyle.hotelinfo}>
+                <h1>{room.roomName}</h1>
+                <p>
+                    {room.description}
+                </p>
+            </section>
 
-            <p>
-                {room.roomName}
-            </p>
+            </div>
         </div>
     );
 
