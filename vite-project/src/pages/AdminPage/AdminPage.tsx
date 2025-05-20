@@ -74,12 +74,12 @@ function AdminPage() {
     const handleToggleVisibility = async (roomToUpdate: Room) => {
         const newVisibility = !roomToUpdate.visible;
 
-        console.log(roomToUpdate)
+        console.log("Before toggle - roomToUpdate:", roomToUpdate)
         const payload: Room = {
             ...roomToUpdate,
             visible: newVisibility,
         };
-        console.log(payload)
+        console.log("Payload being sent:", payload);
         try {
             // Needs entire payload for this
             const response = await axiosInstance.put<Room>(`/rooms/${roomToUpdate.roomId}`, payload, {
@@ -88,7 +88,7 @@ function AdminPage() {
                 }
             });
 
-            console.log(response.data)
+            console.log("Backend response data:", response.data);
             setAllRooms(prevRooms =>
                 prevRooms.map(room =>
                     room.roomId === roomToUpdate.roomId ? response.data : room // Use the fresh data from server
