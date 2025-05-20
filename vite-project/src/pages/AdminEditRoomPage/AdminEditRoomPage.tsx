@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../AxiosInstance';
 
@@ -110,7 +110,66 @@ function AdminEditRoomPage() {
             fetchRoomData();
         }, [roomId, token]);
 
-        
+        const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>) => {
+            const { name, value } = e.target;
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }, []);
+
+        const handleSubmit = async (e: React.FormEvent) => {
+            //Needed to prevent page from reloading when submitting formData
+            e.preventDefault();
+            if (!room) {
+                setError("Room ID is missing.");
+                return;
+            }
+            setIsSaving(true);
+            setError(null);
+            setSuccessMessage(null);
+
+            const payloadToSend: RoomUpdatePayload = {
+            roomName: formData.roomName,
+            description: formData.description,
+            roomType: formData.roomType,
+            imageUrl: formData.imageUrl,
+            };
+
+            try {
+                // Temporarily using put
+                const response = await axiosInstance.put(`/rooms/${room.roomId}`, payloadToSend,
+                    {headers: {Authorization: `Bearer ${token}`}}
+                );
+                const updatedRoomDataFromServer = response.data;
+                setRoom(updatedRoomDataFromServer);
+                setFormData({
+                    roomName: updatedRoomDataFromServer.roomName,
+                    description: updatedRoomDataFromServer.description,
+                    roomType: updatedRoomDataFromServer.roomType,
+                    imageUrl: updatedRoomDataFromServer.imageUrl || (updatedRoomDataFromServer as any).imageurl || '',
+                });
+                setSuccessMessage("Room updated successfully.");
+
+            } catch (err: any) {
+                console.error("Failed to update room:", err);
+                setError(err.response?.data?.message || "Failed to update room.");
+            } finally {
+                setIsSaving(false);
+            }
+        };
+
+        if (isLoading) {
+            return <p className={editPageStyle.message}>Loading room details...</p>;
+        }
+
+        if (error && !room) {
+            return <p className={`${editPageStyle.message} ${editPageStyle.error}`}>Error: {error}</p>;
+        }
+
+        if (!room) {
+            return <p className={editPageStyle.message}>Room data not found.</p>;
+        }
 
     return (
         <>
@@ -173,25 +232,6 @@ function AdminEditRoomPage() {
                 />
             </div>
             */}
-
-            <div className={editPageStyle.formGroup}>
-                <label htmlFor="sourceId">Source:</label>
-                <select
-                    id="sourceId"
-                    name="sourceId"
-                    value={formData.sourceId || ''}
-                    onChange={handleInputChange}
-                    required
-                >
-                    <option value="">Select Source</option>
-                    {sourcesList.map(s => (
-                        <option key={s.sourceId} value={s.sourceId}>
-                            {s.sourceName} (ID: {s.sourceId})
-                        </option>
-                    ))}
-                </select>
-                {room.source && <small>Currently: {room.source.sourceName} (ID: {room.source.sourceId})</small>}
-            </div>
 
 
             <div className={editPageStyle.formActions}>
