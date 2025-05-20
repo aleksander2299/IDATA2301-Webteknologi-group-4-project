@@ -15,6 +15,7 @@ import SearchBar from "../../components/SearchBar/SearchBar.tsx";
 import { navigateToRoomDetails, navigateToSearch, parseURLDate } from '../../utils/navigationUtils';
 
 import { axiosInstance } from "../../AxiosInstance.tsx";
+import { Room } from "../../types/Room.ts";
 
 
 // Interface for rooms/hotels can be expanded however make sure or null is used if you do since this is supposed to be used for multiple functions
@@ -87,7 +88,7 @@ function SearchPage() {
         setError(null);
         console.log("SearchPage: Fetching all rooms...");
         //Get all hotels
-        axiosInstance.get("/rooms")
+        axiosInstance.get<ApiRoom[]>("/rooms")
             .then(response => {
                 console.log("Fetched all rooms", response.data);
                 setAllRoomsFromApi(response.data.filter((room => room.visibility) || []))
@@ -125,7 +126,7 @@ function SearchPage() {
                         const prices = providers.map(p => p.roomPrice).filter(price => typeof price === 'number');
                         if (prices.length > 0) {
                             roomsProcessed.push({
-                                id: String(apiRoom.roomId),
+                                id: apiRoom.roomId,
                                 name: apiRoom.roomName,
                                 location: apiRoom.source.city || apiRoom.source.sourceName,
                                 country: apiRoom.source.country || 'Unknown',
