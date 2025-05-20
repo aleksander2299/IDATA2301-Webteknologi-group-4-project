@@ -75,10 +75,24 @@ function AdminPage() {
     }
 
     const handleEditRoom = async (roomId: number) => {
-
+        navigate(`/admin/edit-room/${roomId}`);
     }
 
     const handleDeleteRoom = async (roomId: number) => {
+        try {
+            await axiosInstance.delete(`/rooms/${roomId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+            console.log(`Admin: Room ${roomId} deleted`);
+            setError(null);
+        } catch (error) {
+            console.error(error);
+            setError("Failed to delete room.");
+        } finally {
+            setIsLoading(false);
+        }
     }
 
 
