@@ -34,13 +34,15 @@ interface Source{
     country: string;
 }
 
+interface Provider{
+    providerId: number;
+    providerName: string;
+}
+
     interface RoomProvider {
     roomProviderId: number;
     roomPrice: number;
-    provider: {
-        providerId: number;
-        providerName: string;
-    };
+    provider: Provider
 }
 
 interface ExtraFeatures{
@@ -114,6 +116,7 @@ function RoomDetailsPage () {
     const [toDate, setToDate] = useState<string | null>(() => parseURLDate(searchParams.get('to')));
     const [roomProviders,setProviders] = useState<RoomProvider[]>([]);
     const [selectedProvider, setSelectedProvider] = useState<number | null>(null);
+    const [roomPrice, setRoomPrice] = useState<number>();
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     {/* roomDetails and error can both be an object or null since they start out as null and then can get objects */}
@@ -283,6 +286,33 @@ function RoomDetailsPage () {
         setShowConfirmation(false); // Closes the confirmation box
         bookRoom();                 // runs bookRoom function
     }
+
+
+    async function listRoomAsProvider(price : number){
+        const username = localStorage.getItem("username");
+        let currentProvider : Provider
+        const response = await axiosInstance.get(`/providers/byName/${username}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        currentProvider = response.data
+        
+         if(currentProvider !== null){
+            console.log(JSON.stringify(currentProvider))
+
+            axiosInstance.post(`/roomProvider/link/${room?.roomId}/${currentProvider.providerId}/${price}`, null,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`
+                  }
+        }).then((response) => 
+            console.log(JSON.stringify(response.data) + " LINK RESPONSE")
+        ).catch((err) => 
+            console.error(err.data + " error here for linking")
+        )
+     }
+}
 
 
     useEffect(() => {
@@ -462,8 +492,8 @@ function RoomDetailsPage () {
                         <div className="bookingboxtext">Do you want to list this room?</div>
                         <div className="bookingoptionswrapper">
                             <h1 className="smallwhitetext">Set Price:</h1>
-                            <input placeholder="Enter price in NOK"></input>
-                            <button className="bookingsubmit">List Room</button>
+                            <input placeholder="Enter price in NOK" onChange={(e) => setRoomPrice(Number(e.target.value))}></input>
+                            <button className="bookingsubmit" onClick={() => { if (roomPrice !== undefined) { listRoomAsProvider(roomPrice); } else {alert("Please enter a price.");}}}>List Room</button>
                         </div>
 
                         </>
