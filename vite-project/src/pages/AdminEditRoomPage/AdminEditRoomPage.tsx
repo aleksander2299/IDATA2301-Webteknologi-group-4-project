@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../AxiosInstance';
 
@@ -7,7 +7,6 @@ import editPageStyle from './AdminEditRoomPage.module.css';
 
 import Footer from '../../components/layout/Footer';
 import Header from '../../components/layout/Header';
-import styles from "../../components/SearchBar/SearchBar.module.css";
 
 interface RoomData {
     roomId: number;
@@ -19,19 +18,14 @@ interface RoomData {
     source: {
         sourceId: number;
         sourceName?: string;
+        city?: string;
+        country?: string;
     };
-}
-
-interface SourceOption {
-    sourceId: number;
-    sourceName: string;
 }
 
 interface RoomUpdatePayload {
     roomName?: string;
-    sourceId?: number;
     description?: string;
-    visibility?: boolean;
     roomType?: string;
     imageUrl?: string;
 }
@@ -55,10 +49,132 @@ const BASIC_ROOM_TYPES: string[] = [
 
 function AdminEditRoomPage() {
 
+    const { roomId } = useParams<{ roomId: string }>();
+    const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+
+    const [room, setRoom] = useState<RoomData | null>(null); // RoomData interface updated
+    const [formData, setFormData] = useState<RoomUpdatePayload>({
+        roomName: '',
+        description: '',
+        roomType: '',
+        imageUrl: '',
+    });
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isSaving, setIsSaving] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!roomId) {
+            setError("Room ID is missing.");
+            setIsLoading(false);
+            return;
+        }
+        setIsLoading(true);
+        setError(null);
+        setSuccessMessage(null);
+
+        useEffect(() => {
+            if (!roomId) {
+                setError("Room ID is missing.");
+                setIsLoading(false);
+                return;
+            }
+            setIsLoading(true);
+            setError(null);
+            setSuccessMessage(null);
+
+            const fetchRoomData = async () => {
+                try {
+                    const roomResponse = await axiosInstance.get<RoomData>(`/rooms/${roomId}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    const fetchedRoom = roomResponse.data;
+                    setRoom(fetchedRoom);
+                    setFormData({
+                        roomName: fetchedRoom.roomName,
+                        description: fetchedRoom.description,
+                        roomType: fetchedRoom.roomType,
+                        imageUrl: fetchedRoom.imageUrl,
+                    });
+
+                } catch (err: any) {
+                    console.error("Failed to fetch room data or list of sources:", err);
+                    setError(err.response?.data?.message || "Failed to load data for editing.");
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+            fetchRoomData();
+        }, [roomId, token]);
+
+        const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>) => {
+            const { name, value } = e.target;
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }, []);
+
+        const handleSubmit = async (e: React.FormEvent) => {
+            //Needed to prevent page from reloading when submitting formData
+            e.preventDefault();
+            if (!room) {
+                setError("Room ID is missing.");
+                return;
+            }
+            setIsSaving(true);
+            setError(null);
+            setSuccessMessage(null);
+
+            const payloadToSend: RoomUpdatePayload = {
+            roomName: formData.roomName,
+            description: formData.description,
+            roomType: formData.roomType,
+            imageUrl: formData.imageUrl,
+            };
+
+            try {
+                // Temporarily using put
+                const response = await axiosInstance.put(`/rooms/${room.roomId}`, payloadToSend,
+                    {headers: {Authorization: `Bearer ${token}`}}
+                );
+                const updatedRoomDataFromServer = response.data;
+                setRoom(updatedRoomDataFromServer);
+                setFormData({
+                    roomName: updatedRoomDataFromServer.roomName,
+                    description: updatedRoomDataFromServer.description,
+                    roomType: updatedRoomDataFromServer.roomType,
+                    imageUrl: updatedRoomDataFromServer.imageUrl || (updatedRoomDataFromServer as any).imageurl || '',
+                });
+                setSuccessMessage("Room updated successfully.");
+
+            } catch (err: any) {
+                console.error("Failed to update room:", err);
+                setError(err.response?.data?.message || "Failed to update room.");
+            } finally {
+                setIsSaving(false);
+            }
+        };
+
+        if (isLoading) {
+            return <p className={editPageStyle.message}>Loading room details...</p>;
+        }
+
+        if (error && !room) {
+            return <p className={`${editPageStyle.message} ${editPageStyle.error}`}>Error: {error}</p>;
+        }
+
+        if (!room) {
+            return <p className={editPageStyle.message}>Room data not found.</p>;
+        }
+
     return (
         <>
         <Header />
-        <main className={editPageStyle.main}></main>
+        <main className={editPageStyle.main}>
         <form onSubmit={handleSubmit} className={editPageStyle.editForm}>
             {/* AI was used to help generate the form fields.
                 Since its just the same field with different info*/}
@@ -103,7 +219,7 @@ function AdminEditRoomPage() {
                     </select>
             </div>
             {/* TODO: If images work uncomment this*/}
-            {/*}
+            {/*
             <div className={editPageStyle.formGroup}>
                 <label htmlFor="imageUrl">Image URL:</label>
                 <input
@@ -116,25 +232,6 @@ function AdminEditRoomPage() {
                 />
             </div>
             */}
-
-            <div className={editPageStyle.formGroup}>
-                <label htmlFor="sourceId">Source:</label>
-                <select
-                    id="sourceId"
-                    name="sourceId"
-                    value={formData.sourceId || ''}
-                    onChange={handleInputChange}
-                    required
-                >
-                    <option value="">Select Source</option>
-                    {sourcesList.map(s => (
-                        <option key={s.sourceId} value={s.sourceId}>
-                            {s.sourceName} (ID: {s.sourceId})
-                        </option>
-                    ))}
-                </select>
-                {room.source && <small>Currently: {room.source.sourceName} (ID: {room.source.sourceId})</small>}
-            </div>
 
 
             <div className={editPageStyle.formActions}>
@@ -151,6 +248,6 @@ function AdminEditRoomPage() {
     </>
 
     );
-};
+});
 
 export default AdminEditRoomPage;

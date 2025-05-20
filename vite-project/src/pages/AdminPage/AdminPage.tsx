@@ -8,18 +8,8 @@ import HotelCard from '../../components/HotelCard/HotelCard';
 import Footer from '../../components/layout/Footer';
 import Header from '../../components/layout/Header';
 import { axiosInstance } from '../../AxiosInstance';
-import roomImg from "../../Images"
+import { Room } from "../../types/Room.ts";
 import { useNavigate } from 'react-router-dom';
-
-interface Room {
-    roomId: number;
-    roomName: string;
-    description: string;
-    roomType: string;
-    visible: boolean;
-    imageUrl: string;
-}
-
 
 
 function AdminPage() {
@@ -34,9 +24,18 @@ function AdminPage() {
     useEffect(() => {
         setIsLoading(true);
         setError(null);
-        axiosInstance.get(`/rooms`, {
+        const currentToken = localStorage.getItem("token");
+        console.log(currentToken);
+
+        if (!currentToken) {
+            setError("Authentication token is missing. Please log in.");
+            setIsLoading(false);
+            setAllRooms([]);
+            return;
+        }
+        axiosInstance.get<Room[]>(`/rooms`, {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${currentToken}`,
             }
         })
             .then((response) => {
@@ -46,24 +45,37 @@ function AdminPage() {
             .catch((error) => {
                 console.error(error);
                 setError("Failed to fetch all rooms.");
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     }, [token]);
 
 
     const handleToggleVisibility = async (roomToUpdate: Room) => {
-        const newVisibility = !roomToUpdate.visible;
+        const newVisibility = !roomToUpdate.visibility;
 
+        console.log("Before toggle - roomToUpdate:", roomToUpdate)
         const payload: Room = {
             ...roomToUpdate,
-            visible: newVisibility,
+            visibility: newVisibility,
         };
-
+        console.log("Payload being sent:", payload);
         try {
-            await axiosInstance.put(`/rooms/${roomToUpdate.roomId}`, payload, {
+            // Needs entire payload for this
+            const response = await axiosInstance.put<Room>(`/rooms/${roomToUpdate.roomId}`, payload, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
             });
+
+            console.log("Backend response data:", response.data);
+            setAllRooms(prevRooms =>
+                prevRooms.map(room =>
+                    room.roomId === roomToUpdate.roomId ? response.data : room // Use the fresh data from server
+                )
+            );
+
             console.log(`Admin: Room ${roomToUpdate.roomId} visibility changed to ${newVisibility}`);
             setError(null);
         } catch (error) {
@@ -115,8 +127,8 @@ function AdminPage() {
                                     <HotelCard
                                         key={room.roomId}
                                         id={room.roomId}
-                                        imageUrl={"https://picsum.photos/id/1/200/300"}
-                                        imageAlt={"https://picsum.photos/id/1/200/300"}
+                                        imageUrl={room.imageUrl}
+                                        imageAlt={room.imageUrl}
                                         title={room.roomName}
                                         description={room.description}
                                         onClick={() => {
@@ -126,7 +138,7 @@ function AdminPage() {
                                         <button className={adminPageStyle.cardButtons}
                                                 onClick={(e) => {e.stopPropagation(); handleEditRoom(room.roomId)}}>Edit Room</button>
                                         <button className={adminPageStyle.cardButtons}
-                                                onClick={(e) => {e.stopPropagation(); handleToggleVisibility(room)}}>{room.visible ? 'Hide Room' : 'Show Room'}</button>
+                                                onClick={(e) => {e.stopPropagation(); handleToggleVisibility(room)}}>{room.visibility ? 'Hide Room' : 'Show Room'}</button>
                                         <button className={adminPageStyle.cardButtons}
                                                 onClick={(e) => {e.stopPropagation(); handleDeleteRoom(room.roomId)}}>Delete Room</button>
                                     </HotelCard>
