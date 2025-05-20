@@ -87,16 +87,21 @@ function AdminPage() {
     }
 
     const handleEditRoom = async (roomId: number) => {
-        navigate(`/admin/edit-room/${roomId}`);
+        navigate(`/admin/${roomId}`);
     }
 
     const handleDeleteRoom = async (roomId: number) => {
         try {
-            await axiosInstance.delete(`/rooms/${roomId}`, {
+            const response = await axiosInstance.delete(`/rooms/${roomId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
             });
+
+            setAllRooms(prevRooms =>
+                prevRooms.filter(room => room.roomId !== roomId)
+            );
+
             console.log(`Admin: Room ${roomId} deleted`);
             setError(null);
         } catch (error) {

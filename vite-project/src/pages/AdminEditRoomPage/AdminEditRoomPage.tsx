@@ -49,7 +49,7 @@ const BASIC_ROOM_TYPES: string[] = [
 
 function AdminEditRoomPage() {
 
-    const { roomId } = useParams<{ roomId: string }>();
+    const {roomId} = useParams<{ roomId: string }>();
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
@@ -76,20 +76,10 @@ function AdminEditRoomPage() {
         setError(null);
         setSuccessMessage(null);
 
-        useEffect(() => {
-            if (!roomId) {
-                setError("Room ID is missing.");
-                setIsLoading(false);
-                return;
-            }
-            setIsLoading(true);
-            setError(null);
-            setSuccessMessage(null);
-
             const fetchRoomData = async () => {
                 try {
                     const roomResponse = await axiosInstance.get<RoomData>(`/rooms/${roomId}`, {
-                        headers: { Authorization: `Bearer ${token}` }
+                        headers: {Authorization: `Bearer ${token}`}
                     });
                     const fetchedRoom = roomResponse.data;
                     setRoom(fetchedRoom);
@@ -110,12 +100,14 @@ function AdminEditRoomPage() {
             fetchRoomData();
         }, [roomId, token]);
 
-        const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>) => {
-            const { name, value } = e.target;
+        const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+            const {name, value} = e.target;
             setFormData((prevData) => ({
                 ...prevData,
                 [name]: value,
             }));
+            setSuccessMessage(null);
+            setError(null);
         }, []);
 
         const handleSubmit = async (e: React.FormEvent) => {
@@ -130,10 +122,11 @@ function AdminEditRoomPage() {
             setSuccessMessage(null);
 
             const payloadToSend: RoomUpdatePayload = {
-            roomName: formData.roomName,
-            description: formData.description,
-            roomType: formData.roomType,
-            imageUrl: formData.imageUrl,
+                ...room,
+                roomName: formData.roomName,
+                description: formData.description,
+                roomType: formData.roomType,
+                imageUrl: formData.imageUrl,
             };
 
             try {
@@ -171,55 +164,55 @@ function AdminEditRoomPage() {
             return <p className={editPageStyle.message}>Room data not found.</p>;
         }
 
-    return (
-        <>
-        <Header />
-        <main className={editPageStyle.main}>
-        <form onSubmit={handleSubmit} className={editPageStyle.editForm}>
-            {/* AI was used to help generate the form fields.
+        return (
+            <>
+                <Header/>
+                <main className={editPageStyle.main}>
+                    <form onSubmit={handleSubmit} className={editPageStyle.editForm}>
+                        {/* AI was used to help generate the form fields.
                 Since its just the same field with different info*/}
-            <div className={editPageStyle.formGroup}>
-                <label htmlFor="roomName">Room Name:</label>
-                <input
-                    type="text"
-                    id="roomName"
-                    name="roomName"
-                    value={formData.roomName || ''}
-                    onChange={handleInputChange}
-                    required
-                />
-            </div>
+                        <div className={editPageStyle.formGroup}>
+                            <label htmlFor="roomName">Room Name:</label>
+                            <input
+                                type="text"
+                                id="roomName"
+                                name="roomName"
+                                value={formData.roomName || ''}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
 
-            <div className={editPageStyle.formGroup}>
-                <label htmlFor="description">Description:</label>
-                <textarea
-                    id="description"
-                    name="description"
-                    value={formData.description || ''}
-                    onChange={handleInputChange}
-                    rows={5}
-                />
-            </div>
+                        <div className={editPageStyle.formGroup}>
+                            <label htmlFor="description">Description:</label>
+                            <textarea
+                                id="description"
+                                name="description"
+                                value={formData.description || ''}
+                                onChange={handleInputChange}
+                                rows={5}
+                            />
+                        </div>
 
-            <div className={editPageStyle.formGroup}>
-                <label htmlFor="roomType">Room Type:</label>
-                <select
-                    id="roomType"
-                    name="roomType"
-                    value={formData.roomType || ''} // Ensure value is not undefined
-                    onChange={handleInputChange}
-                    required
-                >
-                        <option value="any">Any Type</option>
-                        {BASIC_ROOM_TYPES.map((type) => (
-                            <option key={type} value={type.toLowerCase()}>
-                                {type}
-                            </option>
-                        ))}
-                    </select>
-            </div>
-            {/* TODO: If images work uncomment this*/}
-            {/*
+                        <div className={editPageStyle.formGroup}>
+                            <label htmlFor="roomType">Room Type:</label>
+                            <select
+                                id="roomType"
+                                name="roomType"
+                                value={formData.roomType || ''} // Ensure value is not undefined
+                                onChange={handleInputChange}
+                                required
+                            >
+                                <option value="any">Any Type</option>
+                                {BASIC_ROOM_TYPES.map((type) => (
+                                    <option key={type} value={type.toLowerCase()}>
+                                        {type}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        {/* TODO: If images work uncomment this*/}
+                        {/*
             <div className={editPageStyle.formGroup}>
                 <label htmlFor="imageUrl">Image URL:</label>
                 <input
@@ -234,20 +227,20 @@ function AdminEditRoomPage() {
             */}
 
 
-            <div className={editPageStyle.formActions}>
-                <button type="submit" className={editPageStyle.saveButton} disabled={isSaving}>
-                    {isSaving ? 'Saving...' : 'Save Changes'}
-                </button>
-                <button type="button" className={editPageStyle.cancelButton} onClick={() => navigate('/admin')} disabled={isSaving}>
-                    Cancel
-                </button>
-            </div>
-        </form>
-        </main>
-    <Footer />
-    </>
-
+                        <div className={editPageStyle.formActions}>
+                            <button type="submit" className={editPageStyle.saveButton} disabled={isSaving}>
+                                {isSaving ? 'Saving...' : 'Save Changes'}
+                            </button>
+                            <button type="button" className={editPageStyle.cancelButton}
+                                    onClick={() => navigate('/admin')} disabled={isSaving}>
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </main>
+                <Footer/>
+            </>
     );
-});
+}
 
 export default AdminEditRoomPage;
