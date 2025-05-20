@@ -1,14 +1,13 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { axiosInstance } from '../../AxiosInstance.js';
 
-import favPageStyles from './FavouritesPage.module.css';
 import '../../styles/main.css';
+import favPageStyles from './FavouritesPage.module.css';
 
+import FavouriteRoomCard from "../../components/favouriteRoomCard/FavouriteRoomCard";
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
-import FavouriteRoomCard from "../../components/favouriteRoomCard/FavouriteRoomCard"
-import { Favourite} from "../../types/Favourite.ts";
+import { Favourite } from "../../types/Favourite.ts";
 
 function FavouritesPage () {
 
@@ -42,7 +41,9 @@ function FavouritesPage () {
             <Header />
 
             <main className={favPageStyles.content}>
-                <h1>Favorite rooms</h1>
+                <div className={favPageStyles.topbox}>
+                    <h1>Favorite rooms:</h1>
+                </div>
                 <section id={favPageStyles.favourites_container}>
                     {loading && <p>Loading...</p>}
                     {!loading && favourites.length === 0 && <p>No favourite rooms found.</p>}
