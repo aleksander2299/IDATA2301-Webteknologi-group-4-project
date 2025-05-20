@@ -43,6 +43,7 @@ interface RoomProvider {
 
 function ProviderPage() {
     const token = localStorage.getItem("token");
+    const username = localStorage.getItem("username");
 
 
     {/* Fake Temporary data its set up differently since it will display every hotelcard it gets, so its not every hotel */}
@@ -54,7 +55,7 @@ function ProviderPage() {
 
 
     useEffect(() => {
-        axiosInstance.get(`/providers/Agoda/roomProviders`, {
+        axiosInstance.get(`/providers/${username}/roomProviders`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -79,7 +80,7 @@ function ProviderPage() {
         })
         .then(() => {
             console.log("successfully removed listing");
-            axiosInstance.get(`/providers/Agoda/roomProviders`, {
+            axiosInstance.get(`/providers/${username}/roomProviders`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
@@ -124,7 +125,7 @@ function ProviderPage() {
     }
     setRooms([])
 
-     await axiosInstance.get(`/providers/Agoda/roomProviders`, {
+     await axiosInstance.get(`/providers/${username}/roomProviders`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -161,7 +162,7 @@ function ProviderPage() {
                                                         <button className={providerPageStyle.cardButtons} 
                                                         onClick={(e) => {e.stopPropagation(); editListing(Rp.roomProviderId,Rp.roomPrice,Rp)}}>Edit price</button>
                                                         <button className={providerPageStyle.cardButtons} onClick={(e) => {e.stopPropagation(); 
-                                                        deleteListing(Rp.room.roomId, 2);}}>Delete listing</button> 
+                                                        deleteListing(Rp.room.roomId, Rp.provider.providerId);}}>Delete listing</button> 
                                                         </HotelCard>
                                                 )
                                             )
