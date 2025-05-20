@@ -7,7 +7,6 @@ import editPageStyle from './AdminEditRoomPage.module.css';
 
 import Footer from '../../components/layout/Footer';
 import Header from '../../components/layout/Header';
-import styles from "../../components/SearchBar/SearchBar.module.css";
 
 interface RoomData {
     roomId: number;
@@ -19,19 +18,14 @@ interface RoomData {
     source: {
         sourceId: number;
         sourceName?: string;
+        city?: string;
+        country?: string;
     };
-}
-
-interface SourceOption {
-    sourceId: number;
-    sourceName: string;
 }
 
 interface RoomUpdatePayload {
     roomName?: string;
-    sourceId?: number;
     description?: string;
-    visibility?: boolean;
     roomType?: string;
     imageUrl?: string;
 }
@@ -54,6 +48,69 @@ const BASIC_ROOM_TYPES: string[] = [
 ].sort((a, b) => a.localeCompare(b));
 
 function AdminEditRoomPage() {
+
+    const { roomId } = useParams<{ roomId: string }>();
+    const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+
+    const [room, setRoom] = useState<RoomData | null>(null); // RoomData interface updated
+    const [formData, setFormData] = useState<RoomUpdatePayload>({
+        roomName: '',
+        description: '',
+        roomType: '',
+        imageUrl: '',
+    });
+
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isSaving, setIsSaving] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!roomId) {
+            setError("Room ID is missing.");
+            setIsLoading(false);
+            return;
+        }
+        setIsLoading(true);
+        setError(null);
+        setSuccessMessage(null);
+
+        useEffect(() => {
+            if (!roomId) {
+                setError("Room ID is missing.");
+                setIsLoading(false);
+                return;
+            }
+            setIsLoading(true);
+            setError(null);
+            setSuccessMessage(null);
+
+            const fetchRoomData = async () => {
+                try {
+                    const roomResponse = await axiosInstance.get<RoomData>(`/rooms/${roomId}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    const fetchedRoom = roomResponse.data;
+                    setRoom(fetchedRoom);
+                    setFormData({
+                        roomName: fetchedRoom.roomName,
+                        description: fetchedRoom.description,
+                        roomType: fetchedRoom.roomType,
+                        imageUrl: fetchedRoom.imageUrl,
+                    });
+
+                } catch (err: any) {
+                    console.error("Failed to fetch room data or list of sources:", err);
+                    setError(err.response?.data?.message || "Failed to load data for editing.");
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+            fetchRoomData();
+        }, [roomId, token]);
+
+        
 
     return (
         <>
@@ -103,7 +160,7 @@ function AdminEditRoomPage() {
                     </select>
             </div>
             {/* TODO: If images work uncomment this*/}
-            {/*}
+            {/*
             <div className={editPageStyle.formGroup}>
                 <label htmlFor="imageUrl">Image URL:</label>
                 <input
