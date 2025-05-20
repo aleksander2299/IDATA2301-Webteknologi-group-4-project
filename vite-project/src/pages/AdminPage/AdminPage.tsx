@@ -11,6 +11,14 @@ import { axiosInstance } from '../../AxiosInstance';
 import roomImg from "../../Images"
 import { useNavigate } from 'react-router-dom';
 
+interface Source {
+    sourceId: number;
+    sourceName?: string;
+    locationType?: string;
+    city?: string;
+    country?: string;
+}
+
 interface Room {
     roomId: number;
     roomName: string;
@@ -18,6 +26,7 @@ interface Room {
     roomType: string;
     visible: boolean;
     imageUrl: string;
+    source: Source;
 }
 
 
@@ -34,9 +43,18 @@ function AdminPage() {
     useEffect(() => {
         setIsLoading(true);
         setError(null);
-        axiosInstance.get(`/rooms`, {
+        const currentToken = localStorage.getItem("token");
+        console.log(currentToken);
+
+        if (!currentToken) {
+            setError("Authentication token is missing. Please log in.");
+            setIsLoading(false);
+            setAllRooms([]);
+            return;
+        }
+        axiosInstance.get<Room[]>(`/rooms`, {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${currentToken}`,
             }
         })
             .then((response) => {
@@ -46,6 +64,9 @@ function AdminPage() {
             .catch((error) => {
                 console.error(error);
                 setError("Failed to fetch all rooms.");
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     }, [token]);
 
@@ -53,17 +74,27 @@ function AdminPage() {
     const handleToggleVisibility = async (roomToUpdate: Room) => {
         const newVisibility = !roomToUpdate.visible;
 
+        console.log(roomToUpdate)
         const payload: Room = {
             ...roomToUpdate,
             visible: newVisibility,
         };
-
+        console.log(payload)
         try {
-            await axiosInstance.put(`/rooms/${roomToUpdate.roomId}`, payload, {
+            // Needs entire payload for this
+            const response = await axiosInstance.put<Room>(`/rooms/${roomToUpdate.roomId}`, payload, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
             });
+
+            console.log(response.data)
+            setAllRooms(prevRooms =>
+                prevRooms.map(room =>
+                    room.roomId === roomToUpdate.roomId ? response.data : room // Use the fresh data from server
+                )
+            );
+
             console.log(`Admin: Room ${roomToUpdate.roomId} visibility changed to ${newVisibility}`);
             setError(null);
         } catch (error) {
