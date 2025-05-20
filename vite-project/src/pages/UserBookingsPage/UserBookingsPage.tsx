@@ -8,6 +8,7 @@ import {axiosInstance} from "../../AxiosInstance.tsx";
 import UserBookingCard from "../../components/userBookingCard/UserBookingCard.tsx";
 import {Booking} from "../../types/Booking.ts";
 import favPageStyles from "../FavouritesPage/FavouritesPage.module.css";
+import userBookingsPageStyles from "../UserBookingsPage/UserBookingsPage.module.css";
 import FavouriteRoomCard from "../../components/favouriteRoomCard/FavouriteRoomCard.tsx";
 
 function UserBookingsPage () {
@@ -40,14 +41,15 @@ function UserBookingsPage () {
     return (
         <div>
             <Header />
-            <main>
-                <h1>Favorite rooms</h1>
-                <section id={favPageStyles.favourites_container}>
+            <main className="content">
+                <h1>Booked rooms</h1>
+                <section id={userBookingsPageStyles.bookingList}>
                     {loading && <p>Loading...</p>}
-                    {!loading && bookings.length === 0 && <p>No favourite rooms found.</p>}
+                    {!loading && bookings.length === 0 && <p>No booked rooms found.</p>}
                     {bookings.map((booking) => (
                         <UserBookingCard
                             key={booking.bookingId}
+                            booking={booking}
                             room={booking.roomProvider.room}
                         />
                     ))}

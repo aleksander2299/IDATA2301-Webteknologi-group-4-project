@@ -77,8 +77,10 @@ function HotelCard({
                     // On Error use placeholder
                     onError={handleImageError}
                 />
+                <div className={HotelCardStyles.favbuttonoverlay}>
+                  {room && <FavoriteButton room={room} />}
+                </div>
               </div>
-              {room && <FavoriteButton room={room} />}
 
               <div className={HotelCardStyles["hotel-card-info"]}>
                 {/* Conditionally render title if provided */}
