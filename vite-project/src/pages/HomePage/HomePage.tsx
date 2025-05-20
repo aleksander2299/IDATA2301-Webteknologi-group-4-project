@@ -55,8 +55,7 @@ function HomePage() {
     return (
       <>
         <Header />
-        
-        
+
         <main className={homePageStyle["content-wrapper"]}style={{ marginTop: '20px' }}>
           <section className={homePageStyle.container}>
             <div className={homePageStyle.introductionbox}>
@@ -83,8 +82,6 @@ function HomePage() {
             <div className={homePageStyle["popular-title-box"]}>
               <div className={homePageStyle["popular-title"]}>Popular places to visit!</div>
             </div>
-
-
             <div className={homePageStyle["recommend-container"]}>
               <button onClick={() => handleSearchFromBar({
                   searchTerm: "Ålesund",
@@ -123,7 +120,6 @@ function HomePage() {
                 <div className={homePageStyle.placebox}>Amsterdam</div>
               </button>
             </div>
-
           </section>
         </main>
         <Footer />
