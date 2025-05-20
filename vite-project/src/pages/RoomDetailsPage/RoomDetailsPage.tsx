@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import '../../styles/main.css';
 import './RoomDetailsPage.css';
@@ -298,20 +298,20 @@ function RoomDetailsPage () {
         })
         currentProvider = response.data
         
-         if(currentProvider !== null){
+        if(currentProvider !== null){
             console.log(JSON.stringify(currentProvider))
 
             axiosInstance.post(`/roomProvider/link/${room?.roomId}/${currentProvider.providerId}/${price}`, null,
                 {
-                  headers: {
+                    headers: {
                     Authorization: `Bearer ${token}`
-                  }
+                }
         }).then((response) => 
             console.log(JSON.stringify(response.data) + " LINK RESPONSE")
         ).catch((err) => 
             console.error(err.data + " error here for linking")
         )
-     }
+    }
 }
 
 
@@ -457,7 +457,6 @@ function RoomDetailsPage () {
                         <section className="bookingoptionswrapper">
                             <h1 className="bookingboxtext">How long will you stay?</h1>
                             {/* Place the date picker component here */}
-                            <section></section>
                             <div style={{ display: 'flex', alignItems: 'center' }}> {/* Optional wrapper for layout */}
                                 <CustomDatePicker
                                     onDatesSelected={handleDatesUpdate} // Pass the handler function
@@ -490,13 +489,35 @@ function RoomDetailsPage () {
                     
                     {role == "ROLE_PROVIDER" && (
                         <>
-                        <h1 className="bookingboxtext">Do you want to list this room?</h1>
-                        <section className="bookingoptionswrapper">
-                            <h1 className="smallwhitetext">Set Price:</h1>
-                            <input placeholder="Enter price in NOK" onChange={(e) => setRoomPrice(Number(e.target.value))}></input>
-                            <button className="bookingsubmit" onClick={() => { if (roomPrice !== undefined) { listRoomAsProvider(roomPrice); alert("Room listed!");} else {alert("Please enter a price.");}}}>List Room</button>
-                        </section>
-
+                            <h1 className="bookingboxtext">Do you want to list this room?</h1>
+                            <section className="bookingoptionswrapper">
+                                <h1 className="smallwhitetext">Set Price:</h1>
+                                <input placeholder="Enter price in NOK" onChange={(e) => setRoomPrice(Number(e.target.value))}></input>
+                                <button className="bookingsubmit" onClick={() => { if (roomPrice !== undefined) { listRoomAsProvider(roomPrice); alert("Room listed!");} else {alert("Please enter a price.");}}}>List Room</button>
+                            </section>
+                        </>
+                    )}
+                    {role == "ROLE_ADMIN" && (
+                        <>
+                            <h1 className="bookingboxtext">Please go to the admin page to manage this room.</h1>
+                            <section className="bookingoptionswrapper">
+                                <Link to="/admin">
+                                    <button className="bookingsubmit">Admin Page</button>
+                                </Link>
+                            </section>
+                        </>
+                    )}
+                    {!role && (
+                        <>
+                            <h1 className="bookingboxtext">Please Log in or register to book a room.</h1>
+                            <section className="bookingoptionswrapper">
+                                <Link to="/login">
+                                    <button className="bookingsubmit">Log In</button>
+                                </Link>
+                                <Link to="/register">
+                                    <button className="bookingsubmit">Sign Up</button>
+                                </Link>
+                            </section>
                         </>
                     )}
                 </section>
