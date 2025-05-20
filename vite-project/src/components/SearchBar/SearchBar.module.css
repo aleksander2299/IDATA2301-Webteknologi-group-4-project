@@ -5,6 +5,7 @@
     border-radius: 8px;
     margin-bottom: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: solid 2px rgba(255, 255, 255, 0.9);
 }
 
 .mainSearchInputs {
@@ -69,6 +70,9 @@
     margin-top: 22px;
     padding-top: 22px;
     border-top: 1px solid #444;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
 }
 
 /* Set up so the search bar will be horizontal on desktops and such and for phones it will be stacked */

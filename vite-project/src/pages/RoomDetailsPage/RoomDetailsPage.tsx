@@ -7,8 +7,11 @@ import './RoomDetailsPage.css';
 
 import ConfirmationBox from '../../components/ConfirmationBox/ConfirmationBox.tsx';
 import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
+import FavoriteButton from '../../components/FavoriteButton/FavoriteButton.tsx';
 import Footer from '../../components/layout/Footer.jsx';
 import Header from '../../components/layout/Header.tsx';
+
+import { Room } from '../../types/Room.ts';
 
 import { formatDateForURL, parseURLDate } from "../../utils/navigationUtils.ts";
 
@@ -87,6 +90,9 @@ function isDateWithinAnyDisabledInterval(date: Date | null, disabledIntervals: E
 
 function RoomDetailsPage () {
 
+    // gets room for favorite button
+    const [room, setRoom] = useState<Room >();
+
     // State to hold the dates selected by the picker
     const [checkInDate, setCheckInDate] = useState<Date | null>(null);
     const [checkOutDate, setCheckOutDate] = useState<Date | null>(null);
@@ -120,6 +126,20 @@ function RoomDetailsPage () {
 
     // Gets the role of the account logged in
     const role = localStorage.getItem("role");
+
+    // gets room for favorite button
+    useEffect(() => {
+    const token = localStorage.getItem("token");
+    if(!token) return;
+
+    async function fetchRoom(roomID: number, token: string) {
+        const response = await axiosInstance.get(`/rooms/${roomID}`, {
+            headers: { Authorization: `Bearer ${token}` },
+            });
+        setRoom(response.data);
+        }
+        fetchRoom(id, token);
+    }, [id])
 
     {/* Never have any early returns before useEffect */}
     useEffect(() => {
@@ -389,7 +409,6 @@ function RoomDetailsPage () {
             return <div>Room details not available.</div>;
     }
 
-
     return (
         <div>
             <Header />
@@ -399,6 +418,9 @@ function RoomDetailsPage () {
             <section className="content-container">
                 <div className="image">
                     <img src={roomDetails.imageUrl} alt="RoomDetailsPlaceholderImg"/>
+                    <div className="favbuttonoverlay">
+                        {room && <FavoriteButton room={room}/>}
+                    </div>
                 </div>
                 <section className="bookingbox">
                     {role == "ROLE_USER" && (

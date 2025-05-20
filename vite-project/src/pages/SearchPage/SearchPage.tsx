@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react';
-import {useNavigate, useSearchParams} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import '../../styles/main.css';
 import SearchPageStyle from './SearchPage.module.css';
@@ -9,10 +9,13 @@ import HotelCard from "../../components/HotelCard/HotelCard.tsx";
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 
-import { navigateToRoomDetails, parseURLDate, formatDateForURL, CommonSearchCriteria, navigateToSearch } from '../../utils/navigationUtils';
-import SearchBar from "../../components/SearchBar/SearchBar.tsx";
 import axios from "axios";
-import {axiosInstance} from "../../AxiosInstance.tsx";
+
+import SearchBar from "../../components/SearchBar/SearchBar.tsx";
+import { navigateToRoomDetails, navigateToSearch, parseURLDate } from '../../utils/navigationUtils';
+
+import { axiosInstance } from "../../AxiosInstance.tsx";
+
 
 // Interface for rooms/hotels can be expanded however make sure or null is used if you do since this is supposed to be used for multiple functions
 interface DisplayRoom {
@@ -282,8 +285,9 @@ function SearchPage() {
                         // className={homePageStyle.customSearchBarOnHomepage} // Optional for homepage specific tweaks
                     >
                         {/* TODO: Add functioning class */}
-                        <label htmlFor="sortOptions" style={{display: 'block', marginBottom: '5px', fontSize: '0.9em'}}>Sort By:</label>
+                        <label htmlFor="sortOptions" className={SearchPageStyle.filters}>Sort By:</label>
                         <select
+                            className={SearchPageStyle.filterselection}
                             id="sortOptions"
                             value={sortOption}
                             onChange={handleExtraFilterChange}
@@ -298,7 +302,7 @@ function SearchPage() {
                 </section>
 
                 {/* DisplayRoom List Section */}
-                <div className="hotel-list">
+                <div className={SearchPageStyle.hotellist}>
                     {filteredDisplayRooms.length > 0 ? (
                         filteredDisplayRooms.map((room) => (
                                 <HotelCard
@@ -312,7 +316,7 @@ function SearchPage() {
                                 >
                                     {/* Using buttons as children was an idea given by AI since i could not figure out how to use different buttons depending on the page while they were still connected */}
                                     <button
-                                        className="deal-btn"
+                                        className={SearchPageStyle.dealbutton}
                                         onClick={() => {
                                             GoToDealHandler(room.id)
                                         }}

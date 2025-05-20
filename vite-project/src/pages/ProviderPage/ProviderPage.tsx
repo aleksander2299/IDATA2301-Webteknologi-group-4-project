@@ -10,6 +10,8 @@ import Header from '../../components/layout/Header';
 import { axiosInstance } from '../../AxiosInstance';
 import roomImg from "../../Images"
 import { useNavigate } from 'react-router-dom';
+import { error } from 'console';
+import RoomDetailsPage from '../RoomDetailsPage/RoomDetailsPage';
 
 
 
@@ -47,25 +49,12 @@ function ProviderPage() {
         const [rooms, setRooms] = useState<RoomProvider[]>([]);
         const currentProvider = useState()
         const navigate = useNavigate();
+        const [roomProviderId, setRoomProviderId] = useState<number>();
 
-
-
-    function deleteListing(){
-        
-    }
-
-
-    function editListing(){
-
-    }
-
-    function deleteAllListings(){
-
-    }
 
 
     useEffect(() => {
-        axiosInstance.get(`/providers/AirbnbStays/roomProviders`, {
+        axiosInstance.get(`/providers/Agoda/roomProviders`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -78,6 +67,75 @@ function ProviderPage() {
             console.error(error);
         });
     },[]);
+
+
+    function deleteListing(roomId: number, providerId: number){
+        if (!window.confirm("Are you sure you want to delete this listing?")) return;
+        
+        axiosInstance.delete(`/roomProvider/unlink/${roomId}/${providerId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+        .then(() => {
+            console.log("successfully removed listing");
+            axiosInstance.get(`/providers/Agoda/roomProviders`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            })
+            .then((response) => {
+                setRooms(response.data);
+            })
+            
+        })
+        .catch((error) => {
+            console.error("couldn't remove listing", error);
+        });
+    }
+    
+    
+
+
+   async function editListing(newRoomProviderId : number, price : number, roomProvider : RoomProvider){
+        const newPrice = Number(window.prompt("Enter new price:", price.toString()))
+        setRoomProviderId(newRoomProviderId);
+            const updatedRoomProvider = {
+            ...roomProvider,
+            roomPrice: newPrice,
+        };
+
+        await axiosInstance.put(`/roomProvider/${newRoomProviderId}`,  updatedRoomProvider,                          
+            {
+              headers: { Authorization: `Bearer ${token}` }   
+            }
+          );
+        
+    }
+
+    async function deleteAllListings(){
+        if (!window.confirm("Are you sure you want to delete this listing?")) return;
+        for (const roomProvider of rooms) {
+            await axiosInstance.delete(`/roomProvider/unlink/${roomProvider.room.roomId}/${roomProvider.provider.providerId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+    }
+    setRooms([])
+
+     await axiosInstance.get(`/providers/Agoda/roomProviders`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setRooms(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+}
 
 
     return (
@@ -101,9 +159,10 @@ function ProviderPage() {
                                                             navigate(`/room/${Rp.room.roomId}`)}}}>
                                                         {/* Different buttons depending on page */}
                                                         <button className={providerPageStyle.cardButtons} 
-                                                        onClick={(e) => {e.stopPropagation()}}>Edit listing</button>
-                                                        <button className={providerPageStyle.cardButtons} onClick={(e) => {e.stopPropagation()}}>Delete listing</button>
-                                                    </HotelCard>
+                                                        onClick={(e) => {e.stopPropagation(); editListing(Rp.roomProviderId,Rp.roomPrice,Rp)}}>Edit price</button>
+                                                        <button className={providerPageStyle.cardButtons} onClick={(e) => {e.stopPropagation(); 
+                                                        deleteListing(Rp.room.roomId, 2);}}>Delete listing</button> 
+                                                        </HotelCard>
                                                 )
                                             )
                                         ) : (
@@ -114,7 +173,7 @@ function ProviderPage() {
                                     </div>
                 </section>
                 <section>
-                    <button className={providerPageStyle.deletebtn}>
+                    <button className={providerPageStyle.deletebtn} onClick={deleteAllListings}>
                         Delete all listings
                     </button>
                 </section>

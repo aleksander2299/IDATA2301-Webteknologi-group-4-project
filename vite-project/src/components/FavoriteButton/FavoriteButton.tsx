@@ -46,7 +46,7 @@ function FavoriteButton({ room }: FavoriteButtonProps) {
     }
 
     useEffect(() => {
-        if(!username || !token) return;
+        if (!username || !token || role !== "ROLE_USER") return;
         
         async function checkIfFavorited() {
             try{
