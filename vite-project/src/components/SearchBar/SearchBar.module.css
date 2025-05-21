@@ -32,7 +32,7 @@
 .textInput,
 .selectInput {
     padding: 15px 18px;
-    border: 1px solid #555;
+    border: solid 2px rgba(255, 255, 255, 0.9);
     border-radius: 6px;
     background-color: #444;
     color: #fff;
@@ -51,9 +51,9 @@
 
 .searchButton {
     padding: 15px 30px;
-    background-color: #007bff;
+    background-color: #fb4386;
+    border: solid 2px rgba(255, 255, 255, 0.9);
     color: white;
-    border: none;
     border-radius: 6px;
     cursor: pointer;
     font-size: 1.35rem;
@@ -63,7 +63,7 @@
 }
 
 .searchButton:hover {
-    background-color: #0056b3;
+    background-color: rgb(205, 32, 84);
 }
 
 .additionalFilters {
