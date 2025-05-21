@@ -51,6 +51,7 @@ function ProviderPage() {
         const currentProvider = useState()
         const navigate = useNavigate();
         const [roomProviderId, setRoomProviderId] = useState<number>();
+        const [changeSite, setChangeSite] = useState<number>();
 
 
 
@@ -63,11 +64,12 @@ function ProviderPage() {
         .then((response) => {
             setRooms(response.data);
             console.log(JSON.stringify(response.data));
+            setChangeSite(0);
         })
-        .catch((error) => {
+        .catch((error) => {<q></q>
             console.error(error);
         });
-    },[]);
+    },[changeSite]);
 
 
     function deleteListing(roomId: number, providerId: number){
@@ -83,9 +85,12 @@ function ProviderPage() {
             axiosInstance.get(`/providers/${username}/roomProviders`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    
                 }
+                
             })
             .then((response) => {
+                setChangeSite(1);
                 setRooms(response.data);
             })
             
@@ -99,18 +104,29 @@ function ProviderPage() {
 
 
    async function editListing(newRoomProviderId : number, price : number, roomProvider : RoomProvider){
-        const newPrice = Number(window.prompt("Enter new price:", price.toString()))
+        const input = window.prompt("Enter new price:", price.toString());
+
+        if (input === null) return; 
+
+        price = Number(input)
+
         setRoomProviderId(newRoomProviderId);
             const updatedRoomProvider = {
             ...roomProvider,
-            roomPrice: newPrice,
+            roomPrice: price,
         };
 
         await axiosInstance.put(`/roomProvider/${newRoomProviderId}`,  updatedRoomProvider,                          
             {
               headers: { Authorization: `Bearer ${token}` }   
             }
-          );
+          ).then((response) =>
+            console.log(JSON.stringify(response.data) + " It worked ???")
+        )
+        .catch((err) =>
+            console.error(err)
+
+        );
         
     }
 
@@ -123,15 +139,13 @@ function ProviderPage() {
             }
         })
     }
-    setRooms([])
-
-     await axiosInstance.get(`/providers/${username}/roomProviders`, {
+    await axiosInstance.get(`/providers/${username}/roomProviders`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
-        setRooms(response.data);
+        setRooms([])
       })
       .catch((error) => {
         console.error(error);
