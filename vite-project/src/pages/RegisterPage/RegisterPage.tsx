@@ -48,7 +48,7 @@ function RegisterPage() {
             })
             .then((response) => {
               console.log("Provider posted successfully:", response.data);
-              alert("successfull providder registration")
+              alert("Successful provider registration.")
             })
             .catch((error) => {
               console.error("Error posting provider:", error);
@@ -79,7 +79,7 @@ function RegisterPage() {
               type="text"
               id="rusername"
               name="rusername"
-              placeholder="choose a username"
+              placeholder="Choose a username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             /><br />
@@ -88,7 +88,7 @@ function RegisterPage() {
               type="password"
               id="rpass"
               name="rpass"
-              placeholder="choose a password"
+              placeholder="Choose a password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             /><br />
@@ -100,7 +100,7 @@ function RegisterPage() {
                 <option value="">Select Role</option>
                 <option value="USER">User</option>
                 <option value="PROVIDER">Provider</option>
-                <option value="ADMIN">Admin</option>
+                {/*<option value="ADMIN">Admin</option> */}
               </select>
             <button className="submit" type="submit">Register</button>
           </div>

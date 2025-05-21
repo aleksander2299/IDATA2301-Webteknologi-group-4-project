@@ -7,7 +7,7 @@ import './RoomDetailsPage.css';
 
 import ConfirmationBox from '../../components/ConfirmationBox/ConfirmationBox.tsx';
 import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
-import FavoriteButton from '../../components/FavoriteButton/FavoriteButton.tsx';
+import FavouriteButton from '../../components/FavouriteButton/FavouriteButton.tsx';
 import Footer from '../../components/layout/Footer.jsx';
 import Header from '../../components/layout/Header.tsx';
 
@@ -456,7 +456,7 @@ function RoomDetailsPage () {
                 <div className="image">
                     <img src={roomDetails.imageUrl} alt="RoomDetailsPlaceholderImg"/>
                     <div className="favbuttonoverlay">
-                        {room && <FavoriteButton room={room}/>}
+                        {room && <FavouriteButton room={room}/>}
                     </div>
                 </div>
                 <section className="bookingbox">

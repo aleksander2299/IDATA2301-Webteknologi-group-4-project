@@ -5,8 +5,8 @@ import { axiosInstance } from "../../AxiosInstance.js";
 // Import the specific CSS for this component
 import HotelCardStyles from './HotelCard.module.css';
 
-import FavoriteButton from '../../components/FavoriteButton/FavoriteButton.tsx';
 import { Room } from '../../types/Room.ts';
+import FavouriteButton from '../FavouriteButton/FavouriteButton.tsx';
 
 const DEFAULT_IMAGE_URL = '/images/placeholder-hotel.png';
 
@@ -78,7 +78,7 @@ function HotelCard({
                     onError={handleImageError}
                 />
                 <div className={HotelCardStyles.favbuttonoverlay}>
-                  {room && <FavoriteButton room={room} />}
+                  {room && <FavouriteButton room={room} />}
                 </div>
               </div>
 

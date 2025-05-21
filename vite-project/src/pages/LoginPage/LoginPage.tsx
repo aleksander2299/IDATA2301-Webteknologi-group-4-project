@@ -65,7 +65,7 @@ function LoginPage() {
                             type="text"
                             id="fusername"
                             name="fusername"
-                            placeholder="enter username"
+                            placeholder="Enter username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                         /><br />
@@ -74,7 +74,7 @@ function LoginPage() {
                             type="password"
                             id="lpass"
                             name="lpass"
-                            placeholder="enter password"
+                            placeholder="Enter password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         /><br />

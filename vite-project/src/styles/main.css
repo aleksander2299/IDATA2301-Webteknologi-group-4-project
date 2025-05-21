@@ -95,18 +95,19 @@ button {
   .right-buttons {
     display: flex;
     justify-content: flex-end;
+    gap: 1rem;
   }
   
   .right-button {
     font-size: 1.4rem;
     color: rgb(251, 67, 134);
     padding: 0.5rem 1rem;
-    margin-left: 1rem;
+    
     border-radius: 10px;
     border-color: #fb4386;
     border-width: 4px;
     border: solid;
-    height: 100%;
+    height: auto;
   }
   
   .right-button:hover {

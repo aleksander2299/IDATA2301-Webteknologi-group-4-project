@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import favRoomCardStyle from './FavouriteRoomCard.module.css';
 
 import { Room } from '../../types/Room';
-import FavoriteButton from "../FavoriteButton/FavoriteButton.tsx";
+import FavoriteButton from "../FavouriteButton/FavouriteButton.tsx";
 
 const token = localStorage.getItem('token');
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../AxiosInstance.js";
 
-import favoriteButtonStyle from './FavoriteButton.module.css';
+import favoriteButtonStyle from './FavouriteButton.module.css';
 
 import EmptyHeartIcon from '../../assets/emptyHeart.svg?react';
 import FilledHeartIcon from '../../assets/filledHeart.svg?react';

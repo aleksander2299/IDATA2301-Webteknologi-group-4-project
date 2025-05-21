@@ -1,10 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 import './SettingsPage.css';
-import { Link, useNavigate } from 'react-router-dom';
 
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { axiosInstance } from '../../AxiosInstance.js';
 
 function SettingsPage(){
@@ -127,9 +126,9 @@ function deleteAccount(){
             <section id="changePassword" >
                 <h2 className="h2">change password ?</h2>
                 <label className="label">Change Password:</label>
-                <input className="input" type="password" defaultValue="password" onChange={(ev) => setNewPassword(ev.target.value)} />
+                <input className="input" type="password" placeholder="Input new password here" value={newPassword} onChange={(ev) => setNewPassword(ev.target.value)} />
                 <label className="label">Confirm Password:</label>
-                <input className="input" type="password" defaultValue="password" id="confirmpass" onChange={(e) => setConfirmPassword(e.target.value)} />
+                <input className="input" type="password" placeholder="Confirm password here" value={newPassword} id="confirmpass" onChange={(e) => setConfirmPassword(e.target.value)} />
                 <button onClick={changePassword}>Change Password</button>
             </section>
 

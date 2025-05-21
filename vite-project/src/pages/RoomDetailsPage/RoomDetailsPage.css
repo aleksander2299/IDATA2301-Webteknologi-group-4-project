@@ -17,6 +17,8 @@
     width: 40rem;
     height: 25rem;
     max-width: 100%;
+    border: solid 2px rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
 }
 
 .favbuttonoverlay {
@@ -42,6 +44,7 @@
     height: 25rem;
     align-self: flex-start;
     box-sizing: border-box;
+    border: solid 2px rgba(255, 255, 255, 0.9);
 }
 
 .bookingoptionswrapper {
@@ -133,6 +136,7 @@
     height: 23rem;
     margin-top: 10px;
     margin-bottom: 10rem;
+    border: solid 2px rgba(255, 255, 255, 0.9);
 }
 
 .site-specification, .description {

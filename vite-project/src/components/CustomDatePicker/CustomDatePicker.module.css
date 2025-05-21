@@ -1,12 +1,12 @@
 /* Style the main wrapper div
-   Generated with help from AI since
+  Generated with help from AI since
 */
 
 .dateRangeDisplayInput {
   display: flex;
   align-items: center;
   padding: 13px 18px; /* Adjust padding */
-  border: 1px solid #555; /* Adjust border color/style */
+  border: solid 2px rgba(255, 255, 255, 0.9);
   border-radius: 4px;
   background-color: #2a2a2a;
   color: #ccc;
