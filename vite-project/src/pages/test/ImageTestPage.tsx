@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import {axiosInstance} from "../../AxiosInstance.tsx";
 
 const ImageTestPage: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -22,7 +23,7 @@ const ImageTestPage: React.FC = () => {
         const formData = new FormData();
         formData.append('file', selectedFile);
 
-        axios.post(`/api/rooms/${roomId}/images`, formData, {
+        axiosInstance.post(`/rooms/${roomId}/images`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -43,7 +44,7 @@ const ImageTestPage: React.FC = () => {
             return;
         }
 
-        axios.delete(`/api/rooms/images/room/${roomId}`)
+        axiosInstance.delete(`/rooms/images/room/${roomId}`)
             .then(() => {
                 setStatus(`Image "${filename}" deleted successfully.`);
                 setFilename('');
