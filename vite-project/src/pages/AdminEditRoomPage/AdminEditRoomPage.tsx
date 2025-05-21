@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../AxiosInstance';
 
 import '../../styles/main.css';
@@ -192,10 +192,10 @@ function AdminEditRoomPage() {
 
         console.log("Current room ID:", roomId, "Current provider ID:", roomProviderIdToDelete);
         try {
-            await axiosInstance.delete(`/roomProvider/unlink/${roomId}/${roomProviderIdToDelete}`, {
+            const response = await axiosInstance.delete(`/roomProvider/unlink/${roomId}/${roomProviderIdToDelete}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-
+            console.log(response.data + " r90e+r0se9ir+seri+se")
             setRoomProviders(prevProviders =>
                 prevProviders.filter(rp => rp.roomProviderId !== roomProviderIdToDelete)
             );
@@ -223,7 +223,9 @@ function AdminEditRoomPage() {
             <>
                 <Header/>
                 <main className={editPageStyle.main}>
-                    <form onSubmit={handleSubmit} className={editPageStyle.editForm}>
+                    <section className={editPageStyle.editbox}>
+                        <h3 className={editPageStyle.topdetailstitle}>Edit room details: </h3>
+                        <form onSubmit={handleSubmit} className={editPageStyle.editForm}>
                         {/* AI was used to help generate the form fields.
                 Since its just the same field with different info*/}
                         <div className={editPageStyle.formGroup}>
@@ -258,7 +260,7 @@ function AdminEditRoomPage() {
                                 onChange={handleInputChange}
                                 required
                             >
-                                <option value="any">Any Type</option>
+                                <option value="any">Select Type</option>
                                 {BASIC_ROOM_TYPES.map((type) => (
                                     <option key={type} value={type.toLowerCase()}>
                                         {type}
@@ -283,10 +285,10 @@ function AdminEditRoomPage() {
 
 
                         <div className={editPageStyle.formActions}>
-                            <button type="submit" className={editPageStyle.saveButton} disabled={isSaving}>
+                            <button type="submit" className={editPageStyle.editbutton} disabled={isSaving}>
                                 {isSaving ? 'Saving...' : 'Save Changes'}
                             </button>
-                            <button type="button" className={editPageStyle.cancelButton}
+                            <button type="button" className={editPageStyle.editbutton}
                                     onClick={() => navigate('/admin')} disabled={isSaving}>
                                 Cancel
                             </button>
@@ -294,7 +296,7 @@ function AdminEditRoomPage() {
                     </form>
                     {/* --- Section for Managing Room Providers --- */}
                     <section className={editPageStyle.providersSection}>
-                        <h3>Manage Providers for this Room</h3>
+                        <h3>Manage providers for this room:</h3>
                         {/* Display provider-specific errors or success messages here */}
                         {Error && <p className={`${editPageStyle.message} ${editPageStyle.error}`}>{Error}</p>}
                         {successMessage && Error === null && <p className={`${editPageStyle.message} ${editPageStyle.success}`}>{successMessage}</p>} {/* Show general success if no provider error */}
@@ -311,8 +313,8 @@ function AdminEditRoomPage() {
                                         (ID: {rp.roomProviderId})
                                     </span>
                                         <button
-                                            onClick={() => handleDeleteRoomProvider(rp.roomProviderId)}
-                                            className={editPageStyle.deleteProviderButton}
+                                            onClick={() => handleDeleteRoomProvider(rp.provider.providerId)}
+                                            className={editPageStyle.editbutton}
                                         >
                                             Unlink
                                         </button>
@@ -323,6 +325,8 @@ function AdminEditRoomPage() {
                             <p className={editPageStyle.message}>No providers currently assigned to this room.</p>
                         )}
                         </section>
+                    </section>
+                    
                     </main>
                 <Footer/>
             </>
