@@ -197,7 +197,7 @@ function AdminEditRoomPage() {
             });
             console.log(response.data + " r90e+r0se9ir+seri+se")
             setRoomProviders(prevProviders =>
-                prevProviders.filter(rp => rp.roomProviderId !== roomProviderIdToDelete)
+                prevProviders.filter(rp => rp.provider.providerId !== roomProviderIdToDelete)
             );
             setSuccessMessage(`Provider link (ID: ${roomProviderIdToDelete}) removed successfully.`);
 
