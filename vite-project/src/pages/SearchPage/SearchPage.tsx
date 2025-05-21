@@ -9,8 +9,6 @@ import HotelCard from "../../components/HotelCard/HotelCard.tsx";
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 
-import axios from "axios";
-
 import SearchBar from "../../components/SearchBar/SearchBar.tsx";
 import { navigateToRoomDetails, navigateToSearch, parseURLDate } from '../../utils/navigationUtils';
 
@@ -29,6 +27,7 @@ interface DisplayRoom {
     roomType?: string;
     sourceName?: string;
     lowestPrice?: number;
+    visibility?: boolean;
 }
 
 // Might need to be used to simplify filtering
@@ -60,9 +59,18 @@ interface ApiRoomProviderForRoom { // Data from /api/rooms/{id}/roomProviders
 
 type SortOption = 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc' | 'default';
 
+/**
+ * Component for the search page functionality that allows users to search for hotel rooms,
+ * filter and sort results, and view detailed information about rooms and their providers.
+ * Handles fetching data from an API and processing it for display.
+ *
+ * @return {JSX.Element} The search page UI component containing the search bar, filters, and a list of filtered and sorted room cards.
+ * NOTE: This page needed help from AI to fix provider filtering Logic
+ */
 function SearchPage() {
 
     // Needs to be destructured to be able to be changed
+    const userRole = localStorage.getItem('role');
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
 
@@ -86,12 +94,32 @@ function SearchPage() {
     useEffect(() => {
         setIsLoading(true);
         setError(null);
-        console.log("SearchPage: Fetching all rooms...");
-        //Get all hotels
-        axiosInstance.get<ApiRoom[]>("/rooms")
+
+        setAllRoomsFromApi([]);
+        setRoomsWithPrices([]);
+        setFilteredDisplayRooms([]);
+
+        let fetchPromise;
+
+        const currentQuery = searchParams.get('searchTerm');
+        if(currentQuery && currentQuery.trim().length > 0) {
+            console.log("SearchPage: Fetching all rooms with search term:", currentQuery);
+            fetchPromise = axiosInstance.get<ApiRoom[]>(`/rooms/search`, {
+                params: { query: currentQuery.trim() },
+            });
+        } else {
+            console.log("SearchPage: Fetching all rooms");
+            fetchPromise = axiosInstance.get<ApiRoom[]>(`/rooms`);
+        }
+
+        fetchPromise
             .then(response => {
                 console.log("Fetched all rooms", response.data);
-                setAllRoomsFromApi(response.data.filter((room => room.visibility) || []))
+                if (userRole !== 'ROLE_PROVIDER') {
+                    setAllRoomsFromApi(response.data.filter(room => room.visibility))
+                } else {
+                    setAllRoomsFromApi(response.data)
+                }
             })
             .catch(err => {
                 console.log("Failed to Fetch all rooms", err);
@@ -102,45 +130,47 @@ function SearchPage() {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, []);
+    }, [searchParams, userRole]);
 
     useEffect(() => {
         if (allRoomsFromApi.length === 0) {
-            if (!isLoading && !error) setIsLoading(false);
             setRoomsWithPrices([]); // Ensure it's empty
             return;
         }
 
         console.log("SearchPage: Processing rooms to fetch providers and prices...");
-        setIsLoading(true); // Loading while fetching providers for all rooms
         setError(null); // Clear old errors
 
         const fetchProvidersForAllRooms = async () => {
             const roomsProcessed: DisplayRoom[] = [];
             for (const apiRoom of allRoomsFromApi) {
+                let lowestPrice: number | undefined;
                 try {
-                    const response = await axios.get<ApiRoomProviderForRoom[]>(`http://localhost:8080/api/rooms/${apiRoom.roomId}/roomProviders`);
+                    const response = await axiosInstance.get<ApiRoomProviderForRoom[]>(`http://localhost:8080/api/rooms/${apiRoom.roomId}/roomProviders`);
                     const providers = response.data || [];
 
                     if (providers.length > 0) {
                         const prices = providers.map(p => p.roomPrice).filter(price => typeof price === 'number');
                         if (prices.length > 0) {
-                            roomsProcessed.push({
-                                id: apiRoom.roomId,
-                                name: apiRoom.roomName,
-                                location: apiRoom.source.city || apiRoom.source.sourceName,
-                                country: apiRoom.source.country || 'Unknown',
-                                description: apiRoom.description,
-                                imageUrl: apiRoom.imageUrl || '/images/default-room.jpg',
-                                roomType: apiRoom.roomType,
-                                sourceName: apiRoom.source.sourceName,
-                                lowestPrice: Math.min(...prices),
-                            });
+                                lowestPrice = Math.min(...prices)
                         }
                     }
                 } catch (err) {
-                    console.warn(`Failed to fetch providers for room ${apiRoom.roomId}:`, err);
+                    console.log(`Room had no providers ${apiRoom.roomId}:`, err);
                 }
+                roomsProcessed.push({
+                    id: apiRoom.roomId,
+                    name: apiRoom.roomName,
+                    location: apiRoom.source.city || apiRoom.source.sourceName,
+                    country: apiRoom.source.country || 'Unknown',
+                    description: apiRoom.description,
+                    // TODO: ADD default image link
+                    imageUrl: apiRoom.imageUrl || '/images/default-room.jpg',
+                    roomType: apiRoom.roomType,
+                    sourceName: apiRoom.source.sourceName,
+                    lowestPrice: lowestPrice,
+                    visibility: apiRoom.visibility,
+                });
             }
             return roomsProcessed;
         };
@@ -195,15 +225,10 @@ function SearchPage() {
         let filteredRooms = [...roomsWithPrices]
 
         /**
-         * Filter by search term
+         * If not a provider, filter out rooms that are not visible or have no price
          */
-        if (searchTermParam) {
-            filteredRooms = filteredRooms.filter(room =>
-                room.name.toLowerCase().includes(searchTermParam) ||
-                room.location.toLowerCase().includes(searchTermParam) ||
-                room.country.toLowerCase().includes(searchTermParam) ||
-                (room.sourceName && room.sourceName.toLowerCase().includes(searchTermParam))
-            );
+        if (userRole !== 'ROLE_PROVIDER') {
+            filteredRooms = filteredRooms.filter(room => room.visibility && room.lowestPrice !== undefined);
         }
 
         /**
@@ -239,7 +264,7 @@ function SearchPage() {
 
 
 
-    }, [searchParams, roomsWithPrices, sortOption, error]); // Re-run when URL params change OR when allHotels data arrives
+    }, [searchParams, roomsWithPrices, sortOption, error, isLoading, userRole]); // Re-run when URL params change OR when allHotels data arrives
 
 
     const handleSearchFromBar = (criteria: SearchBarCriteria) => {
@@ -322,7 +347,9 @@ function SearchPage() {
                                             GoToDealHandler(room.id)
                                         }}
                                     >
-                                        Go to Deal
+                                        {userRole === 'ROLE_PROVIDER'
+                                            ? 'Add Your Price / View Details'
+                                            : 'Go to Deal'}
                                     </button>
                                     {/* Different buttons depending on page */}
                                 </HotelCard>
