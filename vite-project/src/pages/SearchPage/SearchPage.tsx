@@ -225,15 +225,10 @@ function SearchPage() {
         let filteredRooms = [...roomsWithPrices]
 
         /**
-         * Filter by search term
+         * If not a provider, filter out rooms that are not visible or have no price
          */
-        if (searchTermParam) {
-            filteredRooms = filteredRooms.filter(room =>
-                room.name.toLowerCase().includes(searchTermParam) ||
-                room.location.toLowerCase().includes(searchTermParam) ||
-                room.country.toLowerCase().includes(searchTermParam) ||
-                (room.sourceName && room.sourceName.toLowerCase().includes(searchTermParam))
-            );
+        if (userRole !== 'ROLE_PROVIDER') {
+            filteredRooms = filteredRooms.filter(room => room.visibility && room.lowestPrice !== undefined);
         }
 
         /**
@@ -269,7 +264,7 @@ function SearchPage() {
 
 
 
-    }, [searchParams, roomsWithPrices, sortOption, error]); // Re-run when URL params change OR when allHotels data arrives
+    }, [searchParams, roomsWithPrices, sortOption, error, isLoading, userRole]); // Re-run when URL params change OR when allHotels data arrives
 
 
     const handleSearchFromBar = (criteria: SearchBarCriteria) => {
@@ -352,7 +347,9 @@ function SearchPage() {
                                             GoToDealHandler(room.id)
                                         }}
                                     >
-                                        Go to Deal
+                                        {userRole === 'ROLE_PROVIDER'
+                                            ? 'Add Your Price / View Details'
+                                            : 'Go to Deal'}
                                     </button>
                                     {/* Different buttons depending on page */}
                                 </HotelCard>
