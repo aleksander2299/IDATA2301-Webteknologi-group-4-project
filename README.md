@@ -24,16 +24,17 @@ search for rooms, change settings and login and logout etc. it is supposed to be
 ## Setup and Running
 
 1. Install dependencies:
-```In terminal
+In terminal:
+```
 npm install
 ```
-to run vite with npm preview or npm run dev you need to change directory to vite-project folder and then use npm install and then you can run those commands after
+to run vite with npm preview or npm run dev you need to change directory to vite-project folder and then use npm install and then you can run those commands after.
 
-```then in terminal
+Then in terminal
+```
 npm run dev
 ```
-
- then open your browser at http://localhost:5173, NB! it is required to have backend running for functionality
+then open your browser at http://localhost:5173, NB! it is required to have backend running for functionality
 
 
 
