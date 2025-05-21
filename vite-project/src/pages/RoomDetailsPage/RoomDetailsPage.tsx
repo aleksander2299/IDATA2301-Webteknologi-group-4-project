@@ -268,11 +268,12 @@ function RoomDetailsPage () {
         })
         .then((Response) => 
             {
-
+                alert("Booking confirmed.");
                 console.log(JSON.stringify(Response.data)) 
         }
     ).catch((error) => {
         if (error.response) {
+            alert("ERROR: date or provider not selected.");
             console.error("Status:", error.response.status); 
             console.error("Data:", error.response.data); 
         } else {
@@ -306,10 +307,16 @@ function RoomDetailsPage () {
                     headers: {
                     Authorization: `Bearer ${token}`
                 }
-        }).then((response) => 
-            console.log(JSON.stringify(response.data) + " LINK RESPONSE")
-        ).catch((err) => 
-            console.error(err.data + " error here for linking")
+        }).then((response) => {
+            alert("Room successfully linked");
+            console.log(JSON.stringify(response.data) + " LINK RESPONSE");
+
+        }
+        ).catch((err) => {
+            alert("Could not link/already linked room. Please check your provider page for further information.")
+            console.error(err.data + " error here for linking");
+
+        }
         )
     }
 }
@@ -493,7 +500,7 @@ function RoomDetailsPage () {
                             <section className="bookingoptionswrapper">
                                 <h1 className="smallwhitetext">Set Price:</h1>
                                 <input placeholder="Enter price in NOK" onChange={(e) => setRoomPrice(Number(e.target.value))}></input>
-                                <button className="bookingsubmit" onClick={() => { if (roomPrice !== undefined) { listRoomAsProvider(roomPrice); alert("Room listed!");} else {alert("Please enter a price.");}}}>List Room</button>
+                                <button className="bookingsubmit" onClick={() => { if (roomPrice !== undefined) { listRoomAsProvider(roomPrice);} else {alert("Please enter a price.");}}}>List Room</button>
                             </section>
                         </>
                     )}
