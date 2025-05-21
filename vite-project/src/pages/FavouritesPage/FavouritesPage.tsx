@@ -42,11 +42,11 @@ function FavouritesPage () {
 
             <main className={favPageStyles.content}>
                 <div className={favPageStyles.topbox}>
-                    <h1>Favorite rooms:</h1>
+                    <h1>Favourite rooms:</h1>
                 </div>
                 <section id={favPageStyles.favourites_container}>
                     {loading && <p>Loading...</p>}
-                    {!loading && favourites.length === 0 && <p>No favourite rooms found.</p>}
+                    {!loading && favourites.length === 0 && <p className={favPageStyles.nofavroom}>No favourite rooms found.</p>}
                     {favourites.map((favourite) => (
                         <FavouriteRoomCard
                             key={favourite.favouriteId}
