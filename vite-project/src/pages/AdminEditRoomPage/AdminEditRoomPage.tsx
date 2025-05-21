@@ -192,10 +192,10 @@ function AdminEditRoomPage() {
 
         console.log("Current room ID:", roomId, "Current provider ID:", roomProviderIdToDelete);
         try {
-            await axiosInstance.delete(`/roomProvider/unlink/${roomId}/${roomProviderIdToDelete}`, {
+            const response = await axiosInstance.delete(`/roomProvider/unlink/${roomId}/${roomProviderIdToDelete}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-
+            console.log(response.data + " r90e+r0se9ir+seri+se")
             setRoomProviders(prevProviders =>
                 prevProviders.filter(rp => rp.roomProviderId !== roomProviderIdToDelete)
             );
@@ -224,7 +224,7 @@ function AdminEditRoomPage() {
                 <Header/>
                 <main className={editPageStyle.main}>
                     <section className={editPageStyle.editbox}>
-                        <h3 className={editPageStyle.topdetailstitle}>Room details: </h3>
+                        <h3 className={editPageStyle.topdetailstitle}>Edit room details: </h3>
                         <form onSubmit={handleSubmit} className={editPageStyle.editForm}>
                         {/* AI was used to help generate the form fields.
                 Since its just the same field with different info*/}
@@ -313,7 +313,7 @@ function AdminEditRoomPage() {
                                         (ID: {rp.roomProviderId})
                                     </span>
                                         <button
-                                            onClick={() => handleDeleteRoomProvider(rp.roomProviderId)}
+                                            onClick={() => handleDeleteRoomProvider(rp.provider.providerId)}
                                             className={editPageStyle.editbutton}
                                         >
                                             Unlink
