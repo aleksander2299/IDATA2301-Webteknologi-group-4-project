@@ -36,6 +36,14 @@ npm run dev
 ```
 then open your browser at http://localhost:5173, NB! it is required to have backend running for functionality
 
+Important that this line 
+```
+export const axiosInstance = axios.create({
+    baseURL : 'http://localhost:8080'
+});
+```
+in App.tsx that sets the axios instance, stay like this since the group will change it from localhost:8080 to deployed url.
+
 
 
 
