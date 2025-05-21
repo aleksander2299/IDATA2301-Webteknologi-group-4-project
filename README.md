@@ -1,4 +1,4 @@
-#HOTEL WEBSITE GROUP 4 
+# HOTEL WEBSITE GROUP 4 
 Collaborators: Tobias, Aleksander, Daniel, Nikolai.
 
 About this project : This is a project in courses IDATA2306 and IDATA2301 
