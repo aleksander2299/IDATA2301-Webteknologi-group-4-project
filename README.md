@@ -29,6 +29,11 @@ In terminal:
 npm install
 ```
 to run vite with npm preview or npm run dev you need to change directory to vite-project folder and then use npm install and then you can run those commands after.
+This is done with command 
+```
+cd vite-project
+```
+in the terminal.
 
 Then in terminal
 ```
@@ -44,6 +49,17 @@ export const axiosInstance = axios.create({
 ```
 in App.tsx that sets the axios instance, stay like this since the group will change it from localhost:8080 to deployed url.
 
+## site tips
+There exists premade accounts for you to use, they are listed below:
+ 
+user: dave, Password: Dangerous2024
+admin: chuck, Password: Nunchucks2024
+provider: norris, Password: Warrior2024
+
+
+Pictures of website:
+![image](https://github.com/user-attachments/assets/e8e7d352-ea6d-440d-bb33-9cdae2392e00),
+![image](https://github.com/user-attachments/assets/62867bf2-8aa1-442e-aa9e-33fc36a57485)
 
 
 
