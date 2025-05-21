@@ -6,6 +6,8 @@ we were tasked with creating a hotel site where you can log in as user and admin
 authorities, the project is to be secured with JWT authentication and the user of the project shall be able to book rooms,
 search for rooms, change settings and login and logout etc. it is supposed to be a hotel room aggregator like trivago
 
+## link to website:
+To go to the deployed website here is the link with backend and frontend combined: http://10.212.27.153/
 
 ## Tech Stack
 - React 19
