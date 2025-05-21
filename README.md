@@ -22,7 +22,8 @@ To go to the deployed website here is the link with backend and frontend combine
 ## prerequisites
 - Node.js v18 or higher
 - npm (comes with Node.js)
-
+  
+# Running locally
 ## Setup and Running
 
 1. Install dependencies:
