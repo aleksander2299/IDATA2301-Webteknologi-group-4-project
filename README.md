@@ -63,6 +63,7 @@ provider: norris, Password: Warrior2024
 Pictures of website:
 ![image](https://github.com/user-attachments/assets/e8e7d352-ea6d-440d-bb33-9cdae2392e00),
 ![image](https://github.com/user-attachments/assets/62867bf2-8aa1-442e-aa9e-33fc36a57485),
+![image](https://github.com/user-attachments/assets/d7190651-0402-4f6e-b6ba-d652bdb3fd11)
 
 
 
