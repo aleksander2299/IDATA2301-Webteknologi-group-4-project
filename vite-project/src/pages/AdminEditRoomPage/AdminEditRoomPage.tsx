@@ -224,6 +224,7 @@ function AdminEditRoomPage() {
                 <Header/>
                 <main className={editPageStyle.main}>
                     <section className={editPageStyle.editbox}>
+                        <h3 className={editPageStyle.topdetailstitle}>Room details: </h3>
                         <form onSubmit={handleSubmit} className={editPageStyle.editForm}>
                         {/* AI was used to help generate the form fields.
                 Since its just the same field with different info*/}
@@ -295,7 +296,7 @@ function AdminEditRoomPage() {
                     </form>
                     {/* --- Section for Managing Room Providers --- */}
                     <section className={editPageStyle.providersSection}>
-                        <h3>Manage Providers for this Room</h3>
+                        <h3>Manage providers for this room:</h3>
                         {/* Display provider-specific errors or success messages here */}
                         {Error && <p className={`${editPageStyle.message} ${editPageStyle.error}`}>{Error}</p>}
                         {successMessage && Error === null && <p className={`${editPageStyle.message} ${editPageStyle.success}`}>{successMessage}</p>} {/* Show general success if no provider error */}
