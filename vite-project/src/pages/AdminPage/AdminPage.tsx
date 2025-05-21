@@ -160,6 +160,10 @@ function AdminPage() {
                     <button className={adminPageStyle.deletebtn}>
                         Delete all listings
                     </button>
+                    <button className={adminPageStyle.deletebtn}
+                            onClick={() => navigate('/admin/addRoom')}>
+                        Add new room
+                    </button>
                 </section>
             </div>
             </main>

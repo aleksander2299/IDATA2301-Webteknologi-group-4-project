@@ -14,6 +14,7 @@ import SettingsPage from './pages/SettingsPage/SettingsPage.tsx';
 import UserBookingsPage from './pages/UserBookingsPage/UserBookingsPage.tsx';
 import ImageTestPage from "./pages/test/ImageTestPage.tsx";
 import AdminEditRoomPage from "./pages/AdminEditRoomPage/AdminEditRoomPage.tsx";
+import AddRoomPage from "./pages/AddRoomPage/AddRoomPage.tsx";
 
 const router = createBrowserRouter ([
   { path: '/', element: <HomePage /> },
@@ -27,8 +28,8 @@ const router = createBrowserRouter ([
   { path: '/settings', element: <SettingsPage />},
   { path: '/provider', element: <ProviderPage />},
   { path: '/test', element: <ImageTestPage />},
-  { path: `/admin/:roomId`, element: <AdminEditRoomPage />}
-
+  { path: `/admin/:roomId`, element: <AdminEditRoomPage />},
+  { path: 'admin/addRoom', element: <AddRoomPage />}
 
 ]);
 

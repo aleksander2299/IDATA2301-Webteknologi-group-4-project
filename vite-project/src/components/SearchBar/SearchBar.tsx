@@ -98,8 +98,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                         placeholder="e.g., Grand Hotel or Oslo"
                     />
                 </div>
-
-                <div className={styles.inputGroup}>
+                <div className={styles.inputGroup} tabIndex={0} >
                     <CustomDatePicker
                         onDatesSelected={handleDatesUpdate}
                         initialStartDate={startDate}
