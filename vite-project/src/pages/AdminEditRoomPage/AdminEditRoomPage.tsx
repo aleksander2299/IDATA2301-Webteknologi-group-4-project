@@ -314,7 +314,7 @@ function AdminEditRoomPage() {
                                             onClick={() => handleDeleteRoomProvider(rp.roomProviderId)}
                                             className={editPageStyle.deleteProviderButton}
                                         >
-                                            Remove
+                                            Unlink
                                         </button>
                                     </li>
                                 ))}
