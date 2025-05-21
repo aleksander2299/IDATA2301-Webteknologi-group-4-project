@@ -4,12 +4,12 @@ import '../../styles/main.css';
 import adminPageStyle from './AdminPage.module.css';
 
 
+import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../../AxiosInstance';
 import HotelCard from '../../components/HotelCard/HotelCard';
 import Footer from '../../components/layout/Footer';
 import Header from '../../components/layout/Header';
-import { axiosInstance } from '../../AxiosInstance';
 import { Room } from "../../types/Room.ts";
-import { useNavigate } from 'react-router-dom';
 
 
 function AdminPage() {
@@ -123,8 +123,8 @@ function AdminPage() {
         <>
             <Header />
             <main>
-            <div className={adminPageStyle.contentWrapper}>
-                <div className={adminPageStyle.manageBox}>Choose room to manage: </div>
+            <div className={adminPageStyle.listings}>
+                <div className={adminPageStyle.adminBox}>Choose room to manage: </div>
                 <section>
                     <div className={adminPageStyle.listings}>
                         {allRooms.length > 0 ? (

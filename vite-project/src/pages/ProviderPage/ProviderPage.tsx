@@ -4,14 +4,11 @@ import '../../styles/main.css';
 import providerPageStyle from './ProviderPage.module.css';
 
 
+import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../../AxiosInstance';
 import HotelCard from '../../components/HotelCard/HotelCard';
 import Footer from '../../components/layout/Footer';
 import Header from '../../components/layout/Header';
-import { axiosInstance } from '../../AxiosInstance';
-import roomImg from "../../Images"
-import { useNavigate } from 'react-router-dom';
-import { error } from 'console';
-import RoomDetailsPage from '../RoomDetailsPage/RoomDetailsPage';
 
 
 
@@ -33,13 +30,10 @@ interface provider{
 interface RoomProvider {
     roomProviderId: number;
     roomPrice: number;
-    room: Room;  
-    provider: {
-      providerId: number;
-      providerName: string;
-    };
-  }
-  
+    room: Room;
+    provider: provider;
+}
+
 
 function ProviderPage() {
     const token = localStorage.getItem("token");
