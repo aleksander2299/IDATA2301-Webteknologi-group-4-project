@@ -23,6 +23,17 @@ interface RoomData {
     };
 }
 
+interface ProviderData {
+    providerId: number;
+    providerName: string;
+}
+
+interface RoomProviderData {
+    roomProviderId: number;
+    provider: ProviderData;
+    roomPrice: number;
+}
+
 interface RoomUpdatePayload {
     roomName?: string;
     description?: string;
@@ -53,6 +64,7 @@ function AdminEditRoomPage() {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
+    const [roomProviders, setRoomProviders] = useState<RoomProviderData[]>([]);
     const [room, setRoom] = useState<RoomData | null>(null); // RoomData interface updated
     const [formData, setFormData] = useState<RoomUpdatePayload>({
         roomName: '',
@@ -70,6 +82,13 @@ function AdminEditRoomPage() {
         if (!roomId) {
             setError("Room ID is missing.");
             setIsLoading(false);
+            return;
+        }
+        if (!token) {
+            setError("Authentication token not found. Please log in.");
+            setIsLoading(false);
+            setIsLoading(false);
+            navigate('/login');
             return;
         }
         setIsLoading(true);
@@ -98,7 +117,22 @@ function AdminEditRoomPage() {
                 }
             };
             fetchRoomData();
-        }, [roomId, token]);
+            setIsLoading(true);
+            const fetchRoomProviders = async () => {
+                try {
+                    const response = await axiosInstance.get<RoomProviderData[]>(`/rooms/${roomId}/roomProviders`, {
+                        headers: {Authorization: `Bearer ${token}`}
+                    });
+                    setRoomProviders(response.data);
+                } catch (err: any) {
+                    console.error("Failed to fetch room providers:", err);
+                    setError(err.response?.data?.message || "Failed to load data for editing.");
+                } finally {
+                    setIsLoading(false);
+                }
+            }
+            fetchRoomProviders();
+        }, [roomId, token, navigate]);
 
         const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
             const {name, value} = e.target;
@@ -151,6 +185,27 @@ function AdminEditRoomPage() {
                 setIsSaving(false);
             }
         };
+
+    const handleDeleteRoomProvider = async (roomProviderIdToDelete: number) => {
+        setError(null);
+        setSuccessMessage(null);
+
+        console.log("Current room ID:", roomId, "Current provider ID:", roomProviderIdToDelete);
+        try {
+            await axiosInstance.delete(`/roomProvider/unlink/${roomId}/${roomProviderIdToDelete}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            setRoomProviders(prevProviders =>
+                prevProviders.filter(rp => rp.roomProviderId !== roomProviderIdToDelete)
+            );
+            setSuccessMessage(`Provider link (ID: ${roomProviderIdToDelete}) removed successfully.`);
+
+        } catch (err: any) {
+            console.error("Failed to delete room provider:", err.response?.data || err.message);
+            setError(err.response?.data?.message || `Failed to remove provider link ${roomProviderIdToDelete}.`);
+        }
+    };
 
         if (isLoading) {
             return <p className={editPageStyle.message}>Loading room details...</p>;
@@ -237,7 +292,38 @@ function AdminEditRoomPage() {
                             </button>
                         </div>
                     </form>
-                </main>
+                    {/* --- Section for Managing Room Providers --- */}
+                    <section className={editPageStyle.providersSection}>
+                        <h3>Manage Providers for this Room</h3>
+                        {/* Display provider-specific errors or success messages here */}
+                        {Error && <p className={`${editPageStyle.message} ${editPageStyle.error}`}>{Error}</p>}
+                        {successMessage && Error === null && <p className={`${editPageStyle.message} ${editPageStyle.success}`}>{successMessage}</p>} {/* Show general success if no provider error */}
+
+
+                        {isLoading ? (
+                            <p className={editPageStyle.message}>Loading providers...</p>
+                        ) : roomProviders.length > 0 ? (
+                            <ul className={editPageStyle.providerList}>
+                                {roomProviders.map(rp => (
+                                    <li key={rp.roomProviderId} className={editPageStyle.providerItem}>
+                                    <span>
+                                        {rp.provider.providerName} - ${rp.roomPrice.toFixed(2)}
+                                        (ID: {rp.roomProviderId})
+                                    </span>
+                                        <button
+                                            onClick={() => handleDeleteRoomProvider(rp.roomProviderId)}
+                                            className={editPageStyle.deleteProviderButton}
+                                        >
+                                            Remove
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className={editPageStyle.message}>No providers currently assigned to this room.</p>
+                        )}
+                        </section>
+                    </main>
                 <Footer/>
             </>
     );
