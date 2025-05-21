@@ -1,5 +1,5 @@
 import '../../styles/main.css';
-import './RegisterPage.css';
+import regPageStyle from './RegisterPage.module.css';
 
 import { jwtDecode } from 'jwt-decode';
 import { useState } from 'react';
@@ -71,9 +71,9 @@ function RegisterPage() {
     <div>
       <Header />
       <main>
-        <form className='form' onSubmit={handleRegister}>
-          <div className="register">
-            <h1 className="fRegister">Register</h1>
+        <form className={regPageStyle.form} onSubmit={handleRegister}>
+          <div className={regPageStyle.register}>
+            <h1>Register</h1>
             <label htmlFor="rusername">Username:</label>
             <input
               type="text"
@@ -102,7 +102,7 @@ function RegisterPage() {
                 <option value="PROVIDER">Provider</option>
                 {/*<option value="ADMIN">Admin</option> */}
               </select>
-            <button className="submit" type="submit">Register</button>
+            <button className={regPageStyle.submit} type="submit">Register</button>
           </div>
         </form>
       </main>

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import '../../styles/main.css';
-import './RoomDetailsPage.css';
+import roomDetailPageStyle from './RoomDetailsPage.module.css';
 
 import ConfirmationBox from '../../components/ConfirmationBox/ConfirmationBox.tsx';
 import CustomDatePicker from '../../components/CustomDatePicker/CustomDatePicker.tsx';
@@ -449,20 +449,20 @@ function RoomDetailsPage () {
     return (
         <div>
             <Header />
-            <div className="content-container">
-                <h1 className="roomnametext">{roomDetails.roomName + " at " + Source?.sourceName +", " + Source?.country}</h1>
+            <div className={roomDetailPageStyle.contentcontainer}>
+                <h1 className={roomDetailPageStyle.roomnametext}>{roomDetails.roomName + " at " + Source?.sourceName +", " + Source?.country}</h1>
             </div>
-            <section className="content-container">
-                <div className="image">
+            <section className={roomDetailPageStyle.contentcontainer}>
+                <div className={roomDetailPageStyle.image}>
                     <img src={roomDetails.imageUrl} alt="RoomDetailsPlaceholderImg"/>
-                    <div className="favbuttonoverlay">
+                    <div className={roomDetailPageStyle.favbuttonoverlay}>
                         {room && <FavouriteButton room={room}/>}
                     </div>
                 </div>
-                <section className="bookingbox">
+                <section className={roomDetailPageStyle.bookingbox}>
                     {role == "ROLE_USER" && (
-                        <section className="bookingoptionswrapper">
-                            <h1 className="bookingboxtext">How long will you stay?</h1>
+                        <section className={roomDetailPageStyle.bookingoptionswrapper}>
+                            <h1 className={roomDetailPageStyle.bookingboxtext}>How long will you stay?</h1>
                             {/* Place the date picker component here */}
                             <div style={{ display: 'flex', alignItems: 'center' }}> {/* Optional wrapper for layout */}
                                 <CustomDatePicker
@@ -489,57 +489,57 @@ function RoomDetailsPage () {
                                 }
                             </select>
                 
-                            <button className="bookingsubmit" onClick={() => setShowConfirmation(true)}>Book room</button>
+                            <button className={roomDetailPageStyle.bookingsubmit} onClick={() => setShowConfirmation(true)}>Book room</button>
                             {/* <button onClick={bookRoom}>Book room</button> */}
                         </section>
                     )}
                     
                     {role == "ROLE_PROVIDER" && (
                         <>
-                            <h1 className="bookingboxtext">Do you want to list this room?</h1>
-                            <section className="bookingoptionswrapper">
-                                <h1 className="smallwhitetext">Set Price:</h1>
+                            <h1 className={roomDetailPageStyle.bookingboxtext}>Do you want to list this room?</h1>
+                            <section className={roomDetailPageStyle.bookingoptionswrapper}>
+                                <h1 className={roomDetailPageStyle.smallwhitetext}>Set Price:</h1>
                                 <input placeholder="Enter price in NOK" onChange={(e) => setRoomPrice(Number(e.target.value))}></input>
-                                <button className="bookingsubmit" onClick={() => { if (roomPrice !== undefined) { listRoomAsProvider(roomPrice);} else {alert("Please enter a price.");}}}>List Room</button>
+                                <button className={roomDetailPageStyle.bookingsubmit} onClick={() => { if (roomPrice !== undefined) { listRoomAsProvider(roomPrice);} else {alert("Please enter a price.");}}}>List Room</button>
                             </section>
                         </>
                     )}
                     {role == "ROLE_ADMIN" && (
                         <>
-                            <h1 className="bookingboxtext">Please go to the admin page to manage this room.</h1>
-                            <section className="bookingoptionswrapper">
+                            <h1 className={roomDetailPageStyle.bookingboxtext}>Please go to the admin page to manage this room.</h1>
+                            <section className={roomDetailPageStyle.bookingoptionswrapper}>
                                 <Link to="/admin">
-                                    <button className="bookingsubmit">Admin Page</button>
+                                    <button className={roomDetailPageStyle.bookingsubmit}>Admin Page</button>
                                 </Link>
                             </section>
                         </>
                     )}
                     {!role && (
                         <>
-                            <h1 className="bookingboxtext">Please Log in or register to book a room.</h1>
-                            <section className="bookingoptionswrapper">
+                            <h1 className={roomDetailPageStyle.bookingboxtext}>Please Log in or register to book a room.</h1>
+                            <section className={roomDetailPageStyle.bookingoptionswrapper}>
                                 <Link to="/login">
-                                    <button className="bookingsubmit">Log In</button>
+                                    <button className={roomDetailPageStyle.bookingsubmit}>Log In</button>
                                 </Link>
                                 <Link to="/register">
-                                    <button className="bookingsubmit">Sign Up</button>
+                                    <button className={roomDetailPageStyle.bookingsubmit}>Sign Up</button>
                                 </Link>
                             </section>
                         </>
                     )}
                 </section>
             </section>
-            <section className="content-container">
-                <div className="detailsbox">
-                    <div className="description">
-                        <h2 className="bigwhitetext">Description</h2>
-                        <p className="smallwhitetext">
+            <section className={roomDetailPageStyle.contentcontainer}>
+                <div className={roomDetailPageStyle.detailsbox}>
+                    <div className={roomDetailPageStyle.description}>
+                        <h2 className={roomDetailPageStyle.bigwhitetext}>Description</h2>
+                        <p className={roomDetailPageStyle.smallwhitetext}>
                             {roomDetails.description}
                         </p>
                     </div>
-                    <div className="site-specification">
-                        <h2 className="bigwhitetext">Room Specifications</h2>
-                        <div className="smallwhitetext">
+                    <div className={roomDetailPageStyle.sitespecification}>
+                        <h2 className={roomDetailPageStyle.bigwhitetext}>Room Specifications</h2>
+                        <div className={roomDetailPageStyle.smallwhitetext}>
                             Room type: {roomDetails.roomType}<br />
                             <p>Amenities :</p>
                             <ul>

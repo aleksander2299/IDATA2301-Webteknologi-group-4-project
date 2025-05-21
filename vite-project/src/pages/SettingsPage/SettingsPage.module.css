@@ -19,15 +19,15 @@
     align-items: center;
 }
 
-#userDetails,
-#changePassword {
+.userDetails,
+.changePassword {
     width: 100%;
     max-width: 20rem;
     margin: 0 auto;
 }
 
 
-#userDetails{
+.userDetails{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -47,7 +47,7 @@
     
 }
 
-#userDetails button{
+.userDetails button{
     padding: 1rem;
     font-size: 1.5rem;
     margin: 1rem;
@@ -58,13 +58,13 @@
     border: solid 2px #fb4386;
 }
 
-#userDetails button:hover {
+.userDetails button:hover {
     background-color: rgba(49, 49, 49, 0.85);
     border-color: #fb4386;
     color: rgb(251, 67, 134);
 }
 
-#changePassword{
+.changePassword{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -83,7 +83,7 @@
     margin-top: 30px;
 }
 
-#changePassword button{
+.changePassword button{
     padding: 1rem;
     font-size: 1.5rem;
     margin: 1rem;
@@ -94,12 +94,12 @@
     border: solid 2px #fb4386;
 }
 
-#changePassword button:hover {
+.changePassword button:hover {
     background-color: rgba(49, 49, 49, 0.85);
     border-color: #fb4386;
     color: rgb(251, 67, 134);
 }
-.h2 {
+.settingscontainer h2 {
     text-transform: capitalize;
     font-size: 2rem;
     padding-bottom: 5px;
@@ -112,7 +112,7 @@
     flex: 1;
 }
 
-.label {
+.settingscontainer label {
     display: block;
     font-size: 1.4rem;
     margin: 0.6rem 0.1rem;
@@ -120,7 +120,7 @@
     text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
 }
 
-.input {
+.settingscontainer input {
     border-radius: 10px;
     border-color: #fb4386;
     border-width: 4px;
@@ -136,7 +136,7 @@
     justify-content: center;
 }
 
-#deletebtn{
+.deletebtn{
     padding: 1rem;
     font-size: 2rem;
     margin: 1rem;
@@ -147,7 +147,7 @@
     border: solid 2px rgba(255, 255, 255, 0.9);
     }
 
-#deletebtn:hover{
+.deletebtn:hover{
     background-color: rgba(49, 49, 49, 0.85);
     border-color: #fb4386;
     color: rgb(251, 67, 134);
