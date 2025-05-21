@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
-import './SettingsPage.css';
+import settingsPageStyle from './SettingsPage.module.css';
 
 import { useState } from 'react';
 import { axiosInstance } from '../../AxiosInstance.js';
@@ -109,32 +109,32 @@ function deleteAccount(){
     const [showPassword, setShowPassword] = useState(false);
 
     return(
-        <div className = "settingsWrapper">
+        <div className ={settingsPageStyle.settingsWrapper}>
             <Header/>
-            <div className="settingscontainer">
-            <section id="userDetails">
-                <h2 className="h2">user details:</h2>
-                <label className="label">Username:</label>
-                <input className="input" type="text" value={localStorage.getItem('username') || ""} readOnly disabled/>
-                <label className="label">Password:</label>
-                <input className="input" type={showPassword ? 'text' : 'password'} value={localStorage.getItem('password') || ""} readOnly id="password" disabled />
+            <div className={settingsPageStyle.settingscontainer}>
+            <section className={settingsPageStyle.userDetails}>
+                <h2>user details:</h2>
+                <label>Username:</label>
+                <input type="text" value={localStorage.getItem('username') || ""} readOnly disabled/>
+                <label>Password:</label>
+                <input type={showPassword ? 'text' : 'password'} value={localStorage.getItem('password') || ""} readOnly id="password" disabled />
                 <button type="button" onClick={() => setShowPassword(prev => !prev)}>
                 {showPassword ? 'Hide Password' : 'Show Password'}
                 </button>
             
             </section>
-            <section id="changePassword" >
-                <h2 className="h2">change password ?</h2>
-                <label className="label">Change Password:</label>
-                <input className="input" type="password" placeholder="Input new password here" value={newPassword} onChange={(ev) => setNewPassword(ev.target.value)} />
-                <label className="label">Confirm Password:</label>
-                <input className="input" type="password" placeholder="Confirm password here" value={newPassword} id="confirmpass" onChange={(e) => setConfirmPassword(e.target.value)} />
+            <section className={settingsPageStyle.changePassword} >
+                <h2>change password ?</h2>
+                <label>Change Password:</label>
+                <input type="password" placeholder="Input new password here" value={newPassword} onChange={(ev) => setNewPassword(ev.target.value)} />
+                <label>Confirm Password:</label>
+                <input type="password" placeholder="Confirm password here" value={newPassword} id="confirmpass" onChange={(e) => setConfirmPassword(e.target.value)} />
                 <button onClick={changePassword}>Change Password</button>
             </section>
 
         </div>
-        <div className="deleteButton">
-            <button id="deletebtn" onClick={deleteAccount}> Delete Account </button>
+        <div className={settingsPageStyle.deleteButton}>
+            <button className={settingsPageStyle.deletebtn} onClick={deleteAccount}> Delete Account </button>
             </div>
             <Footer/>
         </div>
