@@ -13,9 +13,6 @@ interface SourceOption {
     sourceName: string;
 }
 
-interface ExtraFeature {
-    feature: string;
-}
 
 interface RoomData {
     roomName: string;
@@ -63,9 +60,6 @@ const BASIC_ROOM_TYPES: string[] = [
 
 function AddRoomPage() {
 
-    const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
-    const [extraFeatures, setExtraFeatures] = useState<ExtraFeature[]>([]);
-    const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
@@ -105,18 +99,6 @@ function AddRoomPage() {
             console.error("Failed to fetch sources:", err);
             setError(err.response?.data?.message || "Failed to fetch sources.");
         })
-        axiosInstance.get<ExtraFeature[]>(`/extra_features`, {
-            headers: { Authorization: `Bearer ${token}` }
-        })
-        .then((response) => {
-            setExtraFeatures(response.data);
-        })
-        .catch((err) => {
-            console.error("Failed to fetch features:", err);
-        })
-       .finally(() => {
-         setIsLoading(false);
-     });
     }, [token, navigate]);
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -175,17 +157,6 @@ function AddRoomPage() {
             setError(err.response?.data?.message || "Failed to create room.");
         } finally {
             setIsSaving(false);
-        }
-
-        if (selectedFeatures.length > 0 && formData.selectedSourceId) {
-            const sourceIdNum = parseInt(formData.selectedSourceId, 10);
-            selectedFeatures.map(featureName => {
-                return axiosInstance.post(`/source_extra_features/${sourceIdNum}/${featureName}`, {}, {
-                    headers: {Authorization: `Bearer ${token}`}
-                }).then(response => {
-                    return { success: true, feature: featureName };
-                })
-            });
         }
 
 
@@ -270,27 +241,6 @@ function AddRoomPage() {
                                 onChange={handleInputChange}
                                 placeholder="https://example.com/image.jpg"
                             />
-                        </div>
-
-                        <div className={addRoomPageStyle.featuretitle}> Select Features: </div>
-                        <div className={addRoomPageStyle.extraFeaturesContainer}>
-                            {extraFeatures.map((feature) => (
-                            <label key={feature.feature}>
-                                <input
-                                    type="checkbox"
-                                    value={feature.feature}
-                                    checked={selectedFeatures.includes(feature.feature)}
-                                    onChange={() => {
-                                        if (selectedFeatures.includes(feature.feature)) {
-                                            setSelectedFeatures(selectedFeatures.filter(f => f !== feature.feature));
-                                        } else {
-                                            setSelectedFeatures([...selectedFeatures, feature.feature]);
-                                        }
-                                    }}
-                                />
-                                {feature.feature}
-                            </label>
-                            ))}
                         </div>
                     </div>
 
