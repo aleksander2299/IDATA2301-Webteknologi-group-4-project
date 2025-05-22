@@ -76,20 +76,10 @@ function ProviderPage() {
             }
         })
         .then(() => {
-            console.log("successfully removed listing");
-            axiosInstance.get(`/providers/${username}/roomProviders`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    
-                }
+                 let updatedListings = rooms.filter(room => room.room.roomId !== roomId)
+                setRooms(updatedListings)
                 
             })
-            .then((response) => {
-                setChangeSite(1);
-                setRooms(response.data);
-            })
-            
-        })
         .catch((error) => {
             console.error("couldn't remove listing", error);
         });
@@ -99,7 +89,7 @@ function ProviderPage() {
 
 
    async function editListing(newRoomProviderId : number, price : number, roomProvider : RoomProvider){
-        const input = window.prompt("Enter new price:", price.toString());
+        const input = window.prompt("Enter new price:", "0");
 
         if (input === null) return; 
 
@@ -139,12 +129,11 @@ function ProviderPage() {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => {
-        setRooms([])
-      })
       .catch((error) => {
         console.error(error);
       });
+
+      setRooms([])
 }
 
 
