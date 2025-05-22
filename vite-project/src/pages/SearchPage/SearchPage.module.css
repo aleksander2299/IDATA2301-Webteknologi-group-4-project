@@ -9,6 +9,19 @@ CSS Made with help from AI gonna be used temporarily
     padding: 20px;
 }
 
+.noroomlisted {
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    color:white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-wrap: break-word;
+    padding: 0 1rem;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
+
 /* Search Bar */
 .searchbarbox {
     display: flex;

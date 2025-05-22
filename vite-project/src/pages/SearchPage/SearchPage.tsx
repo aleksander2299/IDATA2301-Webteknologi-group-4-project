@@ -13,7 +13,6 @@ import SearchBar from "../../components/SearchBar/SearchBar.tsx";
 import { navigateToRoomDetails, navigateToSearch, parseURLDate } from '../../utils/navigationUtils';
 
 import { axiosInstance } from "../../AxiosInstance.tsx";
-import { Room } from "../../types/Room.ts";
 
 
 // Interface for rooms/hotels can be expanded however make sure or null is used if you do since this is supposed to be used for multiple functions
@@ -357,11 +356,10 @@ function SearchPage() {
                         )
                     ) : (
                         // If empty TODO: However it doesnt get empty yet even if the data is empty
-                        <p className="no-results-message">No hotels found matching your criteria.</p>
+                        <p className={SearchPageStyle.noroomlisted}>No rooms found matching your criteria.</p>
                     )
                     }
                 </div>
-
             </main>
             <Footer/>
         </div>
