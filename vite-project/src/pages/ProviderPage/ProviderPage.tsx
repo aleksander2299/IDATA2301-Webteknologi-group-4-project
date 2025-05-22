@@ -28,6 +28,7 @@ interface provider{
 }
 
 interface RoomProvider {
+   
     roomProviderId: number;
     roomPrice: number;
     room: Room;
@@ -106,10 +107,10 @@ function ProviderPage() {
 
         setRoomProviderId(newRoomProviderId);
             const updatedRoomProvider = {
-            ...roomProvider,
+            room: { roomId: roomProvider.room.roomId },
+            provider: { providerId: roomProvider.provider.providerId },
             roomPrice: price,
         };
-
         await axiosInstance.put(`/roomProvider/${newRoomProviderId}`,  updatedRoomProvider,                          
             {
               headers: { Authorization: `Bearer ${token}` }   
