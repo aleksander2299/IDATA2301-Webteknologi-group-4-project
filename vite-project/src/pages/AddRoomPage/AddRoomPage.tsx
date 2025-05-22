@@ -7,10 +7,16 @@ import addRoomPageStyle from './AddRoomPage.module.css';
 
 import Footer from '../../components/layout/Footer';
 import Header from '../../components/layout/Header';
+import { features } from 'process';
 
 interface SourceOption {
     sourceId: number;
     sourceName: string;
+}
+
+
+interface ExtraFeature {
+    feature: string;
 }
 
 interface RoomData {
@@ -59,6 +65,8 @@ const BASIC_ROOM_TYPES: string[] = [
 
 function AddRoomPage() {
 
+    const [extraFeatures, setExtraFeatures] = useState<ExtraFeature[]>([]);
+    const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
@@ -99,10 +107,20 @@ function AddRoomPage() {
             console.error("Failed to fetch sources:", err);
             setError(err.response?.data?.message || "Failed to fetch sources.");
         })
-        .finally(() => {
-            setIsLoading(false);
-        });
-    }, [token, navigate]);
+        axiosInstance.get<ExtraFeature[]>(`/extra_features`, {
+        headers: { Authorization: `Bearer ${token}` }
+        })
+        .then((response) => {
+            setExtraFeatures(response.data);
+        })
+        .catch((err) => {
+            console.error("Failed to fetch features:", err);
+            
+        })
+       .finally(() => {
+         setIsLoading(false);
+     });
+}, [token, navigate]);
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const {name, value} = e.target;
@@ -225,7 +243,7 @@ function AddRoomPage() {
                                 </select>
                             </div>
 
-                            <div className={addRoomPageStyle.formControl}>
+                            <div className={addRoomPageStyle}>
                                 <label htmlFor="imageUrl">Image URL:</label>
                                 <input
                                     type="url"
@@ -235,7 +253,28 @@ function AddRoomPage() {
                                     onChange={handleInputChange}
                                     placeholder="https://example.com/image.jpg"
                                 />
-                            </div>
+                            </div >
+
+                            <div className={addRoomPageStyle}>
+                                {extraFeatures.map((feature) => (
+                                <label key={feature.feature}>
+                                <input
+                                    type="checkbox"
+                                    value={feature.feature}
+                                    checked={selectedFeatures.includes(feature.feature)}
+                                    onChange={() => {
+                            if (selectedFeatures.includes(feature.feature)) {
+                                    setSelectedFeatures(selectedFeatures.filter(f => f !== feature.feature));
+                            } else {
+                                    setSelectedFeatures([...selectedFeatures, feature.feature]);
+                            }
+                            }}
+                            />
+                            {feature.feature}
+                             </label>
+                            ))}
+                                </div>
+
                         </fieldset>
 
                         <fieldset className={addRoomPageStyle.formSection}>

@@ -50,7 +50,7 @@ export const axiosInstance = axios.create({
     baseURL : 'http://localhost:8080'
 });
 ```
-in App.tsx that sets the axios instance, stay like this since the group will change it from localhost:8080 to deployed url.
+in AxiosInstance.tsx that sets the axios instance, stay like this since the group will change it from localhost:8080 to deployed url.
 
 ## site tips
 There exists premade accounts for you to use, they are listed below:
