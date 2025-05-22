@@ -27,43 +27,41 @@ To go to the deployed website here is the link with backend and frontend combine
 ## Setup and Running
 
 1. Install dependencies:
-In terminal:
-```
-npm install
-```
-to run vite with npm preview or npm run dev you need to change directory to vite-project folder and then use npm install and then you can run those commands after.
-This is done with command 
+Terminal Instructions:
+
+To run vite with npm preview or npm run dev you need to change directory to vite-project folder and then use npm install and then you can run those commands after.
+This is done with the command 
 ```
 cd vite-project
 ```
+then you
+```
+npm install
+```
 in the terminal.
 
-Then in terminal
+Then you can
 ```
 npm run dev
 ```
-then open your browser at http://localhost:5173, NB! it is required to have backend running for functionality
-
-Important that this line 
-```
-export const axiosInstance = axios.create({
-    baseURL : 'http://localhost:8080'
-});
-```
-in AxiosInstance.tsx that sets the axios instance, stay like this since the group will change it from localhost:8080 to deployed url.
+and open your browser at http://localhost:5173, NB! it is required to have backend running for functionality.
 
 ## site tips
 There exists premade accounts for you to use, they are listed below:
  
 user: dave, Password: Dangerous2024
+
 admin: chuck, Password: Nunchucks2024
+
 provider: norris, Password: Warrior2024
 
 
-Pictures of website:
+Desktop pictures of website:
 ![image](https://github.com/user-attachments/assets/e8e7d352-ea6d-440d-bb33-9cdae2392e00),
 ![image](https://github.com/user-attachments/assets/62867bf2-8aa1-442e-aa9e-33fc36a57485),
 ![image](https://github.com/user-attachments/assets/d7190651-0402-4f6e-b6ba-d652bdb3fd11)
+
+Mobile pictures of website:
 
 
 
