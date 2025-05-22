@@ -37,7 +37,7 @@ function FavouritesPage () {
     }, [username]);
 
     return (
-        <div className={favPageStyles.favourites}>
+        <div>
             <Header />
 
             <main className={favPageStyles.content}>

@@ -37,7 +37,7 @@
     padding: 0 1rem;
 }
 
-.nofavroom {
+.nobooking {
     font-size: 2.5rem;
     text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
     color:white;
@@ -48,7 +48,7 @@
     padding: 0 1rem;
 }
 
-#favourites_container {
+.bookingcontainer {
     display: flex;
     flex-flow: wrap;
     justify-content: center;

@@ -490,7 +490,7 @@ function RoomDetailsPage () {
                             <h1 className={roomDetailPageStyle.bookingboxtext}>Do you want to list this room?</h1>
                             <section className={roomDetailPageStyle.bookingoptionswrapper}>
                                 <h1 className={roomDetailPageStyle.smallwhitetext}>Set Price:</h1>
-                                <input placeholder="Enter price in NOK" onChange={(e) => setRoomPrice(Number(e.target.value))}></input>
+                                <input placeholder="Enter price in USD" onChange={(e) => setRoomPrice(Number(e.target.value))}></input>
                                 <button className={roomDetailPageStyle.bookingsubmit} onClick={() => { if (roomPrice !== undefined) { listRoomAsProvider(roomPrice);} else {alert("Please enter a price.");}}}>List Room</button>
                             </section>
                         </>
