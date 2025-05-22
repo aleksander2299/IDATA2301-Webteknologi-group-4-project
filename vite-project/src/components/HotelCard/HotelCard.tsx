@@ -119,7 +119,7 @@ function HotelCard({
                   </p>
                 )}
                 {/* Conditionally render price if provided */}
-                {price && <p className="hotel-card-price">{price}€</p>}
+                {price && <p className="hotel-card-price">{price}$</p>}
               </div>
 
               {/* Render action buttons passed as children */}
