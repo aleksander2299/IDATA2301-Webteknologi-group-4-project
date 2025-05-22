@@ -99,6 +99,7 @@ function AddRoomPage() {
             console.error("Failed to fetch sources:", err);
             setError(err.response?.data?.message || "Failed to fetch sources.");
         })
+        .finally(() => setIsLoading(false))
     }, [token, navigate]);
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
