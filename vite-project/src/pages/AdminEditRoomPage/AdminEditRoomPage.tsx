@@ -23,6 +23,10 @@ interface RoomData {
     };
 }
 
+interface ExtraFeature {
+    feature: string;
+}
+
 interface ProviderData {
     providerId: number;
     providerName: string;
@@ -63,6 +67,8 @@ function AdminEditRoomPage() {
     const {roomId} = useParams<{ roomId: string }>();
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
+    const [extraFeatures, setExtraFeatures] = useState<ExtraFeature[]>([]);
+    const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
 
     const [roomProviders, setRoomProviders] = useState<RoomProviderData[]>([]);
     const [room, setRoom] = useState<RoomData | null>(null); // RoomData interface updated
@@ -131,6 +137,18 @@ function AdminEditRoomPage() {
                     setIsLoading(false);
                 }
             }
+
+            axiosInstance.get<ExtraFeature[]>(`/extra_features`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                    })
+                    .then((response) => {
+                        setExtraFeatures(response.data);
+                    })
+                    .catch((err) => {
+                        console.error("Failed to fetch features:", err);
+                        
+                    })
+
             fetchRoomProviders();
         }, [roomId, token, navigate]);
 
@@ -268,6 +286,26 @@ function AdminEditRoomPage() {
                                 ))}
                             </select>
                         </div>
+
+                        <div className={editPageStyle}>
+                                                        {extraFeatures.map((feature) => (
+                                                        <label key={feature.feature}>
+                                                        <input
+                                                            type="checkbox"
+                                                            value={feature.feature}
+                                                            checked={selectedFeatures.includes(feature.feature)}
+                                                            onChange={() => {
+                                                    if (selectedFeatures.includes(feature.feature)) {
+                                                            setSelectedFeatures(selectedFeatures.filter(f => f !== feature.feature));
+                                                    } else {
+                                                            setSelectedFeatures([...selectedFeatures, feature.feature]);
+                                                    }
+                                                    }}
+                                                    />
+                                                    {feature.feature}
+                                                     </label>
+                                                    ))}
+                                                        </div>
                         {/* TODO: If images work uncomment this*/}
                         {/*
             <div className={editPageStyle.formGroup}>
