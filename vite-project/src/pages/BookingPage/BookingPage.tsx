@@ -1,39 +1,45 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from '../../AxiosInstance.js';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import '../../styles/main.css';
 import bookingPageStyle from './BookingPage.module.css';
 
-import bookingCard from "../../components/BookingCard/bookingCard.tsx";
+
+import BookingCard from "../../components/BookingCard/BookingCard.tsx";
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 import { Booking } from "../../types/Booking.ts";
 
 function BookingPage () {
 
-    //const [favourites, setFavourites] = useState<Favourite[]>([]);
+    const [bookings, setBookings] = useState<Booking[]>([]);
     const [loading, setLoading] = useState(true);
 
     const username = localStorage.getItem('username');
     const token = localStorage.getItem('token');
 
     useEffect(() => {
-        async function fetchFavourites() {
+        if (!username || !token) { // Added check for token existence
+            setLoading(false);
+            useNavigate('/login');
+        }
+        async function fetchBookings() {
+            setLoading(true);
             try {
-                const response = await axiosInstance.get(`/favourite/user/${username}`, {
+                const response = await axiosInstance.get(`/booking/user/${username}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                //setFavourites(response.data);
+                setBookings(response.data || []);
             } catch (err) {
-                console.log(err);
-                console.log("username here: " + username);
+                console.log("Error username here: " + username);
             } finally {
                 setLoading(false);
             }
         }
-        fetchFavourites();
+        fetchBookings();
     }, [username]);
 
     return (
@@ -42,13 +48,18 @@ function BookingPage () {
 
             <main className={bookingPageStyle.content}>
                 <div className={bookingPageStyle.topbox}>
-                    <h1>Favourite rooms:</h1>
+                    <h1>Bookings</h1>
                 </div>
                 <section id={bookingPageStyle.favourites_container}>
                     {loading && <p>Loading...</p>}
-                    {!loading && favourites.length === 0 && <p className={bookingPageStyle.nofavroom}>No favourite rooms found.</p>}
-                    {favourites.map((favourite) => (
-                        <bookingCard
+                    {!loading && bookings.length === 0 && <p className={bookingPageStyle.nofavroom}>No favourite rooms found.</p>}
+                    {bookings.map((booking) => (
+                        <BookingCard
+                            key={booking.bookingId}
+                            bookingId={booking.bookingId}
+                            room={booking.roomProvider.room}
+                            checkInDate={booking.checkInDate}
+                            checkOutDate={booking.checkOutDate}
 
                         />
                     ))}
