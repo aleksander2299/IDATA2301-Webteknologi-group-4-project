@@ -1,0 +1,149 @@
+.main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    word-wrap: break-word;
+    flex-flow: column nowrap;
+    flex-direction: column;
+    word-wrap: break-word;
+    flex-grow: 1;
+}
+
+.topdetailstitle {
+    border: solid 2px rgba(255, 255, 255, 0.9);
+    padding: 1rem;
+    border-radius: 10px;
+    background-color: rgba(60, 58, 58, 0.588);
+}
+
+.editbox {
+    gap: 1rem;
+    background-color: rgba(60, 58, 58, 0.588);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 80rem;
+    margin-top: 20px;
+    border: solid 2px rgba(255, 255, 255, 0.9);
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    color:white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+
+.editbox select:hover {
+    background-color: rgba(49, 49, 49, 0.85);
+    border-color: #fb4386;
+    color: rgb(251, 67, 134);
+}
+
+.editbox option {
+    background-color: rgba(60, 58, 58, 0.6);
+    color: white;
+}
+
+
+.editbutton {
+    padding: 1.2rem;
+    font-size: 1rem;
+    margin: 1.5rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    background-color: rgba(60, 58, 58, 0.6);
+    border-radius: 10px;
+    border: 3px solid white;
+}
+
+.editbutton:hover {
+    background-color: rgba(49, 49, 49, 0.85);
+    border-color: #fb4386;
+    color: rgb(251, 67, 134);
+}
+
+.editForm {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 60rem;
+    padding: 2rem;
+    gap: 1.5rem;
+    border: solid 2px rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    background-color: rgba(60, 58, 58, 0.588);
+}
+
+.formGroup {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.formGroup label {
+    text-align: right;
+    font-weight: bold;
+    color: white;
+}
+
+.formGroup input,
+.formGroup textarea,
+.formGroup select {
+    flex: 1;
+    font-size: 1.2rem;
+    padding: 0.75rem;
+    border-radius: 10px;
+    border: 3px solid #fb4386;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    resize: vertical;
+}
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.featureList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem 2rem;
+    max-width: 60rem;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    input[type="checkbox"] {
+        transform: scale(1.5);
+        margin-right: 0.5rem;
+    }
+}
+
+.providersSection {
+    width: 100%;
+    max-width: 60rem;
+    padding: 1rem;
+    background-color: rgba(60, 58, 58, 0.588);
+    border-radius: 10px;
+    border: solid 2px rgba(255, 255, 255, 0.9);
+}
+
+.providerList { 
+    padding-left: 0;
+    margin-top: 1rem;
+}
+
+.providerItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    background-color: rgba(60, 58, 58, 0.588);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: solid 2px rgba(255, 255, 255, 0.9);
+}
+

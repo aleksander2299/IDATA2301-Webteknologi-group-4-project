@@ -147,8 +147,3 @@
     border: solid 2px rgba(255, 255, 255, 0.9);
 }
 
-@media (max-width: 960px) {
-    .main {
-        min-height: 180vh;
-    }
-}
