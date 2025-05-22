@@ -176,7 +176,7 @@ function ProviderPage() {
                                             )
                                         ) : (
                                             // If empty TODO: However it doesnt get empty yet even if the data is empty
-                                            <p className="no-results-message">No hotels found matching your criteria.</p>
+                                            <p className={providerPageStyle.nolistedroom}>No listed rooms found.</p>
                                         )
                                         }
                                     </div>
