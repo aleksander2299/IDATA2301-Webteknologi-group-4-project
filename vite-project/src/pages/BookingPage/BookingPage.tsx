@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../AxiosInstance.js';
-import { useNavigate, useParams } from 'react-router-dom';
 
 import '../../styles/main.css';
 import bookingPageStyle from './BookingPage.module.css';
@@ -10,7 +10,6 @@ import BookingCard from "../../components/BookingCard/BookingCard.tsx";
 import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 import { Booking } from "../../types/Booking.ts";
-import axios from "axios";
 
 function BookingPage () {
 
@@ -44,35 +43,16 @@ function BookingPage () {
         fetchBookings();
     }, [username]);
 
-    function cancelBooking(bookingId: number){
-
-        axiosInstance.delete(`/booking/${bookingId}`, {
-              headers: {
-            Authorization: `Bearer ${token}`
-        }
-        })
-        .then(() => {
-            let updatedBookings = bookings.filter(booking => booking.bookingId !== bookingId)
-            setBookings(updatedBookings)
-        }
-        )
-        .catch((err) =>{
-            console.error(err)
-        })
-        
-    }
-
     return (
-        <div className={bookingPageStyle.favourites}>
+        <div>
             <Header />
-
             <main className={bookingPageStyle.content}>
                 <div className={bookingPageStyle.topbox}>
-                    <h1>Bookings</h1>
+                    <h1>Booked stays:</h1>
                 </div>
-                <section id={bookingPageStyle.favourites_container}>
+                <section className={bookingPageStyle.bookingcontainer}>
                     {loading && <p>Loading...</p>}
-                    {!loading && bookings.length === 0 && <p className={bookingPageStyle.nofavroom}>No favourite rooms found.</p>}
+                    {!loading && bookings.length === 0 && <p className={bookingPageStyle.nobooking}>No booking found.</p>}
                     {bookings.map((booking) => (
                         <div>
                         <BookingCard
@@ -81,9 +61,7 @@ function BookingPage () {
                             room={booking.roomProvider.room}
                             checkInDate={booking.checkInDate}
                             checkOutDate={booking.checkOutDate}
-                            
                             />
-                        <button onClick={() => cancelBooking(booking.bookingId)}>Cancel booking</button>
                         </div>
                     ))}
                 </section>
