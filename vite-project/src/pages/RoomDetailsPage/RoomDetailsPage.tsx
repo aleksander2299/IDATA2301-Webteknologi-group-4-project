@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 
@@ -525,9 +524,39 @@ function RoomDetailsPage () {
                 <div className={roomDetailPageStyle.detailsbox}>
                     <div className={roomDetailPageStyle.description}>
                         <h2 className={roomDetailPageStyle.bigwhitetext}>Description</h2>
-                        <p className={roomDetailPageStyle.smallwhitetext}>
-                            {roomDetails.description}
-                        </p>
+                        {/* Used AI to fix the image links. */}
+                        {roomDetails.description && (
+                            <p className={roomDetailPageStyle.smallwhitetext}>
+                                {roomDetails.description.split('\n').map((line, i) => (
+                                    <span key={i}>
+                                        {line.split(/(https?:\/\/[^\s]+)/g).map((part, index) => {
+                                            if (part.match(/https?:\/\/[^\s]+/)) {
+                                                try {
+                                                    const url = new URL(part);
+                                                    const shortText = url.hostname.replace(/^www\./, '');
+                                                    return (
+                                                        <a
+                                                        key={index}
+                                                        href={part}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        style={{ color: '#007bff', textDecoration: 'underline' }}
+                                                        >
+                                                            {shortText}
+                                                        </a>
+                                                    );
+                                                } catch {
+                                                    return part;
+                                                }
+                                                } else {
+                                                    return <span key={index}>{part}</span>;
+                                                }
+                                        })}
+                                    <br />
+                                    </span>
+                                ))}
+                            </p>
+                        )}
                     </div>
                     <div className={roomDetailPageStyle.sitespecification}>
                         <h2 className={roomDetailPageStyle.bigwhitetext}>Room Specifications</h2>
