@@ -62,3 +62,10 @@
 .hotel-card-actions {
     width: 100%; /* Make actions container take full width */
 }
+
+@media (max-width: 768px) {
+    .hotel-card {
+        width: 22.5rem;
+        height: 22.5rem;
+    }
+}

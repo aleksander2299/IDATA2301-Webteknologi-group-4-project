@@ -114,6 +114,10 @@ CSS Made with help from AI gonna be used temporarily
         align-items: center;
     }
 
+    .filterselection {
+        width: 50%;
+    }
+
     .hotel-list {
         grid-template-columns: 1fr;
         width: 100%;
