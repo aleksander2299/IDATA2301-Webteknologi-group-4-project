@@ -14,6 +14,8 @@ interface HotelCardProps {
     id: number; // Only part of the prop that is not optional
     imageUrl?: string;
     imageAlt?: string;
+    hotelName?: string;
+    location?: string;
     title?: string;
     description?: string;
     price?: number;
@@ -25,6 +27,8 @@ function HotelCard({
   id,
   imageUrl,
   imageAlt,
+  hotelName,
+  location,
   title,
   description,
   price,
@@ -83,6 +87,8 @@ function HotelCard({
               </div>
 
               <div className={HotelCardStyles["hotel-card-info"]}>
+                {/* Conditionally render hotel name if provided */}
+                {room && <h2 className="hotel-card-title">{hotelName || location}</h2>}
                 {/* Conditionally render title if provided */}
                 {title && <h3 className="hotel-card-title">{title}</h3>}
                 {/* Conditionally render description if provided, used AI to fix the image links. */}

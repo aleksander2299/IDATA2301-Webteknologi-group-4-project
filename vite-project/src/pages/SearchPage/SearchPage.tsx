@@ -335,6 +335,7 @@ function SearchPage() {
                                     id={room.id}
                                     imageUrl={room.imageUrl}
                                     imageAlt={`Image of ${room.name}`}
+                                    hotelName={room.sourceName || room.location}
                                     title={room.name}
                                     description={room.description}
                                     price={room.lowestPrice}
