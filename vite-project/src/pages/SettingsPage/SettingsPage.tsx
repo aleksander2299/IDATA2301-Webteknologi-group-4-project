@@ -115,9 +115,9 @@ function deleteAccount(){
             <section className={settingsPageStyle.userDetails}>
                 <h2>user details:</h2>
                 <label>Username:</label>
-                <input type="text" value={localStorage.getItem('username') || ""} readOnly disabled/>
+                <input type="text" aria-label="Username" value={localStorage.getItem('username') || ""} readOnly disabled/>
                 <label>Password:</label>
-                <input type={showPassword ? 'text' : 'password'} value={localStorage.getItem('password') || ""} readOnly id="password" disabled />
+                <input type={showPassword ? 'text' : 'password'} aria-label="Password" value={localStorage.getItem('password') || ""} readOnly id="password" disabled />
                 <button type="button" onClick={() => setShowPassword(prev => !prev)}>
                 {showPassword ? 'Hide Password' : 'Show Password'}
                 </button>

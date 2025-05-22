@@ -462,7 +462,7 @@ function RoomDetailsPage () {
                                     excludeDateIntervals={disabledDateIntervals}
                                 />
                             </div>
-                            <select value={selectedProvider ?? ""} onChange={changeProvider}>
+                            <select aria-label="Select Provider" value={selectedProvider ?? ""} onChange={changeProvider}>
                     
                                 <option value="" disabled>
                                     Choose your provider

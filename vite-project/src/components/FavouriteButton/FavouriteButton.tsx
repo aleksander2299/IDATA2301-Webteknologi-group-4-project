@@ -94,6 +94,7 @@ function FavoriteButton({ room }: FavoriteButtonProps) {
             <button
             className="favoritebutton"
             onClick={toggleFavorite}
+            aria-label="Favorite Button"
             style={{ background: 'transparent', border: 'none' }}
             >
                 {/* Conditionally render SVGs based on dropdown state */}

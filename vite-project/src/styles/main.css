@@ -44,6 +44,17 @@ body {
     width: 100%;
 }
 
+.header-text {
+    font-family: "Poppins", sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: rgb(251, 67, 134);
+    border-top: solid 2px;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    margin-top: 0.8rem;
+    margin-bottom: 0.4rem;
+    line-height: 1.2;
+}
 @keyframes color{
 
   0% {
