@@ -286,8 +286,8 @@ function AdminEditRoomPage() {
                                 ))}
                             </select>
                         </div>
-
-                        <div className={editPageStyle}>
+                        <h4> Select Features: </h4>
+                        <div className={editPageStyle.featureList}>
                                                         {extraFeatures.map((feature) => (
                                                         <label key={feature.feature}>
                                                         <input
@@ -303,7 +303,7 @@ function AdminEditRoomPage() {
                                                     }}
                                                     />
                                                     {feature.feature}
-                                                     </label>
+                                                    </label>
                                                     ))}
                                                         </div>
                         {/* TODO: If images work uncomment this*/}

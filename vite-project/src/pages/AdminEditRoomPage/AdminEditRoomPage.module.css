@@ -6,7 +6,6 @@
     flex-flow: column nowrap;
     flex-direction: column;
     word-wrap: break-word;
-    min-height: 100vh;
     flex-grow: 1;
 }
 
@@ -25,7 +24,6 @@
     border-radius: 10px;
     width: 100%;
     max-width: 80rem;
-    max-height: 100rem;
     margin-top: 20px;
     border: solid 2px rgba(255, 255, 255, 0.9);
     font-size: 2rem;
@@ -35,7 +33,6 @@
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
-    overflow: hidden;
 }
 
 
@@ -110,6 +107,19 @@
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
+}
+
+.featureList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem 2rem;
+    max-width: 60rem;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    input[type="checkbox"] {
+        transform: scale(1.5);
+        margin-right: 0.5rem;
+    }
 }
 
 .providersSection {
