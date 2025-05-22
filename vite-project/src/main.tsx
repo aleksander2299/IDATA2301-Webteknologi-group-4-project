@@ -2,7 +2,10 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+import AddRoomPage from "./pages/AddRoomPage/AddRoomPage.tsx";
+import AdminEditRoomPage from "./pages/AdminEditRoomPage/AdminEditRoomPage.tsx";
 import AdminPage from './pages/AdminPage/AdminPage.tsx';
+import BookingPage from "./pages/BookingPage/BookingPage.tsx";
 import FavouritesPage from './pages/FavouritesPage/FavouritesPage.tsx';
 import HomePage from './pages/HomePage/HomePage.tsx';
 import LoginPage from './pages/LoginPage/LoginPage.tsx';
@@ -13,9 +16,6 @@ import SearchPage from './pages/SearchPage/SearchPage.tsx';
 import SettingsPage from './pages/SettingsPage/SettingsPage.tsx';
 import UserBookingsPage from './pages/UserBookingsPage/UserBookingsPage.tsx';
 import ImageTestPage from "./pages/test/ImageTestPage.tsx";
-import AdminEditRoomPage from "./pages/AdminEditRoomPage/AdminEditRoomPage.tsx";
-import AddRoomPage from "./pages/AddRoomPage/AddRoomPage.tsx";
-import BookingPage from "./pages/BookingPage/BookingPage.tsx";
 
 const router = createBrowserRouter ([
   { path: '/', element: <HomePage /> },
@@ -24,14 +24,14 @@ const router = createBrowserRouter ([
   { path: '/search', element: <SearchPage /> },
   { path: '/room/:id', element: <RoomDetailsPage /> },
   { path: '/admin', element: <AdminPage />},
-  { path: '/booking', element: <UserBookingsPage /> },
+  { path: '/booking1', element: <UserBookingsPage /> },
   { path: '/favourites', element: <FavouritesPage /> },
   { path: '/settings', element: <SettingsPage />},
   { path: '/provider', element: <ProviderPage />},
   { path: '/test', element: <ImageTestPage />},
   { path: `/admin/:roomId`, element: <AdminEditRoomPage />},
   { path: 'admin/addRoom', element: <AddRoomPage />},
-  { path: '/booking1', element: <BookingPage />},
+  { path: '/booking', element: <BookingPage />},
 
 ]);
 
