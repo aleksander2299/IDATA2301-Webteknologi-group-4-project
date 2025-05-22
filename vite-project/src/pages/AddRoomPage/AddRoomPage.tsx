@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../AxiosInstance';
 
 import '../../styles/main.css';
@@ -7,13 +7,11 @@ import addRoomPageStyle from './AddRoomPage.module.css';
 
 import Footer from '../../components/layout/Footer';
 import Header from '../../components/layout/Header';
-import { features } from 'process';
 
 interface SourceOption {
     sourceId: number;
     sourceName: string;
 }
-
 
 interface ExtraFeature {
     feature: string;
@@ -75,12 +73,11 @@ function AddRoomPage() {
     const [formData, setFormData] = useState<RoomFormState>({
         roomName: '',
         description: '',
-        roomType: BASIC_ROOM_TYPES[0],
+        roomType: '',
         imageUrl: '',
         selectedSourceId: '',
         isVisible: true,
     });
-
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -108,19 +105,18 @@ function AddRoomPage() {
             setError(err.response?.data?.message || "Failed to fetch sources.");
         })
         axiosInstance.get<ExtraFeature[]>(`/extra_features`, {
-        headers: { Authorization: `Bearer ${token}` }
+            headers: { Authorization: `Bearer ${token}` }
         })
         .then((response) => {
             setExtraFeatures(response.data);
         })
         .catch((err) => {
             console.error("Failed to fetch features:", err);
-            
         })
        .finally(() => {
          setIsLoading(false);
      });
-}, [token, navigate]);
+    }, [token, navigate]);
 
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const {name, value} = e.target;
@@ -133,7 +129,6 @@ function AddRoomPage() {
     }, []);
 
     const addRoom = async (e: React.FormEvent) => {
-        //Needed to prevent page from reloading when submitting formData
         e.preventDefault();
 
         if (!formData.roomName || !formData.description || !formData.roomType) {
@@ -194,134 +189,134 @@ function AddRoomPage() {
     return (
         <>
             <Header/>
-            <main className={addRoomPageStyle.main}>
-                    {/* AI was used to help generate the form fields.
+            {/* AI was used to help generate the form fields.
                 Since its just the same field with different info*/}
-                    <form onSubmit={addRoom} className={addRoomPageStyle.roomForm}>
-                        <fieldset className={addRoomPageStyle.formSection}>
-                            <legend className={addRoomPageStyle.sectionLegend}>Room Details</legend>
+            <main className={addRoomPageStyle.main}>
+                <form onSubmit={addRoom} className={addRoomPageStyle.roomForm}>
+                    <h3 className={addRoomPageStyle.topdetailstitle}>Add room details: </h3>
+                    <div className={addRoomPageStyle.formSection}>
+                        <div className={addRoomPageStyle.sectionLegend}>Room Details</div>
 
-                            {/* Each label-input pair is a "form item" or "control group" */}
-                            <div className={addRoomPageStyle.formControl}>
-                                <label htmlFor="roomName">Room Name:</label>
-                                <input
-                                    type="text"
-                                    id="roomName"
-                                    name="roomName"
-                                    value={formData.roomName}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-                            </div>
+                        <div className={addRoomPageStyle.formControl}>
+                            <label htmlFor="roomName">Room Name:</label>
+                            <input
+                                type="text"
+                                id="roomName"
+                                name="roomName"
+                                value={formData.roomName}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
 
-                            <div className={addRoomPageStyle.formControl}>
-                                <label htmlFor="description">Description:</label>
-                                <textarea
-                                    id="description"
-                                    name="description"
-                                    value={formData.description}
-                                    onChange={handleInputChange}
-                                    rows={4} // Slightly reduced rows
-                                />
-                            </div>
+                        <div className={addRoomPageStyle.formControl}>
+                            <label htmlFor="description">Description:</label>
+                            <textarea
+                                id="description"
+                                name="description"
+                                value={formData.description}
+                                onChange={handleInputChange}
+                                rows={4}
+                            />
+                        </div>
 
-                            <div className={addRoomPageStyle.formControl}>
-                                <label htmlFor="roomType">Room Type:</label>
-                                <select
-                                    id="roomType"
-                                    name="roomType"
-                                    value={formData.roomType}
-                                    onChange={handleInputChange}
-                                    required
-                                >
-                                    <option value="any" >Any</option>
-                                    {BASIC_ROOM_TYPES.map((type) => (
-                                        <option key={type} value={type}>
-                                            {type}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
+                        <div className={addRoomPageStyle.formControl}>
+                            <label htmlFor="roomType">Room Type:</label>
+                            <select
+                                id="roomType"
+                                name="roomType"
+                                value={formData.roomType}
+                                onChange={handleInputChange}
+                                required
+                            >
+                                <option value="any" >Any</option>
+                                {BASIC_ROOM_TYPES.map((type) => (
+                                    <option key={type} value={type}>
+                                        {type}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-                            <div className={addRoomPageStyle}>
-                                <label htmlFor="imageUrl">Image URL:</label>
-                                <input
-                                    type="url"
-                                    id="imageUrl"
-                                    name="imageUrl"
-                                    value={formData.imageUrl}
-                                    onChange={handleInputChange}
-                                    placeholder="https://example.com/image.jpg"
-                                />
-                            </div >
+                        <div className={addRoomPageStyle.formControl}>
+                            <label htmlFor="imageUrl">Image URL:</label>
+                            <input
+                                type="url"
+                                id="imageUrl"
+                                name="imageUrl"
+                                value={formData.imageUrl}
+                                onChange={handleInputChange}
+                                placeholder="https://example.com/image.jpg"
+                            />
+                        </div>
 
-                            <div className={addRoomPageStyle}>
-                                {extraFeatures.map((feature) => (
-                                <label key={feature.feature}>
+                        <div className={addRoomPageStyle.featuretitle}> Select Features: </div>
+                        <div className={addRoomPageStyle.extraFeaturesContainer}>
+                            {extraFeatures.map((feature) => (
+                            <label key={feature.feature}>
                                 <input
                                     type="checkbox"
                                     value={feature.feature}
                                     checked={selectedFeatures.includes(feature.feature)}
                                     onChange={() => {
-                            if (selectedFeatures.includes(feature.feature)) {
-                                    setSelectedFeatures(selectedFeatures.filter(f => f !== feature.feature));
-                            } else {
-                                    setSelectedFeatures([...selectedFeatures, feature.feature]);
-                            }
-                            }}
-                            />
-                            {feature.feature}
-                             </label>
+                                        if (selectedFeatures.includes(feature.feature)) {
+                                            setSelectedFeatures(selectedFeatures.filter(f => f !== feature.feature));
+                                        } else {
+                                            setSelectedFeatures([...selectedFeatures, feature.feature]);
+                                        }
+                                    }}
+                                />
+                                {feature.feature}
+                            </label>
                             ))}
-                                </div>
-
-                        </fieldset>
-
-                        <fieldset className={addRoomPageStyle.formSection}>
-                            <legend className={addRoomPageStyle.sectionLegend}>Association</legend>
-                            <div className={addRoomPageStyle.formControl}>
-                                <label htmlFor="selectedSourceId">Assign to Source (Hotel/Property):</label>
-                                <select
-                                    id="selectedSourceId"
-                                    name="selectedSourceId"
-                                    value={formData.selectedSourceId}
-                                    onChange={handleInputChange}
-                                    required
-                                    disabled={sourceDetails.length === 0 || isLoading}
-                                >
-                                    <option value="" disabled={formData.selectedSourceId !== "" || sourceDetails.length === 0}>
-                                        {isLoading ? "Loading sources..." : sourceDetails.length === 0 ? "No sources available" : "-- Select a Source --"}
-                                    </option>
-                                    {sourceDetails.map((source) => (
-                                        <option key={source.sourceId} value={String(source.sourceId)}>
-                                            {source.sourceName} (ID: {source.sourceId})
-                                        </option>
-                                    ))}
-                                </select>
-                                {sourceDetails.length === 0 && !isLoading && (
-                                    <p className={addRoomPageStyle.inlineWarning}>Please add a source before creating rooms.</p>
-                                )}
-                            </div>
-                        </fieldset>
-
-                        <div className={addRoomPageStyle.formActions}>
-                            <button
-                                type="submit"
-                                className={addRoomPageStyle.submitButton}
-                                disabled={isSaving || isLoading || sourceDetails.length === 0 || !formData.selectedSourceId}
-                            >
-                                {isSaving ? 'Adding Room...' : 'Add Room'}
-                            </button>
-                            <button
-                                type="button"
-                                className={addRoomPageStyle.cancelButton}
-                                onClick={() => navigate('/admin')}
-                                disabled={isSaving}
-                            >
-                                Cancel
-                            </button>
                         </div>
-                    </form>
+                    </div>
+
+                    <div className={addRoomPageStyle.formSection}>
+                        <div className={addRoomPageStyle.sectionLegend}>Associations:</div>
+                        <div className={addRoomPageStyle.formControl}>
+                            <label htmlFor="selectedSourceId">Assign to Source (Hotel/Property):</label>
+                            <select
+                                id="selectedSourceId"
+                                name="selectedSourceId"
+                                value={formData.selectedSourceId}
+                                onChange={handleInputChange}
+                                required
+                                disabled={sourceDetails.length === 0 || isLoading}
+                            >
+                                <option value="" disabled={formData.selectedSourceId !== "" || sourceDetails.length === 0}>
+                                    {isLoading ? "Loading sources..." : sourceDetails.length === 0 ? "No sources available" : "-- Select a Source --"}
+                                </option>
+                                {sourceDetails.map((source) => (
+                                    <option key={source.sourceId} value={String(source.sourceId)}>
+                                        {source.sourceName} (ID: {source.sourceId})
+                                    </option>
+                                ))}
+                            </select>
+                            {sourceDetails.length === 0 && !isLoading && (
+                                <p className={addRoomPageStyle.inlineWarning}>Please add a source before creating rooms.</p>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className={addRoomPageStyle.formActions}>
+                        <button
+                            type="submit"
+                            className={addRoomPageStyle.submitButton}
+                            disabled={isSaving || isLoading || sourceDetails.length === 0 || !formData.selectedSourceId}
+                        >
+                            {isSaving ? 'Adding Room...' : 'Add Room'}
+                        </button>
+                        <button
+                            type="button"
+                            className={addRoomPageStyle.cancelButton}
+                            onClick={() => navigate('/admin')}
+                            disabled={isSaving}
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
             </main>
             <Footer/>
         </>
