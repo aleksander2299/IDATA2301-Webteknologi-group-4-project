@@ -146,7 +146,6 @@ function RoomDetailsPage () {
 
     {/* Never have any early returns before useEffect */}
     useEffect(() => {
-
         console.log(`Fetching Details for hotel id: ${id}`);
         setIsLoading(true); // Start loading
         setError(null);     // Clear previous errors
@@ -185,7 +184,11 @@ function RoomDetailsPage () {
             });
 
         axiosInstance.get<RoomProvider[]>(`/rooms/${numericId}/roomProviders`)
-            .then((response) => { setProviders(response.data);
+            .then((response) => { 
+                 console.log("Response from /roomProviders:", response.data);
+                 console.log("Type of response:", typeof response.data);
+                    console.log("Is array?", Array.isArray(response.data));
+                setProviders(response.data);
             }) .catch((error) => { console.error("Failed to fetch room providers:", error); });
 
 
@@ -349,6 +352,9 @@ function RoomDetailsPage () {
         console.log(Source?.sourceId + "SOURCEID")
         console.log("SOURCEID SHOULD BEHERERER")
           console.log(JSON.stringify(response.data) + " stringify ") */}
+           console.log("/extra_features/sourceFeatures/:", response.data);
+            console.log("Type of response:", typeof response.data);
+            console.log("Is array?", Array.isArray(response.data));
         setExtraFeatures(response.data);
         })
         .catch((error) => {
@@ -477,7 +483,8 @@ function RoomDetailsPage () {
                                 <option value="" disabled>
                                     Choose your provider
                                 </option>
-                                {roomProviders.length > 0 ?
+                                {
+                                roomProviders.length > 0 ?
                                     roomProviders.map((rp) => (
                                         <option key={rp.roomProviderId} value={rp.roomProviderId}>
                                             {rp.provider.providerName} - ${rp.roomPrice}
