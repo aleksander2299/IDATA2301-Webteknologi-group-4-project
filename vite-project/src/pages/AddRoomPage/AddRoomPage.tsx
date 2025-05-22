@@ -63,6 +63,7 @@ const BASIC_ROOM_TYPES: string[] = [
 
 function AddRoomPage() {
 
+    const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
     const [extraFeatures, setExtraFeatures] = useState<ExtraFeature[]>([]);
     const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
     const navigate = useNavigate();
