@@ -305,6 +305,7 @@ function RoomDetailsPage () {
         if(currentProvider !== null){
             console.log(JSON.stringify(currentProvider))
 
+            if (!room?.roomId) return alert("Room not loaded yet");
             axiosInstance.post(`/roomProvider/link/${room?.roomId}/${currentProvider.providerId}/${price}`, null,
                 {
                     headers: {
@@ -323,22 +324,6 @@ function RoomDetailsPage () {
         )
     }
 }
-
-
-    useEffect(() => {
-        if(roomDetails === null){
-            return
-        }
-        axiosInstance.get(`/rooms/2/dates`)
-        .then((response) => {
-            setBookingDates(response.data)
-            console.log(JSON.stringify(BookingDates))
-        })
-        .catch((err) => {
-            console.error(err)
-        })
-    
-    },[roomDetails])
 
     useEffect (() =>{
 
