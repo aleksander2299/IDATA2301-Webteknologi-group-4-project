@@ -128,7 +128,11 @@ function AddRoomPage() {
         setSuccessMessage(null);
         setError(null);
     }, []);
+    /*
+    const handleImageChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
 
+    })
+    */
     const addRoom = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -162,14 +166,9 @@ function AddRoomPage() {
             const updatedRoomDataFromServer = response.data;
             setSuccessMessage("Room created successfully." + updatedRoomDataFromServer);
 
-            setFormData({
-                roomName: '',
-                description: '',
-                roomType: BASIC_ROOM_TYPES[0],
-                imageUrl: '',
-                selectedSourceId: '',
-                isVisible: true,
-            })
+
+
+
 
         } catch (err: any) {
             console.error("Failed to create room:", err);
@@ -177,6 +176,28 @@ function AddRoomPage() {
         } finally {
             setIsSaving(false);
         }
+
+        if (selectedFeatures.length > 0 && formData.selectedSourceId) {
+            const sourceIdNum = parseInt(formData.selectedSourceId, 10);
+            selectedFeatures.map(featureName => {
+                return axiosInstance.post(`/source_extra_features/${sourceIdNum}/${featureName}`, {}, {
+                    headers: {Authorization: `Bearer ${token}`}
+                }).then(response => {
+                    return { success: true, feature: featureName };
+                })
+            });
+        }
+
+
+        setFormData({
+            roomName: '',
+            description: '',
+            roomType: BASIC_ROOM_TYPES[0],
+            imageUrl: '',
+            selectedSourceId: '',
+            isVisible: true,
+        })
+
     };
 
     if (isLoading) {

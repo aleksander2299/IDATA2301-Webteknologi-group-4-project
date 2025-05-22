@@ -69,6 +69,7 @@ function AdminEditRoomPage() {
     const token = localStorage.getItem("token");
     const [extraFeatures, setExtraFeatures] = useState<ExtraFeature[]>([]);
     const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+    const [sourceId, setSourceId] = useState<string | null>(null);
 
     const [roomProviders, setRoomProviders] = useState<RoomProviderData[]>([]);
     const [room, setRoom] = useState<RoomData | null>(null); // RoomData interface updated
@@ -83,6 +84,7 @@ function AdminEditRoomPage() {
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [roomIsLoading, setIsRoomLoading] = useState<boolean>(true);
 
     useEffect(() => {
         if (!roomId) {
@@ -114,6 +116,7 @@ function AdminEditRoomPage() {
                         roomType: fetchedRoom.roomType,
                         imageUrl: fetchedRoom.imageUrl,
                     });
+                    setSourceId(fetchedRoom.source.sourceId.toString());
 
                 } catch (err: any) {
                     console.error("Failed to fetch room data or list of sources:", err);
@@ -202,6 +205,16 @@ function AdminEditRoomPage() {
             } finally {
                 setIsSaving(false);
             }
+            if (selectedFeatures.length > 0 && sourceId) {
+                const sourceIdNum = parseInt(sourceId, 10);
+                selectedFeatures.map(featureName => {
+                    return axiosInstance.post(`/source_extra_features/${sourceIdNum}/${featureName}`, {}, {
+                        headers: {Authorization: `Bearer ${token}`}
+                    }).then(response => {
+                        return { success: true, feature: featureName };
+                    })
+                });
+            }
         };
 
     const handleDeleteRoomProvider = async (roomProviderIdToDelete: number) => {
@@ -228,7 +241,6 @@ function AdminEditRoomPage() {
         if (isLoading) {
             return <p className={editPageStyle.message}>Loading room details...</p>;
         }
-
         if (error && !room) {
             return <p className={`${editPageStyle.message} ${editPageStyle.error}`}>Error: {error}</p>;
         }
@@ -240,6 +252,7 @@ function AdminEditRoomPage() {
         return (
             <>
                 <Header/>
+
                 <main className={editPageStyle.main}>
                     <section className={editPageStyle.editbox}>
                         <h3 className={editPageStyle.topdetailstitle}>Edit room details: </h3>
@@ -287,24 +300,37 @@ function AdminEditRoomPage() {
                             </select>
                         </div>
                         <h4> Select Features: </h4>
+                            {/* Made with help from ai since i wasnt able to make it work */}
                         <div className={editPageStyle.featureList}>
-                                                        {extraFeatures.map((feature) => (
-                                                        <label key={feature.feature}>
-                                                        <input
-                                                            type="checkbox"
-                                                            value={feature.feature}
-                                                            checked={selectedFeatures.includes(feature.feature)}
-                                                            onChange={() => {
-                                                    if (selectedFeatures.includes(feature.feature)) {
-                                                            setSelectedFeatures(selectedFeatures.filter(f => f !== feature.feature));
-                                                    } else {
-                                                            setSelectedFeatures([...selectedFeatures, feature.feature]);
-                                                    }
-                                                    }}
-                                                    />
-                                                    {feature.feature}
-                                                    </label>
-                                                    ))}
+                            {extraFeatures.map((featureItem) => {
+                                const featureNameFromList = featureItem.feature;
+                                const trimmedFeatureName = featureNameFromList.trim();
+                                let checkedvar;
+                                if (selectedFeatures.includes(trimmedFeatureName)){
+                                    checkedvar = true;
+                                } else {
+                                    checkedvar = false;
+                                }
+                                return (
+                                    <label key={featureNameFromList}>
+                                        <input
+                                            type="checkbox"
+                                            value={featureNameFromList}
+                                            checked={checkedvar}
+                                            onChange={() => {
+                                                const featureToToggle = featureNameFromList.trim();
+
+                                                if (selectedFeatures.includes(featureToToggle)) {
+                                                    setSelectedFeatures(prevSelected => prevSelected.filter(f => f !== featureToToggle));
+                                                } else {
+                                                    setSelectedFeatures(prevSelected => [...prevSelected, featureToToggle]);
+                                                }
+                                            }}
+                                        />
+                                        {featureNameFromList}
+                                    </label>
+                                );
+                            })}
                                                         </div>
                         {/* TODO: If images work uncomment this*/}
                         {/*
