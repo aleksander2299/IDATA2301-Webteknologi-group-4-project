@@ -1,0 +1,59 @@
+
+.content {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+    box-sizing: border-box;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbox {
+    background-color: rgba(60, 58, 58, 0.588);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 50rem;
+    height: 3rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    display: flex;
+    border: solid 2px rgba(255, 255, 255, 0.9);
+    justify-content: center;
+    align-self: center;
+}
+
+.topbox h1 {
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    color:white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-wrap: break-word;
+    padding: 0 1rem;
+}
+
+.nofavroom {
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(15, 15, 15, 0.6), -2px -2px 4px rgba(19, 18, 18, 0.6);
+    color:white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    word-wrap: break-word;
+    padding: 0 1rem;
+}
+
+#favourites_container {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+    column-gap: 1rem;
+    width: fit-content;
+    margin: 2rem auto;
+    border-radius: 2rem;
+}
