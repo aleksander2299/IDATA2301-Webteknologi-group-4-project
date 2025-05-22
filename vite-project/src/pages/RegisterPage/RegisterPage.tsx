@@ -101,6 +101,7 @@ function RegisterPage() {
             <label htmlFor="rusername">Role:</label>
             <select
               value={role}
+              aria-label="Role"
               onChange={(e) => setRole(e.target.value)}
               required>
                 <option value="">Select Role</option>

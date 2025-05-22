@@ -144,6 +144,7 @@ function Header() {
             className="home-buttons right-button"
             onClick={toggleDropdown}
             style={{ background: 'transparent', border: 'none' }}
+            aria-label={"Dropdown"}
           >
             {/* Conditionally render SVGs based on dropdown state */}
             {isDropdownOpen ? (
