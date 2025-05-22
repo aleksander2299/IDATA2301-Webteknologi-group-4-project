@@ -15,10 +15,10 @@ body {
     font-weight: 100;
     width: 100%;
     min-height: 100vh;
-    /* background: linear-gradient(0deg, #d56723, rgb(210, 0, 140), rgb(251, 67, 135), #d56723); */
-    background-size: 300% 300%;
-    animation: color 10s ease-in-out infinite;
     background: linear-gradient(0deg, #ffa76c, #ff6699);
+    background-size: 300% 300%;
+    background-repeat: no-repeat;
+    animation: color 10s ease-in-out infinite;
 }
 
 #root {
@@ -206,5 +206,8 @@ footer {
   }
   .home-buttons {
     font-size: 1.5rem;
+  }
+  body {
+    background-size: 2000% 2000%;
   }
 }
