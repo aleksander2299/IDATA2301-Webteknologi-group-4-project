@@ -11,7 +11,9 @@ import Footer from '../../components/layout/Footer';
 import Header from '../../components/layout/Header';
 import { Room } from "../../types/Room.ts";
 
-
+/**
+* function that creates admin page out of data.
+*/ 
 function AdminPage() {
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
@@ -51,7 +53,9 @@ function AdminPage() {
             });
     }, [token]);
 
-
+    /**
+    * function that handles toggling visibility of room
+    */ 
     const handleToggleVisibility = async (roomToUpdate: Room) => {
         const newVisibility = !roomToUpdate.visibility;
 
@@ -86,10 +90,16 @@ function AdminPage() {
         }
     }
 
+    /**
+    * funciont that handles going to the edit room of a room id  
+    */ 
     const handleEditRoom = async (roomId: number) => {
         navigate(`/admin/${roomId}`);
     }
 
+    /**
+    * function that handles deleting room 
+    */ 
     const handleDeleteRoom = async (roomId: number) => {
         try {
             const response = await axiosInstance.delete(`/rooms/${roomId}`, {
@@ -119,6 +129,10 @@ function AdminPage() {
     if (error) {
         return <div className={adminPageStyle.errorMessage}>Error: {error}</div>;
     }
+
+    /**
+    * creates the structure of the admin page 
+    */ 
     return (
         <>
             <Header />

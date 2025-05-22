@@ -9,6 +9,9 @@ import { axiosInstance } from '../../AxiosInstance';
 import Footer from '../../components/layout/Footer.jsx';
 import Header from '../../components/layout/Header.jsx';
 
+/**
+*  * function that renders the register page and handles registration logic.
+*/ 
 function RegisterPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -67,6 +70,9 @@ function RegisterPage() {
       }
     };
 
+  /**
+  *  creates the structure of the page.
+  */ 
   return (
     <div>
       <Header />

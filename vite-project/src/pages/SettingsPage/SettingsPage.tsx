@@ -6,6 +6,9 @@ import settingsPageStyle from './SettingsPage.module.css';
 import { useState } from 'react';
 import { axiosInstance } from '../../AxiosInstance.js';
 
+/**
+ *  creates the settings page from data. 
+*/ 
 function SettingsPage(){
     
 
@@ -13,6 +16,9 @@ const [newPassword, setNewPassword] = useState('');
 const [confirmPassword, setConfirmPassword] = useState('');    
 const navigate = useNavigate();
 
+/**
+* handles logout navigates to homepage and removes your login. 
+*/ 
 const handleLogout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('role');
@@ -20,13 +26,18 @@ const handleLogout = () => {
   window.location.reload();
 };
 
+/**
+* interface of user data. 
+*/ 
 interface user{
     username: string;
     password: string;
     role: string;
 }
 
-
+/**
+* changes password for a user. 
+*/ 
 function changePassword(){
     const token = localStorage.getItem("token")
 
@@ -59,7 +70,9 @@ else{
 }
 
 
-
+/**
+* deletes account from database and logs you out.
+*/ 
 function deleteAccount(){
     const token = localStorage.getItem('token');
     let role = localStorage.getItem("role") || "";
@@ -108,6 +121,9 @@ function deleteAccount(){
 
     const [showPassword, setShowPassword] = useState(false);
 
+    /**
+    *   creates the structure for the settings page. 
+    */ 
     return(
         <div className ={settingsPageStyle.settingsWrapper}>
             <Header/>

@@ -8,12 +8,18 @@ import addRoomPageStyle from './AddRoomPage.module.css';
 import Footer from '../../components/layout/Footer';
 import Header from '../../components/layout/Header';
 
+
+/**
+ * interface of options that sources will have.
+*/
 interface SourceOption {
     sourceId: number;
     sourceName: string;
 }
 
-
+/**
+ * interface of room data.
+*/
 interface RoomData {
     roomName: string;
     description: string;
@@ -22,6 +28,9 @@ interface RoomData {
     visibility: boolean;
 }
 
+/**
+ * interface of created room data. 
+*/
 interface CreatedRoomData {
     roomId: number;
     roomName: string;
@@ -32,6 +41,9 @@ interface CreatedRoomData {
     source: SourceOption;
 }
 
+/**
+ * interface of room form state that is form that you fill out of the room. 
+*/
 interface RoomFormState {
     roomName: string;
     description: string;
@@ -41,6 +53,9 @@ interface RoomFormState {
     isVisible: boolean;
 }
 
+/**
+ * basic room type list. 
+*/
 const BASIC_ROOM_TYPES: string[] = [
     'Single',
     'Superior',
@@ -58,6 +73,9 @@ const BASIC_ROOM_TYPES: string[] = [
     'Club Room'
 ].sort((a, b) => a.localeCompare(b));
 
+/**
+ *function that creates the add room page sets its data. 
+*/
 function AddRoomPage() {
 
     const navigate = useNavigate();
@@ -180,6 +198,9 @@ function AddRoomPage() {
         return <p className={`${addRoomPageStyle.message} ${addRoomPageStyle.error}`}>Error: {error}</p>;
     }
 
+    /**
+    *function that creates the page itself.
+    */
     return (
         <>
             <Header/>

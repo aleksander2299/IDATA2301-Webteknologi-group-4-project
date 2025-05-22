@@ -9,11 +9,17 @@ import {useState} from "react";
 
 const token = localStorage.getItem('token');
 
+/**
+ * type of userbookingcardprops that has booking and room. 
+ */
 type UserBookingCardProps = {
     booking: Booking;
     room: Room;
 };
 
+/**
+ * function that creates a userbookingcard based on booking and room parameters.
+ */
 function UserBookingCard ({ booking, room }: UserBookingCardProps) {
 
     const [disabled, setDisabled] = useState(false);
@@ -43,6 +49,9 @@ function UserBookingCard ({ booking, room }: UserBookingCardProps) {
 
     }
 
+    /**
+    * creates the user booking card. 
+    */
     return (
         <div className={userBookingCardStyle.booking_card}>
             <Link to={`/room/${room.roomId}`}>

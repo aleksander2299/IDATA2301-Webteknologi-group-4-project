@@ -8,10 +8,16 @@ import FilledHeartIcon from '../../assets/filledHeart.svg?react';
 
 import { Room } from "../../types/Room.js";
 
+/**
+ * interface of favourite button that contains a room.
+ */
 interface FavoriteButtonProps {
     room: Room;
 }
 
+/**
+ * function that creates a favourite button based on a room.
+ */
 function FavoriteButton({ room }: FavoriteButtonProps) {
 
     const [isFavorited, setIsFavorited] = useState(false);

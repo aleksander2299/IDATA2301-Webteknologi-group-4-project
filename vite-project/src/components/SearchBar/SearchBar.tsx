@@ -3,6 +3,9 @@ import CustomDatePicker from '../CustomDatePicker/CustomDatePicker';
 // @ts-ignore
 import styles from './SearchBar.module.css';
 
+/**
+ * Interface of search criteria
+ */
 export interface SearchCriteria {
     searchTerm: string;
     startDate: Date | null;
@@ -10,6 +13,9 @@ export interface SearchCriteria {
     roomType: string;
 }
 
+/**
+ * interface of search bar props to be used elsewhere
+ */
 interface SearchBarProps {
     onSearch: (criteria: SearchCriteria) => void;
     initialSearchTerm?: string;
@@ -20,6 +26,9 @@ interface SearchBarProps {
     className?: string; // For Styling
 }
 
+/**
+ * list of basic room types for our room type drop down.
+ */
 const BASIC_ROOM_TYPES: string[] = [
     'Single',
     'Superior',
@@ -37,6 +46,9 @@ const BASIC_ROOM_TYPES: string[] = [
     'Club Room'
 ].sort((a, b) => a.localeCompare(b));
 
+/**
+ * creates the search. 
+ */
 const SearchBar: React.FC<SearchBarProps> = ({
                                                                      onSearch,
                                                                      initialSearchTerm = '',
@@ -69,12 +81,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
 
 
-
+    /**
+    * method that handles update.
+    */
     const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
         setStartDate(selected.startDate);
         setEndDate(selected.endDate);
     };
-
+    /**
+    * function that handles search click.
+    */
     const handleSearchClick = () => {
         onSearch({
             searchTerm: searchTerm.trim(), // Trim whitespace
@@ -84,6 +100,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
         });
     };
 
+    /**
+     * creates the search bar itself. 
+     */
     return (
         <div className={`${styles.searchBarWrapper} ${className || ''}`}>
             <div className={styles.mainSearchInputs}>

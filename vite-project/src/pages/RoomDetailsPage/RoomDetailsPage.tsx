@@ -16,7 +16,9 @@ import { formatDateForURL, parseURLDate } from "../../utils/navigationUtils.ts";
 
 import { axiosInstance } from '../../AxiosInstance.js';
 
-
+ /**
+  *  interface or room details. 
+  */ 
 interface RoomDetails{
     roomId: number;
     roomName: string;
@@ -25,6 +27,9 @@ interface RoomDetails{
     imageUrl: string;
 }
 
+ /**
+  *  interface of source data
+  */ 
 interface Source{
     sourceId: number;
     sourceName:  string;
@@ -33,33 +38,51 @@ interface Source{
     country: string;
 }
 
+ /**
+  *  interface of provider data
+  */ 
 interface Provider{
     providerId: number;
     providerName: string;
 }
 
-    interface RoomProvider {
+
+ /**
+  *  interface of room provider data 
+  */ 
+interface RoomProvider {
     roomProviderId: number;
     roomPrice: number;
     provider: Provider
 }
 
+ /**
+  *  interface of extra features. 
+  */ 
 interface ExtraFeatures{
     feature: string;
 }
 
+ /**
+  *  interface of booking data 
+  */ 
 interface Booking {
     checkInDate: string;
     checkOutDate: string;
 }
 
 
-
+ /**
+  *  interface of exluded date interval
+  */ 
 interface ExcludedDateInterval {
     start: Date;
     end: Date;
 }
 
+ /**
+  *  checks if intervals of dates are overlapping, so that you cannot book on a date that is booked. 
+  */ 
 function intervalsOverlap(s1: Date | null, e1: Date | null, s2: Date, e2: Date): boolean {
     if (!s1 || !e1) { // If user selection is incomplete, no overlap for this specific check
         return false;
@@ -74,6 +97,9 @@ function intervalsOverlap(s1: Date | null, e1: Date | null, s2: Date, e2: Date):
     return Math.max(start1Time, start2Time) <= Math.min(end1Time, end2Time);
 }
 
+/**
+ * checks if a date is within disabled intervals, so dates that are booked. 
+ */
 function isDateWithinAnyDisabledInterval(date: Date | null, disabledIntervals: ExcludedDateInterval[]): boolean {
     if (!date || disabledIntervals.length === 0) {
         return false;
@@ -89,6 +115,9 @@ function isDateWithinAnyDisabledInterval(date: Date | null, disabledIntervals: E
     return false;
 }
 
+ /**
+  *  creates roomdetails page from data via functions. 
+  */ 
 function RoomDetailsPage () {
 
     // gets room for favorite button
@@ -134,6 +163,9 @@ function RoomDetailsPage () {
     const token = localStorage.getItem("token");
     if(!token) return;
 
+    /**
+    * sets the room to a room id. 
+    */ 
     async function fetchRoom(roomID: number, token: string) {
         const response = await axiosInstance.get(`/rooms/${roomID}`, {
             headers: { Authorization: `Bearer ${token}` },
@@ -143,6 +175,9 @@ function RoomDetailsPage () {
         fetchRoom(id, token);
     }, [id])
 
+    /**
+    *  fetches room, source, roomprovider and dates for a room.
+    */ 
     {/* Never have any early returns before useEffect */}
     useEffect(() => {
         console.log(`Fetching Details for hotel id: ${id}`);
@@ -204,6 +239,9 @@ function RoomDetailsPage () {
 
     }, [ id, numericId, searchParams ]);
 
+     /**
+     *  creates the structure of the page.
+    */ 
     useEffect(() => {
         const newDisabledIntervals: ExcludedDateInterval[] = [];
 
@@ -227,7 +265,7 @@ function RoomDetailsPage () {
         }
     }, [rawBookingDates]);
 
-    // Used to update DatePicker on this page based on searchParams
+    // Used to update DatePicker on this page based on searchParams.
     const handleDatesUpdate = (selected: { startDate: Date | null; endDate: Date | null }) => {
         setCheckInDate(selected.startDate);
         setCheckOutDate(selected.endDate);
@@ -250,11 +288,17 @@ function RoomDetailsPage () {
         setSearchParams(currentParams, { replace: true }); // Using replace to avoid too many history entries
     };
 
+    /**
+    * sets the selected provider that you will book with to the one in the drop down menu.
+    */ 
     function changeProvider(e : React.ChangeEvent<HTMLSelectElement>){
         setSelectedProvider(parseInt(e.target.value))
         console.log(parseInt(e.target.value))
     }
 
+    /**
+    *  function that books a room based on checkin and checkout date. has to be a normal user. 
+    */ 
     function bookRoom(){
 
         const booking: Booking = {
@@ -285,12 +329,19 @@ function RoomDetailsPage () {
             
     }
 
+    /**
+    *  function that handles booking confirmation, so it closes the confirmation books and calls book room.
+    */ 
     function handleBookingConfirmed() {
         setShowConfirmation(false); // Closes the confirmation box
         bookRoom();                 // runs bookRoom function
     }
 
 
+    /**
+    *  function that lists out a room as a provider, so logged in as provider you can list out a room 
+    *  with a price.  
+    */ 
     async function listRoomAsProvider(price : number){
         const username = localStorage.getItem("username");
         let currentProvider : Provider
@@ -323,7 +374,9 @@ function RoomDetailsPage () {
         )
     }
 }
-
+    /**
+    *  adds the extra features for the room into the room specifications.
+    */ 
     useEffect (() =>{
 
         if(Source === null){
@@ -436,6 +489,9 @@ function RoomDetailsPage () {
             return <div>Room details not available.</div>;
     }
 
+    /**
+    * creates the structure of the page.
+    */ 
     return (
         <div>
             <Header />

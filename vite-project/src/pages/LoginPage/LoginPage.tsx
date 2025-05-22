@@ -8,6 +8,9 @@ import { axiosInstance } from '../../AxiosInstance.js';
 import Footer from '../../components/layout/Footer.jsx';
 import Header from '../../components/layout/Header.jsx';
 
+/**
+*  function that creates the login page out of data 
+*/ 
 function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -53,6 +56,9 @@ function LoginPage() {
         }
     };
 
+    /**
+    *  creates the structure of the page
+    */ 
     return (
         <div>
             <Header />

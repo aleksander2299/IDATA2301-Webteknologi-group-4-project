@@ -140,6 +140,7 @@ function SearchPage() {
         console.log("SearchPage: Processing rooms to fetch providers and prices...");
         setError(null); // Clear old errors
 
+        
         const fetchProvidersForAllRooms = async () => {
             const roomsProcessed: DisplayRoom[] = [];
             for (const apiRoom of allRoomsFromApi) {
@@ -174,6 +175,9 @@ function SearchPage() {
             return roomsProcessed;
         };
 
+        /**
+        * function that providers for all the rooms 
+        */ 
         fetchProvidersForAllRooms()
             .then(processedRooms => {
                 setRoomsWithPrices(processedRooms);
@@ -266,6 +270,9 @@ function SearchPage() {
     }, [searchParams, roomsWithPrices, sortOption, error, isLoading, userRole]); // Re-run when URL params change OR when allHotels data arrives
 
 
+    /**
+    * lists rooms from search bar criteria 
+    */ 
     const handleSearchFromBar = (criteria: SearchBarCriteria) => {
         console.log('SearchPage received search from SearchBar:', criteria);
         navigateToSearch(navigate, {
@@ -276,10 +283,16 @@ function SearchPage() {
         });
     };
 
+    /**
+    * navigates to the room details. 
+    */ 
     const GoToDealHandler = (hotelId: number) => {
         navigateToRoomDetails(navigate, hotelId, checkInDate, checkOutDate);
     };
 
+    /**
+    * handles filter changes.
+    */ 
     const handleExtraFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const newSortOption = event.target.value as SortOption;
         const currentParams = new URLSearchParams(searchParams);
@@ -295,6 +308,9 @@ function SearchPage() {
         return <p className={SearchPageStyle.errorMessage}>Error: {error}</p>;
     }
 
+    /**
+    * creates the search page structure.
+    */ 
     return (
         <div>
             <Header/>
