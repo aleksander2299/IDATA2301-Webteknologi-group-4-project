@@ -85,8 +85,34 @@ function HotelCard({
               <div className={HotelCardStyles["hotel-card-info"]}>
                 {/* Conditionally render title if provided */}
                 {title && <h3 className="hotel-card-title">{title}</h3>}
-                {/* Conditionally render description if provided */}
-                {description && <p className="hotel-card-description">{description}</p>}
+                {/* Conditionally render description if provided, used AI to fix the image links. */}
+                {description && (
+                  <p className="hotel-card-description">
+                    {description.split(/(https?:\/\/[^\s]+)/g).map((part, index) => {
+                      if (part.match(/https?:\/\/[^\s]+/)) {
+                        try {
+                          const url = new URL(part);
+                          const shortText = url.hostname.replace(/^www\./, '');
+                          return (
+                            <a
+                            key={index}
+                            href={part}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ color: '#007bff', textDecoration: 'underline' }}
+                            >
+                              {shortText}
+                            </a>
+                          );
+                        } catch {
+                          return part;
+                        }
+                      } else {
+                        return part;
+                      }
+                    })}
+                  </p>
+                )}
                 {/* Conditionally render price if provided */}
                 {price && <p className="hotel-card-price">{price}</p>}
               </div>
