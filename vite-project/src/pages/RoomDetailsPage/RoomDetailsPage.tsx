@@ -440,7 +440,7 @@ function RoomDetailsPage () {
         <div>
             <Header />
             <div className={roomDetailPageStyle.contentcontainer}>
-                <h1 className={roomDetailPageStyle.roomnametext}>{roomDetails.roomName + " at " + Source?.sourceName +", " + Source?.country}</h1>
+                <h1 className={roomDetailPageStyle.roomnametext}>{roomDetails.roomName + " at " + Source?.sourceName +", " + Source?.country + ", " + Source?.city}</h1>
             </div>
             <section className={roomDetailPageStyle.contentcontainer}>
                 <div className={roomDetailPageStyle.image}>
