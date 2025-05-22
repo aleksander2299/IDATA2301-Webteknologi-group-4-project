@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import './LoginPage.css';
+import loginPageStyle from './LoginPage.module.css';
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -57,9 +57,9 @@ function LoginPage() {
         <div>
             <Header />
             <main>
-                <form className="form" onSubmit={handleLogin}>
-                    <div className="login">
-                        <h1 className="fLogin">Login</h1>
+                <form className={loginPageStyle.form} onSubmit={handleLogin}>
+                    <div className={loginPageStyle.login}>
+                        <h1>Login</h1>
                         <label htmlFor="fusername">Username:</label>
                         <input
                             type="text"
@@ -78,8 +78,8 @@ function LoginPage() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         /><br />
-                        <a href="/register"><p className="rparagraph">Not a user? Register here</p></a>
-                        <button className="submit" type="submit">Login</button>
+                        <a href="/register"><p className={loginPageStyle.rparagraph}>Not a user? Register here</p></a>
+                        <button className={loginPageStyle.submit} type="submit">Login</button>
                     </div>
                 </form>
             </main>

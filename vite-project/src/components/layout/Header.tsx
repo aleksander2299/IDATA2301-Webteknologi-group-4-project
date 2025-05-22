@@ -53,6 +53,12 @@ function Header() {
         )}
         {role == 'ROLE_USER' && (
           <>
+          { /* booking page */}
+          <Link to="/booking">
+            <button className="home-buttons right-button">
+              <b>My Stays</b>
+            </button>
+          </Link>
           { /* favourites page */}
           <Link to="/favourites">
           <button className="home-buttons right-button">
@@ -141,6 +147,10 @@ function Header() {
             <div className="dropdown-menu" style={{ position: 'absolute', top: '100%', right: '0' }}>
           {role == 'ROLE_USER' && (
           <>
+          { /* booking page */}
+          <Link to="/booking" className="dropdown-link">
+            My Stays
+          </Link>
           { /* favourites page */}
           <Link to="/favourites" className="dropdown-link">
             Favourites

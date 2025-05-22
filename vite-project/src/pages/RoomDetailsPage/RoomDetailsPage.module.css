@@ -29,7 +29,7 @@
 
 }
 
-.content-container {
+.contentcontainer {
     display: flex;
     justify-content: center;
     gap: 20px;
@@ -139,7 +139,7 @@
     border: solid 2px rgba(255, 255, 255, 0.9);
 }
 
-.site-specification, .description {
+.sitespecification, .description {
     width: 50%;
     margin-bottom: 20px;
 }
@@ -155,7 +155,7 @@
         width: 30rem;
         height: 20rem;
     }
-    .site-specification, .description {
+    .sitespecification, .description {
         width: 50%;
     }
 
@@ -185,7 +185,7 @@
     .detailsbox {
         width: 22.5rem;
     }
-    .site-specification, .description {
+    .sitespecification, .description {
         width: 50%; /* Adjust the width to keep content balanced */
     }
 

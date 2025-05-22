@@ -146,7 +146,7 @@ function SearchPage() {
             for (const apiRoom of allRoomsFromApi) {
                 let lowestPrice: number | undefined;
                 try {
-                    const response = await axiosInstance.get<ApiRoomProviderForRoom[]>(`http://localhost:8080/api/rooms/${apiRoom.roomId}/roomProviders`);
+                    const response = await axiosInstance.get<ApiRoomProviderForRoom[]>(`/rooms/${apiRoom.roomId}/roomProviders`);
                     const providers = response.data || [];
 
                     if (providers.length > 0) {
