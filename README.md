@@ -1,5 +1,5 @@
 # HOTEL WEBSITE GROUP 4 
-Collaborators: Tobias, Aleksander, Daniel, Nikolai.
+Candidate Numbers: 10032, 10052, 10001, 10056
 
 About this project : This is a project in courses IDATA2306 and IDATA2301 
 we were tasked with creating a hotel site where you can log in as user and admin that have their own roles that has their own 
