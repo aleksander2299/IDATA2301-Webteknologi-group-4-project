@@ -166,8 +166,8 @@ function ProviderPage() {
                                                     <HotelCard
                                                         key={Rp.room.roomId}
                                                         id={Rp.room.roomId}
-                                                        imageUrl={"https://picsum.photos/id/1/200/300"}
-                                                        imageAlt={"https://picsum.photos/id/1/200/300"}
+                                                        imageUrl={Rp.room.imageUrl}
+                                                        imageAlt={Rp.room.roomName}
                                                         title={Rp.room.roomName}
                                                         description={Rp.room.description}
                                                         onClick={() => {
