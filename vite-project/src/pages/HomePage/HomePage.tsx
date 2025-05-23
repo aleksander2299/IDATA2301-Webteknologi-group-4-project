@@ -71,7 +71,7 @@ function HomePage() {
   
           <section className={homePageStyle.container} style={{ marginTop: '20px' }}>
             <div className={homePageStyle.backgroundbox}>
-              <img src={mainRoomImg} alt="Room placeholder" />
+              <img src="/images/main page room placeholder.jpg" alt="Room placeholder" />
                 <SearchBar
                     onSearch={handleSearchFromBar}
                     initialSearchTerm={initialSearchTerm}
@@ -95,7 +95,7 @@ function HomePage() {
                   endDate: checkOutDate,
                   roomType: 'any'
               })} className={homePageStyle.recommendbox}>
-                <img src={aalesundImg} alt="Ålesund" />
+                <img src="/images/Ålesund placeholder.jpg" alt="Ålesund" />
                 <div className={homePageStyle.placebox}>Ålesund</div>
               </button>
               <button onClick={() => handleSearchFromBar({
@@ -104,7 +104,7 @@ function HomePage() {
                   endDate: checkOutDate,
                   roomType: 'any'
               })} className={homePageStyle.recommendbox}>
-                <img src={osloImg} alt="Oslo" />
+                <img src="/images/Oslo placeholder.jpg" alt="Oslo" />
                 <div className={homePageStyle.placebox}>Oslo</div>
               </button>
               <button onClick={() => handleSearchFromBar({
@@ -113,7 +113,7 @@ function HomePage() {
                   endDate: checkOutDate,
                   roomType: 'any'
               })} className={homePageStyle.recommendbox}>
-                <img src={bergenImg} alt="Bergen" />
+                <img src="/images/Bergen placeholder.jpg" alt="Bergen" />
                 <div className={homePageStyle.placebox}>Bergen</div>
               </button>
               <button onClick={() => handleSearchFromBar({
@@ -122,7 +122,7 @@ function HomePage() {
                   endDate: checkOutDate,
                   roomType: 'any'
               })} className={homePageStyle.recommendbox}>
-                <img src={amsterdamImg} alt="Amsterdam" />
+                <img src="/images/Amsterdam placeholder.jpg" alt="Amsterdam" />
                 <div className={homePageStyle.placebox}>Amsterdam</div>
               </button>
             </div>
