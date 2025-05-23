@@ -9,6 +9,9 @@ import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 import { Favourite } from "../../types/Favourite.ts";
 
+/**
+*  creates favourite page out of data 
+*/ 
 function FavouritesPage () {
 
     const [favourites, setFavourites] = useState<Favourite[]>([]);
@@ -36,6 +39,9 @@ function FavouritesPage () {
         fetchFavourites();
     }, [username]);
 
+/**
+*  creates the structure of the page 
+*/ 
     return (
         <div>
             <Header />

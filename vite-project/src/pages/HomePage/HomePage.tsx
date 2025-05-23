@@ -23,7 +23,9 @@ import osloImg from '../../Images/Oslo placeholder.jpg';
 // @ts-ignore
 import aalesundImg from '../../Images/Ålesund placeholder.jpg';
 
-
+/**
+*  function that creates homepage out of data
+*/ 
 function HomePage() {
 
     const navigate = useNavigate();
@@ -52,6 +54,10 @@ function HomePage() {
         const username = localStorage.getItem('username');
         console.log('Logged in as:', username);
 
+    
+/**
+*  creates the structure of the page
+*/ 
     return (
       <>
         <Header />

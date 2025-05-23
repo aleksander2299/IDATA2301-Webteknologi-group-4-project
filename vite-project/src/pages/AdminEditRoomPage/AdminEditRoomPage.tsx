@@ -8,6 +8,9 @@ import editPageStyle from './AdminEditRoomPage.module.css';
 import Footer from '../../components/layout/Footer';
 import Header from '../../components/layout/Header';
 
+/**
+* interface of room data. 
+*/
 interface RoomData {
     roomId: number;
     roomName: string;
@@ -23,21 +26,33 @@ interface RoomData {
     };
 }
 
+/**
+* interface of extra feature the room has.
+*/
 interface ExtraFeature {
     feature: string;
 }
 
+/**
+* interface of provider data the provider of the room.
+*/
 interface ProviderData {
     providerId: number;
     providerName: string;
 }
 
+/**
+* interface or room provider data the linking of room and provider with price
+*/
 interface RoomProviderData {
     roomProviderId: number;
     provider: ProviderData;
     roomPrice: number;
 }
 
+/**
+* interface or room update payload that will be used to update room.
+*/
 interface RoomUpdatePayload {
     roomName?: string;
     description?: string;
@@ -45,6 +60,9 @@ interface RoomUpdatePayload {
     imageUrl?: string;
 }
 
+/**
+* list of basic room types. 
+*/
 const BASIC_ROOM_TYPES: string[] = [
     'Single',
     'Superior',
@@ -62,6 +80,9 @@ const BASIC_ROOM_TYPES: string[] = [
     'Club Room'
 ].sort((a, b) => a.localeCompare(b));
 
+/**
+*  function that creates the admin edit room page out of data. 
+*/
 function AdminEditRoomPage() {
 
     const {roomId} = useParams<{ roomId: string }>();
@@ -217,6 +238,9 @@ function AdminEditRoomPage() {
             }
         };
 
+    /**
+    * function that deletes room provider  
+    */    
     const handleDeleteRoomProvider = async (roomProviderIdToDelete: number) => {
         setError(null);
         setSuccessMessage(null);
@@ -249,6 +273,9 @@ function AdminEditRoomPage() {
             return <p className={editPageStyle.message}>Room data not found.</p>;
         }
 
+        /**
+        * creates the structure of the edit room page  
+        */
         return (
             <>
                 <Header/>

@@ -10,10 +10,15 @@ import FavouriteButton from '../FavouriteButton/FavouriteButton.tsx';
 
 const DEFAULT_IMAGE_URL = '/images/placeholder-hotel.png';
 
+/**
+ * Interface of hotelcard props also sets onclick for void so that one can add onclick later
+ */
 interface HotelCardProps {
     id: number; // Only part of the prop that is not optional
     imageUrl?: string;
     imageAlt?: string;
+    hotelName?: string;
+    location?: string;
     title?: string;
     description?: string;
     price?: number;
@@ -21,10 +26,15 @@ interface HotelCardProps {
     onClick?: () => void;
 }
 
+/**
+ * function that creates a hotelcard.
+ */
 function HotelCard({
   id,
   imageUrl,
   imageAlt,
+  hotelName,
+  location,
   title,
   description,
   price,
@@ -60,6 +70,9 @@ function HotelCard({
         setHasImageError(false);
     }, [imageUrl]);
 
+/**
+ * function that handles image error.
+ */
     const handleImageError = () => {
         if (!hasImageError) {
             {/* System to stop a infinite loop if default image does not work either */}
@@ -68,6 +81,9 @@ function HotelCard({
             }
         }
 
+/**
+ * creates the hotel card.
+ */
     return (
         <div className={HotelCardStyles["hotel-card"]} hotel-id={id}    onClick={onClick}>
               <div className={HotelCardStyles["hotel-card-image-container"]}>
@@ -83,6 +99,8 @@ function HotelCard({
               </div>
 
               <div className={HotelCardStyles["hotel-card-info"]}>
+                {/* Conditionally render hotel name if provided */}
+                {room && <h2 className="hotel-card-title">{hotelName || location}</h2>}
                 {/* Conditionally render title if provided */}
                 {title && <h3 className="hotel-card-title">{title}</h3>}
                 {/* Conditionally render description if provided, used AI to fix the image links. */}

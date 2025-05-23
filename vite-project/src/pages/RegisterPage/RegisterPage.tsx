@@ -9,6 +9,9 @@ import { axiosInstance } from '../../AxiosInstance';
 import Footer from '../../components/layout/Footer.jsx';
 import Header from '../../components/layout/Header.jsx';
 
+/**
+*  * function that renders the register page and handles registration logic.
+*/ 
 function RegisterPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -67,6 +70,9 @@ function RegisterPage() {
       }
     };
 
+  /**
+  *  creates the structure of the page.
+  */ 
   return (
     <div>
       <Header />
@@ -95,6 +101,7 @@ function RegisterPage() {
             <label htmlFor="rusername">Role:</label>
             <select
               value={role}
+              aria-label="Role"
               onChange={(e) => setRole(e.target.value)}
               required>
                 <option value="">Select Role</option>

@@ -9,6 +9,7 @@ import { Room } from '../../types/Room';
 
 const token = localStorage.getItem('token');
 
+// the type that the booking card props will be made up of
 type BookingCardProps = {
     bookingId: number;
     room: Room;
@@ -16,10 +17,14 @@ type BookingCardProps = {
     checkOutDate: string;
 };
 
+// this is a booking card component that will be used in other classes. 
 function BookingCard ({ bookingId, room, checkInDate, checkOutDate }: BookingCardProps) {
 
     const [bookings, setBookings] = useState<Booking[]>([]);
 
+    /**
+ * Cancels a booking by bookingId and updates the bookings state.
+ */
     function cancelBooking(bookingId: number){
     
             axiosInstance.delete(`/booking/${bookingId}`, {
@@ -38,6 +43,7 @@ function BookingCard ({ bookingId, room, checkInDate, checkOutDate }: BookingCar
             
         }
 
+    //method that formats date 
     const formatDate = (dateString: string) => {
         try {
             return new Date(dateString).toLocaleDateString(undefined, {
@@ -47,6 +53,7 @@ function BookingCard ({ bookingId, room, checkInDate, checkOutDate }: BookingCar
             return dateString;
         }
     };
+
 
     return (
         <div className={bookingCardStyle.favourite_card}>

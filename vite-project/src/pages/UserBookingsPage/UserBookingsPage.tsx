@@ -11,6 +11,9 @@ import favPageStyles from "../FavouritesPage/FavouritesPage.module.css";
 import userBookingsPageStyles from "../UserBookingsPage/UserBookingsPage.module.css";
 import FavouriteRoomCard from "../../components/favouriteRoomCard/FavouriteRoomCard.tsx";
 
+/**
+* function that creates userbookingspage from data. 
+*/ 
 function UserBookingsPage () {
 
     const [bookings, setBookings] = useState<Booking[]>([]);
@@ -38,6 +41,9 @@ function UserBookingsPage () {
         fetchBookings();
     }, [username]);
 
+    /**
+    * creates structure for userbookingspage 
+    */ 
     return (
         <div>
             <Header />

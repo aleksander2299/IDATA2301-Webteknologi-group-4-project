@@ -11,7 +11,9 @@ import Footer from '../../components/layout/Footer';
 import Header from '../../components/layout/Header';
 
 
-
+/**
+*  interface of room data 
+*/ 
 interface Room {
     roomId: number;
     roomName: string;
@@ -21,12 +23,18 @@ interface Room {
     imageUrl: string;
 }
 
+/**
+*  interface of provider data
+*/ 
 interface provider{
     
     providerId : number;
     providerName : string
 }
 
+/**
+*  interface of room provider data.
+*/ 
 interface RoomProvider {
    
     roomProviderId: number;
@@ -35,7 +43,9 @@ interface RoomProvider {
     provider: provider;
 }
 
-
+/**
+*  function that creates the page out of data.
+*/ 
 function ProviderPage() {
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
@@ -67,6 +77,9 @@ function ProviderPage() {
     },[changeSite]);
 
 
+    /**
+    *  deletes a single listing from the room provider. 
+    */ 
     function deleteListing(roomId: number, providerId: number){
         if (!window.confirm("Are you sure you want to delete this listing?")) return;
         
@@ -76,20 +89,9 @@ function ProviderPage() {
             }
         })
         .then(() => {
-            console.log("successfully removed listing");
-            axiosInstance.get(`/providers/${username}/roomProviders`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    
-                }
-                
+                 let updatedListings = rooms.filter(room => room.room.roomId !== roomId)
+                setRooms(rooms.filter(room => room.room.roomId != roomId))
             })
-            .then((response) => {
-                setChangeSite(1);
-                setRooms(response.data);
-            })
-            
-        })
         .catch((error) => {
             console.error("couldn't remove listing", error);
         });
@@ -97,9 +99,11 @@ function ProviderPage() {
     
     
 
-
+    /**
+    *  edits the listing of the proviers room price. so price of the room listed changes.
+    */ 
    async function editListing(newRoomProviderId : number, price : number, roomProvider : RoomProvider){
-        const input = window.prompt("Enter new price:", price.toString());
+        const input = window.prompt("Enter new price:", "0");
 
         if (input === null) return; 
 
@@ -115,9 +119,7 @@ function ProviderPage() {
             {
               headers: { Authorization: `Bearer ${token}` }   
             }
-          ).then((response) =>
-            console.log(JSON.stringify(response.data) + " It worked ???")
-        )
+          )
         .catch((err) =>
             console.error(err)
 
@@ -125,6 +127,9 @@ function ProviderPage() {
         
     }
 
+    /**
+    *  deletes all listing from the provider so their room providers are unlinked. 
+    */ 
     async function deleteAllListings(){
         if (!window.confirm("Are you sure you want to delete this listing?")) return;
         for (const roomProvider of rooms) {
@@ -139,15 +144,16 @@ function ProviderPage() {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => {
-        setRooms([])
-      })
       .catch((error) => {
         console.error(error);
       });
+
+      setRooms([])
 }
 
-
+    /**
+    *  creates the structure of the page.
+    */ 
     return (
         <>
             <Header />

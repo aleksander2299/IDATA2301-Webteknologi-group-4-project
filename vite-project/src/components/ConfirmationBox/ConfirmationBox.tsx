@@ -1,10 +1,18 @@
 import ConfirmationBoxstyle from './ConfirmationBox.module.css';
 
+
+/**
+ * interface for confirmation box props 
+ */
 interface ConfirmationBoxProps {
   onConfirm: () => void;
   onCancel: () => void;
 }
 
+
+/**
+ * creates a confirmation box with confirm and cancel props to be used elsewhere 
+ */
 function ConfirmationBox({ onConfirm, onCancel }: ConfirmationBoxProps) {
   return (
     <div className={ConfirmationBoxstyle.modalOverlay}>

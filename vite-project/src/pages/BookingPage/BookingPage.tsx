@@ -11,6 +11,9 @@ import Footer from '../../components/layout/Footer.tsx';
 import Header from '../../components/layout/Header.tsx';
 import { Booking } from "../../types/Booking.ts";
 
+/**
+*  function that creates the booking page based on data 
+*/ 
 function BookingPage () {
 
     const [bookings, setBookings] = useState<Booking[]>([]);
@@ -43,6 +46,9 @@ function BookingPage () {
         fetchBookings();
     }, [username]);
 
+/**
+*  creates the structure of the page 
+*/     
     return (
         <div>
             <Header />

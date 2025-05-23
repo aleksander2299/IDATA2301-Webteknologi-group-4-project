@@ -8,11 +8,17 @@ import FavoriteButton from "../FavouriteButton/FavouriteButton.tsx";
 
 const token = localStorage.getItem('token');
 
+/**
+ * type that sets up favourite room card props of room and favourite id 
+ */
 type FavouriteRoomCardProps = {
     room: Room;
     favouriteId: number;
 };
 
+/**
+ * function to create a favourite room card based on a room and a favourite id 
+ */
 function FavouriteRoomCard ({ room, favouriteId }: FavouriteRoomCardProps) {
     const [disabled, setDisabled] = useState(false);
     const [buttonText, setButtonText] = useState("Remove");

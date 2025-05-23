@@ -5,7 +5,9 @@ import '../../styles/main.css';
 import HamburgerIcon from '../../assets/burgerIcon.svg?react';
 import CrossIcon from '../../assets/crossIcon.svg?react';
 
-
+/**
+ * The header for the project used on every page is created here.
+ */
 function Header() {
   const [role, setRole] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -18,6 +20,9 @@ function Header() {
   
   const navigate = useNavigate();
 
+/**
+ * function that handles logout and navigates to homepage.
+ */
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
@@ -25,10 +30,16 @@ function Header() {
     window.location.reload();
   };
 
+/**
+ * function that toggles a dropdown to drop down.
+ */
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown state
   };
   
+/**
+ * creates the header.  
+ */
   return (
     <header style={{ 
       display: 'flex', 
@@ -133,6 +144,7 @@ function Header() {
             className="home-buttons right-button"
             onClick={toggleDropdown}
             style={{ background: 'transparent', border: 'none' }}
+            aria-label={"Dropdown"}
           >
             {/* Conditionally render SVGs based on dropdown state */}
             {isDropdownOpen ? (
