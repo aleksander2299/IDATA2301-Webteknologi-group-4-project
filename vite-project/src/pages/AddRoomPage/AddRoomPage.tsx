@@ -63,6 +63,8 @@ function AddRoomPage() {
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [status, setStatus] = useState<string>('');
     const [sourceDetails, setSourceDetails] = useState<SourceOption[]>([]);
     const [room, setRoom] = useState<RoomData | null>(null); // RoomData interface updated
     const [formData, setFormData] = useState<RoomFormState>({
@@ -119,11 +121,12 @@ function AddRoomPage() {
     const addRoom = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        // Validate form fields
         if (!formData.roomName || !formData.description || !formData.roomType) {
             setError("Please fill out all fields.");
             return;
         }
-        if (formData.selectedSourceId === '') {
+        if (!formData.selectedSourceId) {
             setError("Please select a source.");
             return;
         }
@@ -132,26 +135,48 @@ function AddRoomPage() {
         setError(null);
         setSuccessMessage(null);
 
-        const payloadToSend: RoomData = {
-            roomName: formData.roomName,
-            description: formData.description,
-            roomType: formData.roomType,
-            imageUrl: formData.imageUrl,
-            visibility: true,
-        };
-
         try {
-            const response = await axiosInstance.post<CreatedRoomData>(
+            let imageUrl = "";
+
+            if (selectedFile) {
+                const fileFormData = new FormData();
+                fileFormData.append('file', selectedFile);
+
+                const uploadResponse = await axiosInstance.post(`/rooms/images`, fileFormData, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                const uploadedFilename = uploadResponse.data;
+                imageUrl = `/images/${uploadedFilename}`;
+            }
+
+            const payloadToSend: RoomData = {
+                roomName: formData.roomName,
+                description: formData.description,
+                roomType: formData.roomType,
+                imageUrl: imageUrl,
+                visibility: formData.isVisible,
+            };
+
+            await axiosInstance.post<CreatedRoomData>(
                 `/rooms/withSource/${formData.selectedSourceId}`,
                 payloadToSend,
-                {headers: {Authorization: `Bearer ${token}`}}
+                { headers: { Authorization: `Bearer ${token}` } }
             );
-            const updatedRoomDataFromServer = response.data;
-            setSuccessMessage("Room created successfully." + updatedRoomDataFromServer);
 
+            setSuccessMessage("Room created successfully.");
 
-
-
+            setSelectedFile(null);
+            setFormData({
+                roomName: '',
+                description: '',
+                roomType: BASIC_ROOM_TYPES[0],
+                imageUrl: '',
+                selectedSourceId: '',
+                isVisible: true,
+            });
 
         } catch (err: any) {
             console.error("Failed to create room:", err);
@@ -159,18 +184,7 @@ function AddRoomPage() {
         } finally {
             setIsSaving(false);
         }
-
-
-        setFormData({
-            roomName: '',
-            description: '',
-            roomType: BASIC_ROOM_TYPES[0],
-            imageUrl: '',
-            selectedSourceId: '',
-            isVisible: true,
-        })
-
-    };
+    }
 
     if (isLoading) {
         return <p className={addRoomPageStyle.message}>Loading room details...</p>;
@@ -179,6 +193,19 @@ function AddRoomPage() {
     if (error) {
         return <p className={`${addRoomPageStyle.message} ${addRoomPageStyle.error}`}>Error: {error}</p>;
     }
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            const file = event.target.files[0];
+            setSelectedFile(file);
+
+            // Update formData with a generated URL for server-side use
+            setFormData((prev) => ({
+                ...prev,
+                imageUrl: `/images/${file.name}`,
+            }));
+        }
+    };
 
     return (
         <>
@@ -241,8 +268,36 @@ function AddRoomPage() {
                                 value={formData.imageUrl}
                                 onChange={handleInputChange}
                                 placeholder="https://example.com/image.jpg"
+                                disabled={!!selectedFile}
+                            />
+                            {formData.imageUrl && (
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setFormData((prev) => ({ ...prev, imageUrl: '' }))
+                                    }
+                                    className={addRoomPageStyle.clearButton}
+                                >
+                                    Clear image URL
+                                </button>
+                            )}
+                        </div>
+                        <div>
+                            <input
+                                type="file"
+                                onChange={handleFileChange}
+                                disabled={formData.imageUrl.trim() !== ''}
                             />
                         </div>
+                        {selectedFile && (
+                            <button
+                                type="button"
+                                onClick={() => setSelectedFile(null)}
+                                className={addRoomPageStyle.clearButton}
+                            >
+                                Clear chosen file
+                            </button>
+                        )}
                     </div>
 
                     <div className={addRoomPageStyle.formSection}>
