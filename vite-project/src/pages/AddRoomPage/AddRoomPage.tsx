@@ -297,7 +297,7 @@ function AddRoomPage() {
                                     onClick={() =>
                                         setFormData((prev) => ({ ...prev, imageUrl: '' }))
                                     }
-                                    className={addRoomPageStyle.clearButton}
+                                    className={addRoomPageStyle.imageButtons}
                                 >
                                     Clear image URL
                                 </button>
@@ -305,20 +305,22 @@ function AddRoomPage() {
                         </div>
                         <div>
                             <input
+                                className={addRoomPageStyle.imageButtons}
                                 type="file"
                                 onChange={handleFileChange}
                                 disabled={formData.imageUrl.trim() !== ''}
                             />
-                        </div>
-                        {selectedFile && (
+                            {selectedFile && (
                             <button
                                 type="button"
                                 onClick={() => setSelectedFile(null)}
-                                className={addRoomPageStyle.clearButton}
+                                className={addRoomPageStyle.imageButtons}
                             >
                                 Clear chosen file
                             </button>
                         )}
+                        </div>
+                        
                     </div>
 
                     <div className={addRoomPageStyle.formSection}>
